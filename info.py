@@ -54,6 +54,7 @@ def get_code(deck:dict) -> str:
     """
     data = {"clan":deck['clan'],"deck_format":1,"cardID":[str(id) for id in deck['deck']]}
     resp = requests.post(url = 'https://exp.16163.com/sv/to_code',json = data)
+    print(resp.text)
     code = json.loads(resp.text)['data']
     return code
 
