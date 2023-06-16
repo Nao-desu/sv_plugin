@@ -1,0 +1,1 @@
+start cmd /K "py -c "import update;update.update()""
