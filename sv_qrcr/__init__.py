@@ -16,11 +16,8 @@ async def sv_QRCR(bot,ev):
         await bot.send(ev,'发现世界服二维码！')
         for deck in decks:
             img = await deck_img_gen(deck)
-            try:
-                code = await get_code(deck)
-                msg = f'职业：{clan2w[deck["clan"]]}{img}\n国服永久码{code}'
-            except:
-                msg = f'职业：{clan2w[deck["clan"]]}{img}'
+            code = await get_code(deck)
+            msg = f'职业：{clan2w[deck["clan"]]}{img}\n国服永久码{code}'
             await bot.send(ev,msg)            
     except Exception as e:
         await bot.send(ev,f'生成失败{e}')
