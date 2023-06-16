@@ -24,7 +24,7 @@ async def sv_card_index(bot,ev):
             await bot.send(ev,img)
         else:
             await bot.send(ev,f'查询到如下{len(cards)}张可能结果\n使用svcard+id可以查看卡牌详细信息',at_sender = True)
-            cards_sorted = sorted(cards,key = lambda x : x['dm'],reverse=True)
+            cards_sorted = sorted(cards,key = lambda x : x['score'],reverse=True)
             img = await cardlist_img_gen(cards_sorted)
             await bot.send(ev,img)
     except Exception as e:
