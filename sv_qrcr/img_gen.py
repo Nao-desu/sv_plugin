@@ -76,7 +76,7 @@ async def deck_img_gen(deck:dict)->str:
                 costimg = Image.open(join(MOUDULE_PATH,f'img/cost/{cards[i]["cost"]}.png'))
                 img.paste(costimg,((rol-1)*270+10,(row-1)*46+10),costimg)
                 y = font.getsize(cards[i]['name'])[1]
-                draw_text_psd_style(deaw=draw,xy=((rol-1)*270+50,int((row-1)*46+23-y/2)),text=cards[i]['name'],font=font,tracking=-10)
+                draw_text_psd_style(draw=draw,xy=((rol-1)*270+50,int((row-1)*46+23-y/2)),text=cards[i]['name'],font=font,tracking=-10)
                 draw.text(((rol)*270-10,(row-1)*46+23),f'x{cards[i]["num"]}',(255,255,255),font,'rm')
                 count +=1
     img = img.convert('RGB')
