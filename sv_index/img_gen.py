@@ -32,8 +32,8 @@ def img_gen_1(card) -> Image:
     id = card["card_id"]
     #绘制左侧
     left = Image.new("RGBA",(1100,810+y1+y2),(255,255,255,0))
-    C_pic = Image.open(join(MOUDULE_PATH,f'img/C/{id}.png'))
-    E_pic = Image.open(join(MOUDULE_PATH,f'img/E/{id}.png'))
+    C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+    E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
     left.paste(C_pic,(0,0),C_pic)
     left.paste(E_pic,(560,0),E_pic)
     C_pic.close()
@@ -85,7 +85,7 @@ def img_gen_2(card) -> Image:
     id = card["card_id"]
     #绘制左侧
     left = Image.new("RGBA",(540,700),(255,255,255,0))
-    C_pic = Image.open(join(MOUDULE_PATH,f'img/C/{id}.png'))
+    C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
     left.paste(C_pic,(0,0),C_pic)
     C_pic.close()
     #绘制右侧
@@ -149,7 +149,7 @@ async def cardlist_img_gen(cards:list) -> str:
             id = card['card_id']
             name = card['card_name']
             text = f'id:{id}|匹配度:{dm}'
-            C_img = Image.open(join(MOUDULE_PATH,f'img/C/{id}.png'))
+            C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
             img.paste(C_img,(30+j*570,30+i*800),C_img)
             count +=1
             draw.text((300+j*570,740+i*800),name,(0,0,0),font,'mm')

@@ -33,7 +33,7 @@ async def deck_img_gen(deck:dict)->str:
                 if rol == 0:
                     rol = 2
                 row = (count-1)//2 + 1
-                lcard = Image.open(join(MOUDULE_PATH,f'img/L/{i}.jpg'))
+                lcard = Image.open(join(MOUDULE_PATH,f'img/L/L_{i}.jpg'))
                 img.paste(lcard,((rol-1)*270,(row-1)*46))
                 costimg = Image.open(join(MOUDULE_PATH,f'img/cost/{cards[i]["cost"]}.png'))
                 img.paste(costimg,((rol-1)*270+10,(row-1)*46+10),costimg)
