@@ -1,0 +1,6 @@
+fuzzywuzzy==0.18.0
+Pillow==9.5.0
+pyzbar==0.1.9
+Requests==2.31.0
+tqdm==4.46.0
+zhconv==1.4.2
