@@ -18,12 +18,12 @@ def img_gen_1(card) -> Image:
     """
     绘制从者卡
     """
-    skill = "进化前\n" + text_split(card["skill_disc"])
-    eskill = "进化后\n" + text_split(card["evo_skill_disc"])
+    skill = "進化前\n" + text_split(card["skill_disc"])
+    eskill = "進化后\n" + text_split(card["evo_skill_disc"])
     des = text_split(card["description"])
     edes = text_split(card["evo_description"])
     cv = 'cv:' + card["cv"]
-    card_info = '卡包:' + card_set[card["card_set_id"]] + '|類型:' + card["tribe_name"] + '|职业:' + clan2w[card["clan"]]
+    card_info = '卡包:' + card_set[card["card_set_id"]] + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
     y1 = font.getsize_multiline(des)[1]
     y2 = font.getsize_multiline(edes)[1]
     y3 = font.getsize_multiline(skill)[1]
@@ -68,7 +68,7 @@ def img_gen_1(card) -> Image:
     bg = bg.crop((0,0,2200,ym+80))
     bgdraw = ImageDraw.Draw(bg)
     x,y = bg.size
-    bgdraw.text((x-300,y-90),f'id:{id}\ncode by 夏绪\ngenerate by ddbot',text_color,font)
+    bgdraw.text((x-300,y-100),f'id:{id}\ncode by Nao-desu\ngenerate by ddbot',text_color,font)
     return bg
 
 def img_gen_2(card) -> Image:
@@ -145,10 +145,10 @@ async def cardlist_img_gen(cards:list) -> str:
             if j+i*4 == card_num:
                 break
             card = cards[j+i*4]['card']
-            dm = cards[j+i*4]['dm']
+            score = cards[j+i*4]['score']
             id = card['card_id']
             name = card['card_name']
-            text = f'id:{id}|匹配度:{dm}'
+            text = f'id:{id}|匹配度:{score}'
             C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
             img.paste(C_img,(30+j*570,30+i*800),C_img)
             count +=1

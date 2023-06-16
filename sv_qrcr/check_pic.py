@@ -14,7 +14,7 @@ async def get_pic(ev) -> list:
     if not match:
         return pic
     for cq in match:
-        url = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", cq)
+        url = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", cq).group(2)
         resp = await aiorequests.get(url)
         resp_cont = await resp.content
         pic.append(Image.open(BytesIO(resp_cont)).convert("RGBA"))
