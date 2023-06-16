@@ -48,15 +48,6 @@ def get_latest_set() -> int:
     con = get_condition()
     return int(list(con["card_set_id"].keys())[-1])
 
-def get_code(deck:dict) -> str:
-    """
-    获取国服永久码
-    """
-    data = {"clan":deck['clan'],"deck_format":1,"cardID":[str(id) for id in deck['deck']]}
-    resp = requests.post(url = 'https://exp.16163.com/sv/to_code',json = data)
-    code = json.loads(resp.text)['data']
-    return code
-
 def check_condition(i:str) -> tuple:
     """
     输入卡包名/职业/稀有度/类型/种类

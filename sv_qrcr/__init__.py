@@ -1,7 +1,7 @@
 from hoshino import Service
 from .check_pic import get_pic,check_QR
 from .img_gen import deck_img_gen
-from ..info import clan2w,get_code
+from ..info import clan2w
 import traceback
 sv = Service('sv-QRcode')
 
@@ -17,8 +17,7 @@ async def sv_QRCR(bot,ev):
         await bot.send(ev,'发现世界服二维码！')
         for deck in decks:
             img = await deck_img_gen(deck)
-            code = get_code(deck)
-            msg = f'职业：{clan2w[deck["clan"]]}{img}\n国服永久码{code}'
+            msg = f'职业：{clan2w[deck["clan"]]}{img}'
             await bot.send(ev,msg)            
     except Exception as e:
         traceback.print_exc()
