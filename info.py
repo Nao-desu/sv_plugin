@@ -176,9 +176,9 @@ async def text2cards(text:str) -> list:
     condition = []
     for i in text:
         if i[:1] == '#':
-            condition.append(i)
+            condition.append(i[1:])
     for i in condition:
-        text.remove(i)
+        text.remove('#'+i)
     text:str = ''.join(text).strip()
     cards:list = get_card_list()
     costmatch = r'^\d{1,2}c$'

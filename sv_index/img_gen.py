@@ -113,7 +113,6 @@ def img_gen_2(card) -> Image:
     x,y = bg.size
     bgdraw.text((x-300,y-90),f'id:{id}\ncode by 夏绪\ngenerate by ddbot',text_color,font)
     return bg
-    return
 
 async def card_img_gen(card:dict) -> str:
     """
@@ -122,6 +121,8 @@ async def card_img_gen(card:dict) -> str:
     """
     if card["char_type"] == 1:
         img = img_gen_1(card)
+    else:
+        img = img_gen_2(card)
     img = img.convert('RGBA')
     buf = BytesIO()
     img.save(buf, format='PNG')
