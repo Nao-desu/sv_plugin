@@ -78,7 +78,7 @@ def img_gen_2(card) -> Image:
     skill = text_split(card["skill_disc"])
     des = text_split(card["description"])
     cv = 'cv:' + card["cv"]
-    card_info = '卡包:' + card_set[card["card_set_id"]] + '|類型:' + card["tribe_name"] + '|职业:' + clan2w[card["clan"]]
+    card_info = '卡包:' + card_set[card["card_set_id"]] + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
     y1 = font.getsize_multiline(skill)[1]
     y2 = font.getsize_multiline(des)[1]
     xcv = font.getsize_multiline(cv)[0]
@@ -107,11 +107,11 @@ def img_gen_2(card) -> Image:
     bg = Image.open(join(MOUDULE_PATH,'img/bg/bg2.jpg'))
     bg.paste(left,(30,30),left)
     bg.paste(right,(610,30),right)
-    ym = max(700,440+y1+y2)
+    ym = max(700,450+y1+y2)
     bg = bg.crop((0,0,1640,ym+30))
     bgdraw = ImageDraw.Draw(bg)
     x,y = bg.size
-    bgdraw.text((x-300,y-90),f'id:{id}\ncode by 夏绪\ngenerate by ddbot',text_color,font)
+    bgdraw.text((x-300,y-100),f'id:{id}\ncode by 夏绪\ngenerate by ddbot',text_color,font)
     return bg
 
 async def card_img_gen(card:dict) -> str:
