@@ -14,12 +14,12 @@ def draw_rr(x,y,clan)-> Image:
     draw.rounded_rectangle((3,3,x-3,y-3),15,(15,15,20),clan_color[clan],3)
     return square
 
-def draw_text_mulcolour(draw:ImageDraw.ImageDraw,x:int,y:int,text:str,pos:list):
+def draw_text_mulcolour(draw:ImageDraw.ImageDraw,x:int,y:int,text:str,pos:list,is_follower:bool):
     """
     绘制不同颜色的字体
     """
     texts = text.split('\n')
-    count = -3
+    count = -3 if is_follower else 0
     for text in texts:
         _x = x
         for word in text:
@@ -76,9 +76,9 @@ def img_gen_1(card) -> Image:
     right.paste(square,(0,140),square)
     square.close()
     #rdraw.text((50,240),skill,text_color,font)
-    draw_text_mulcolour(rdraw,50,240,skill,get_textcolor_pos(card["org_skill_disc"]))
+    draw_text_mulcolour(rdraw,50,240,skill,get_textcolor_pos(card["org_skill_disc"]),True)
     #rdraw.text((50,350+y3),eskill,text_color,font)
-    draw_text_mulcolour(rdraw,50,350+y3,eskill,get_textcolor_pos(card["org_evo_skill_disc"]))
+    draw_text_mulcolour(rdraw,50,350+y3,eskill,get_textcolor_pos(card["org_evo_skill_disc"]),True)
     rdraw.line([(45,295+y3),(955,295+y3)],text_color,1)
     bg = Image.open(join(MOUDULE_PATH,'img/bg/bg.jpg'))
     bg.paste(left,(30,30),left)
@@ -120,7 +120,7 @@ def img_gen_2(card) -> Image:
     right.paste(square,(0,140),square)
     square.close()
     #rdraw.text((50,190),skill,text_color,font)
-    draw_text_mulcolour(rdraw,50,190,skill,get_textcolor_pos(card["org_skill_disc"]))
+    draw_text_mulcolour(rdraw,50,190,skill,get_textcolor_pos(card["org_skill_disc"]),False)
     rdraw.text((50,300+y1),des,text_color,font)    
     rdraw.text((950-xcv,510+y1+y2),cv,text_color,font)
     rdraw.line([(45,245+y1),(955,245+y1)],text_color,1)

@@ -13,7 +13,7 @@ def text_split(text):
     文字排版
     """
     t_list = text.replace("<br>","\n").split("\n")
-    t_list = [fill(i,width=25) for i in t_list]
+    t_list = [fill(i,width=25,drop_whitespace = False) for i in t_list]
     text = '\n'.join(t_list)
     return text
 
