@@ -29,7 +29,7 @@ def draw_text_mulcolour(draw:ImageDraw.ImageDraw,x:int,y:int,text:str,pos:list):
                 draw.text((_x,y),text=word,fill=text_color,font=font)
             _x += font.getsize(word)[0]
             count += 1
-        y += font.getsize(text)
+        y += font.getsize(text)[1]
 
 def img_gen_1(card) -> Image:
     """
