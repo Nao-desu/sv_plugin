@@ -5,7 +5,7 @@
 from os.path import join
 from fuzzywuzzy.fuzz import partial_ratio as ratio
 from textwrap import fill
-import json,os,zhconv,re,requests
+import json,os,zhconv,re
 MOUDULE_PATH = os.path.dirname(__file__)
 
 def text_split(text):
@@ -71,6 +71,31 @@ def check_score(text:str) -> int:
         return 70
     else:
         return int(100*(l-3)/l)
+
+def get_textcolor_pos(text:str) -> list:
+    """
+    获取换色文字的位置
+    """
+    pos = []
+    _text = text.replace('<br>','').split('[u][ffcd45]')
+    for part in _text:
+        part = part.replace('[-][/u]','')
+    count = 0
+    ntext = []
+    for part in _text:
+        if '[-][/u]' in part:
+            ntext.append(part.split('[-][/u]')[0])
+            ntext.append(part.split('[-][/u]')[1])
+        else:
+            ntext.append(part)
+    for i in range(0,len(ntext)):
+        if i % 2 == 0:
+            count += len(ntext[i])
+        else:
+            for j in range(0,len(ntext[i])):
+                pos.append(count)
+                count += 1
+    return pos
 
 def hashToID(hash:str) -> int:
     """
