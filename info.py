@@ -8,12 +8,27 @@ from textwrap import fill
 import json,os,zhconv,re
 MOUDULE_PATH = os.path.dirname(__file__)
 
+def text_changeline(text:str) -> str:
+    """
+    按限制换行,textwrap不好用
+    """
+    new_text = ''
+    count = 1
+    for word in text:
+        if count != 25:
+            new_text += word
+            count += 1
+        else:
+            new_text += word+'\n'
+            count = 1
+    return new_text
+
 def text_split(text):
     """
     文字排版
     """
     t_list = text.replace("<br>","\n").split("\n")
-    t_list = [fill(i,width=25,drop_whitespace = False) for i in t_list]
+    t_list = [text_changeline(i) for i in t_list]
     text = '\n'.join(t_list)
     return text
 
