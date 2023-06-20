@@ -1,7 +1,8 @@
 """
 获取各种数据
 """
-
+from xpinyin import Pinyin
+p = Pinyin()
 from os.path import join
 from fuzzywuzzy.fuzz import partial_ratio as ratio
 import json,os,zhconv,re
@@ -324,6 +325,8 @@ async def text2cards(text:str) -> list:
             cards.remove(card)
     for card in cards:
         ratio1 = ratio(card["card_name"],text)
+        ratio1_1 = ratio(p.get_pinyin(card["card_name"],''),p.get_pinyin(text,''))
+        ratio1 = max(ratio1,ratio1_1)
         if len(text) > len(card["card_name"]):
             ratio1 = 0
         ratio2 = ratio(clear_pun(card["skill_disc"]),text)
