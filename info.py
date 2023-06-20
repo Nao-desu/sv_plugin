@@ -326,7 +326,7 @@ async def text2cards(text:str) -> list:
     for card in cards:
         ratio1 = ratio(card["card_name"],text)
         ratio1_1 = ratio(p.get_pinyin('-'+card["card_name"])+'-','-'+p.get_pinyin(text)+'-')
-        ratio1 = max(ratio1,ratio1_1)
+        ratio1 = 100 if ratio1_1 == 100 else ratio1
         if len(text) > len(card["card_name"]):
             ratio1 = 0
         ratio2 = ratio(clear_pun(card["skill_disc"]),text)
