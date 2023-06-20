@@ -130,6 +130,9 @@ def hashToID(hash:str) -> int:
             id = id * 64 + 63
     return id
 
+def clear_pun(text:str) -> str:
+    return text.replace('<br>','').replace('。','').replace('，','').replace('：','').replace('；','').replace(' ','')
+
 """
 类型名
 """
@@ -231,6 +234,10 @@ async def text2cards(text:str) -> list:
                 latset = get_latest_set()
                 if card['card_set_id'] in range(latset-4,latset+1):
                     select.append(card)
+        elif i.isdigit():
+            for card in cards:
+                if str(card['cost'])+str(card['atk'])+str(card['life']) == i:
+                    select.append(card)
         elif re.match(costmatch,i):
             cost = int(i[:-1])
             for card in cards:
@@ -276,8 +283,8 @@ async def text2cards(text:str) -> list:
         ratio1 = ratio(card["card_name"],text)
         if len(text) > len(card["card_name"]):
             ratio1 = 0
-        ratio2 = ratio(card["skill_disc"],text)
-        ratio3 = ratio(card["evo_skill_disc"],text)
+        ratio2 = ratio(clear_pun(card["skill_disc"]),text)
+        ratio3 = ratio(clear_pun(card["evo_skill_disc"]),text)
         score = max(ratio1,ratio2,ratio3)
         if score >= check_score(text):
             result.append({'card':card,'score':score/100})
