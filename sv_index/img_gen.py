@@ -142,7 +142,7 @@ async def card_img_gen(card:dict) -> str:
         img = img_gen_2(card)
     img = img.convert('RGB')
     buf = BytesIO()
-    img.save(buf, format='JEPG')
+    img.save(buf, format='JPEG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
     img = f'[CQ:image,file={base64_str}]'
     related = get_related_cards(card)
@@ -155,7 +155,7 @@ async def card_img_gen(card:dict) -> str:
                 img = img_gen_2(card)
             img = img.convert('RGB')
             buf = BytesIO()
-            img.save(buf, format='JEPG')
+            img.save(buf, format='JPEG')
             base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
             img += f'[CQ:image,file={base64_str}]'
     return img
