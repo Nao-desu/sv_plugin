@@ -4,7 +4,6 @@
 
 from os.path import join
 from fuzzywuzzy.fuzz import partial_ratio as ratio
-from textwrap import fill
 import json,os,zhconv,re
 MOUDULE_PATH = os.path.dirname(__file__)
 
@@ -145,9 +144,34 @@ def get_related_cards(card:dict) -> list:
     related_id = re.findall(idmatch,card["skill_option"])
     cards = get_cards()
     for i in related_id:
-        if i in cards and cards[i] not in related:
+        if i in cards and cards[i] not in related and int(i) != card["card_id"]:
             related.append(cards[i])
     return related
+
+def judge_card(cards:list):
+    """
+    判断是否为异画
+    """
+    base_id = cards[0]['card']["base_card_id"]
+    for i in cards:
+        if i['card']["base_card_id"] != base_id:
+            return False
+    card_dict = get_cards()
+    card = card_dict[str(base_id)]
+    return {'card':card,'score':cards[0]['score']}
+
+def find_all_card(id:int)->list:
+    """
+    返回此卡牌的所有异画id
+    """
+    card_dict = get_cards()
+    relist = []
+    base_id = card_dict[str(id)]["base_card_id"]
+    for cardid in card_dict:
+        if card_dict[cardid]["base_card_id"] == base_id and card_dict[cardid]["card_id"] != id:
+            relist.append(cardid)
+    return relist
+
 
 """
 类型名

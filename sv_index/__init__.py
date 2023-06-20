@@ -1,5 +1,5 @@
 from hoshino import Service
-from ..info import text2cards,get_cards
+from ..info import text2cards,get_cards,judge_card
 from .img_gen import card_img_gen,cardlist_img_gen
 sv = Service('sv-index')
 
@@ -11,6 +11,9 @@ async def sv_card_index(bot,ev):
             await bot.send(ev,'请输入条件&关键词!',at_sender=True)
             return
         cards:list = await text2cards(text)
+        judge = judge_card(cards)
+        if judge:
+            cards = judge
         if len(cards) == 0:
             await bot.send(ev,'抱歉,未查询到符合条件的卡牌',at_sender = True)
         elif len(cards) == 1:
