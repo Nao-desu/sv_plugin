@@ -1,7 +1,7 @@
 from PIL import Image,ImageFont,ImageDraw
 from io import BytesIO
 from os.path import join
-from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos
+from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos,get_related_cards
 from ..config import clan_color,text_color
 import base64
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 30)
@@ -75,9 +75,7 @@ def img_gen_1(card) -> Image:
     square = draw_rr(1000,310+y3+y4,card["clan"])
     right.paste(square,(0,140),square)
     square.close()
-    #rdraw.text((50,240),skill,text_color,font)
     draw_text_mulcolour(rdraw,50,240,skill,get_textcolor_pos(card["org_skill_disc"]),True)
-    #rdraw.text((50,350+y3),eskill,text_color,font)
     draw_text_mulcolour(rdraw,50,350+y3,eskill,get_textcolor_pos(card["org_evo_skill_disc"]),True)
     rdraw.line([(45,295+y3),(955,295+y3)],text_color,1)
     bg = Image.open(join(MOUDULE_PATH,'img/bg/bg.jpg'))
@@ -119,7 +117,6 @@ def img_gen_2(card) -> Image:
     square = draw_rr(1000,210+y1+y2,card["clan"])
     right.paste(square,(0,140),square)
     square.close()
-    #rdraw.text((50,190),skill,text_color,font)
     draw_text_mulcolour(rdraw,50,190,skill,get_textcolor_pos(card["org_skill_disc"]),False)
     rdraw.text((50,300+y1),des,text_color,font)    
     rdraw.text((950-xcv,510+y1+y2),cv,text_color,font)
@@ -143,11 +140,24 @@ async def card_img_gen(card:dict) -> str:
         img = img_gen_1(card)
     else:
         img = img_gen_2(card)
-    img = img.convert('RGBA')
+    img = img.convert('RGB')
     buf = BytesIO()
-    img.save(buf, format='PNG')
+    img.save(buf, format='JEPG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
     img = f'[CQ:image,file={base64_str}]'
+    related = get_related_cards(card)
+    if related:
+        img += '关联卡牌：\n'
+        for i in related:
+            if i["char_type"] == 1:
+                img = img_gen_1(card)
+            else:
+                img = img_gen_2(card)
+            img = img.convert('RGB')
+            buf = BytesIO()
+            img.save(buf, format='JEPG')
+            base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
+            img += f'[CQ:image,file={base64_str}]'
     return img
 
 async def cardlist_img_gen(cards:list) -> str:

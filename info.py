@@ -131,7 +131,23 @@ def hashToID(hash:str) -> int:
     return id
 
 def clear_pun(text:str) -> str:
+    """
+    去除文字内换行符和标点
+    """
     return text.replace('<br>','').replace('。','').replace('，','').replace('：','').replace('；','').replace(' ','')
+
+def get_related_cards(card:dict) -> list:
+    """
+    获取相关卡牌
+    """
+    related = []
+    idmatch = r'\d{9}'
+    related_id = re.findall(idmatch,card["skill_option"])
+    cards = get_cards()
+    for i in related_id:
+        if i in cards:
+            related.append(cards[i])
+    return related
 
 """
 类型名
