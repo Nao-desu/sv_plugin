@@ -145,7 +145,7 @@ def get_related_cards(card:dict) -> list:
     related_id = re.findall(idmatch,card["skill_option"])
     cards = get_cards()
     for i in related_id:
-        if i in cards:
+        if i in cards and cards[i] not in related:
             related.append(cards[i])
     return related
 
@@ -211,6 +211,7 @@ card_set = {
     70025:"賽馬娘Pretty Derby合作",
     70026:"吉伊卡哇合作",
     70027:"闇影詩章F合作",
+    70028:"初音未來合作",
     20001:"初音未來合作",
     90000:"token"
 }
