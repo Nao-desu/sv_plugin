@@ -152,6 +152,8 @@ def judge_card(cards:list):
     """
     判断是否为异画
     """
+    if not cards:
+        return False
     base_id = cards[0]['card']["base_card_id"]
     for i in cards:
         if i['card']["base_card_id"] != base_id:

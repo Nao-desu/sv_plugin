@@ -1,7 +1,7 @@
 from PIL import Image,ImageFont,ImageDraw
 from io import BytesIO
 from os.path import join
-from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos,get_related_cards,get_card_list
+from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos,get_related_cards,find_all_card
 from ..config import clan_color,text_color
 import base64
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 30)
@@ -158,7 +158,7 @@ async def card_img_gen(card:dict) -> str:
             img.save(buf, format='JPEG')
             base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
             msg += f'[CQ:image,file={base64_str}]'
-    diff_card = get_card_list(card["card_id"])
+    diff_card = find_all_card(card["card_id"])
     if diff_card:
         msg += '\n※此卡牌存在其他卡面：'
         for id in diff_card:
