@@ -144,10 +144,10 @@ async def card_img_gen(card:dict) -> str:
     buf = BytesIO()
     img.save(buf, format='JPEG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    img = f'[CQ:image,file={base64_str}]'
+    msg = f'[CQ:image,file={base64_str}]'
     related = get_related_cards(card)
     if related:
-        img += '关联卡牌：\n'
+        msg += '关联卡牌：\n'
         for i in related:
             if i["char_type"] == 1:
                 img = img_gen_1(card)
@@ -157,7 +157,7 @@ async def card_img_gen(card:dict) -> str:
             buf = BytesIO()
             img.save(buf, format='JPEG')
             base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-            img += f'[CQ:image,file={base64_str}]'
+            msg += f'[CQ:image,file={base64_str}]'
     return img
 
 async def cardlist_img_gen(cards:list) -> str:
