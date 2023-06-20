@@ -150,9 +150,9 @@ async def card_img_gen(card:dict) -> str:
         msg += '关联卡牌：\n'
         for i in related:
             if i["char_type"] == 1:
-                img = img_gen_1(card)
+                img = img_gen_1(i)
             else:
-                img = img_gen_2(card)
+                img = img_gen_2(i)
             img = img.convert('RGB')
             buf = BytesIO()
             img.save(buf, format='JPEG')
