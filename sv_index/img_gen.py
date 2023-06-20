@@ -158,7 +158,7 @@ async def card_img_gen(card:dict) -> str:
             img.save(buf, format='JPEG')
             base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
             msg += f'[CQ:image,file={base64_str}]'
-    return img
+    return msg
 
 async def cardlist_img_gen(cards:list) -> str:
     """
