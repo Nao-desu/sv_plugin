@@ -161,7 +161,7 @@ def judge_card(cards:list):
             return False
     card_dict = get_cards()
     card = card_dict[str(base_id)]
-    return {'card':card,'score':cards[0]['score']}
+    return [{'card':card,'score':cards[0]['score']}]
 
 def find_all_card(id:int)->list:
     """
