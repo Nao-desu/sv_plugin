@@ -325,7 +325,7 @@ async def text2cards(text:str) -> list:
             cards.remove(card)
     for card in cards:
         ratio1 = ratio(card["card_name"],text)
-        ratio1_1 = ratio(p.get_pinyin(card["card_name"],''),p.get_pinyin(text,''))
+        ratio1_1 = ratio(p.get_pinyin(card["card_name"]),p.get_pinyin(text))
         ratio1 = max(ratio1,ratio1_1)
         if len(text) > len(card["card_name"]):
             ratio1 = 0
