@@ -164,6 +164,7 @@ def check_set(text:str) -> int:
         else:return False
     cond = get_condition()
     card_set = cond["card_set_id"]
+    text = zhconv.convert(text,'zh-tw')
     for id in card_set:
         if text in card_set[id]:
             return int(id)

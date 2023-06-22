@@ -22,6 +22,7 @@ async def gacha1(bot,ev):
         card_set:int = check_set(text)
         if not card_set:
             await bot.send(ev,'不存在此卡包！',at_sender= True)
+            return
         leadercard,card,result = await gachaing(card_set,1)
         msg = await draw_result_1(leadercard,card)
         msg += '\n进行了1次抽卡,获得:'
@@ -53,6 +54,7 @@ async def gacha10(bot,ev):
         card_set:int = check_set(text)
         if not card_set:
             await bot.send(ev,'不存在此卡包！',at_sender= True)
+            return
         leadercard,card,result = await gachaing(card_set,10)
         msg = await draw_result_2(leadercard,card)
         msg += '\n进行了10次抽卡,获得:'
@@ -84,6 +86,7 @@ async def gacha400(bot,ev):
         card_set:int = check_set(text)
         if not card_set:
             await bot.send(ev,'不存在此卡包！',at_sender= True)
+            return
         leadercard,card,result = await gachaing(card_set,400)
         msg = await draw_result_2(leadercard,card)
         msg += '\n进行了400次抽卡,获得:'
