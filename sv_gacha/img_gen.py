@@ -20,7 +20,7 @@ async def draw_result_1(leadercard:list,card:dict)->str:
             id = cards[j+i*4]
             card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
             img.paste(card_pic,(j*536,i*698),card_pic)
-    img.resize((536*2,698))
+    img.resize((536,349))
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
@@ -64,7 +64,7 @@ async def draw_result_2(leadercard:list,card:dict)->str:
             if j+i*5 >= len(cardlist):
                 break
     x,y = img.size
-    img.resize((x//4,y//4))
+    img.resize((x//8,y//8))
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')

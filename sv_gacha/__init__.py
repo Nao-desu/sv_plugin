@@ -24,7 +24,7 @@ async def gacha1(bot,ev):
             await bot.send(ev,'不存在此卡包！',at_sender= True)
         leadercard,card,result = await gachaing(card_set,1)
         msg = await draw_result_1(leadercard,card)
-        msg += '\n获得:'
+        msg += '\n进行了1次抽卡,获得:'
         if leadercard:
             msg += f'\n异画x{len(leadercard)}'
         if result[1]:
@@ -35,6 +35,7 @@ async def gacha1(bot,ev):
             msg += f'\n白银卡x{result[3]}'
         if result[4]:
             msg += f'\n青铜卡x{result[4]}'
+        msg += f'获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}'
         clmt.increase(f'{uid}',100)
         await bot.send(ev,msg,at_sender = True)
     except Exception as e:
@@ -54,7 +55,7 @@ async def gacha10(bot,ev):
             await bot.send(ev,'不存在此卡包！',at_sender= True)
         leadercard,card,result = await gachaing(card_set,10)
         msg = await draw_result_2(leadercard,card)
-        msg += '\n获得:'
+        msg += '\n进行了10次抽卡,获得:'
         if leadercard:
             msg += f'\n异画x{len(leadercard)}'
         if result[1]:
@@ -65,6 +66,7 @@ async def gacha10(bot,ev):
             msg += f'\n白银卡x{result[3]}'
         if result[4]:
             msg += f'\n青铜卡x{result[4]}'
+        msg += f'获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}'
         await bot.send(ev,msg,at_sender = True)
         clmt.increase(f'{uid}',1000)
     except Exception as e:
@@ -84,7 +86,7 @@ async def gacha400(bot,ev):
             await bot.send(ev,'不存在此卡包！',at_sender= True)
         leadercard,card,result = await gachaing(card_set,400)
         msg = await draw_result_2(leadercard,card)
-        msg += '\n获得:'
+        msg += '\n进行了400次抽卡,获得:'
         if leadercard:
             msg += f'\n异画x{len(leadercard)}'
         if result[1]:
@@ -95,6 +97,7 @@ async def gacha400(bot,ev):
             msg += f'\n白银卡x{result[3]}'
         if result[4]:
             msg += f'\n青铜卡x{result[4]}'
+        msg += f'获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}'
         await bot.send(ev,msg,at_sender = True)
         tlmt.increase(f'{uid}')
     except Exception as e:
