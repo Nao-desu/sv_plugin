@@ -35,7 +35,7 @@ async def draw_result_2(leadercard:list,card:dict)->str:
     cards ={}
     cardlist = []
     if not leadercard and not card[1]:
-        img = Image.new("RGBA",(536*5/4,698/2),(0,0,0,100))
+        img = Image.new("RGBA",(536*5//4,698//2),(0,0,0,100))
     else:
         for i in leadercard:
             if i in cards:
@@ -60,7 +60,7 @@ async def draw_result_2(leadercard:list,card:dict)->str:
                 img.paste(card_pic,(j*536,i*698),card_pic)
                 draw.text((j*536+400,i*698+40),f'x{cards[id]}',(255,255,255),font)
     x,y = img.size
-    img.resize((x/4,y/4))
+    img.resize((x//4,y//4))
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
