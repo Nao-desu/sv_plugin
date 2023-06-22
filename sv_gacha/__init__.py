@@ -4,6 +4,7 @@ from ..info import check_set
 from .gacha import gachaing
 from .img_gen import draw_result_1,draw_result_2
 from ..config import max_400,max_coin
+import traceback
 
 sv = Service('sv_gacha')
 
@@ -27,6 +28,7 @@ async def gacha1(bot,ev):
         await bot.send(ev,msg,at_sender = True)
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}')
+        traceback.print_exc()
 
 @sv.on_prefix('sv十连','影之诗十连','sv十包','影之诗十包')
 async def gacha10(bot,ev):
@@ -56,6 +58,7 @@ async def gacha10(bot,ev):
         clmt.increase(f'{uid}',1000)
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}')
+        traceback.print_exc()
 
 @sv.on_prefix('sv井','影之诗井','sv井','影之诗井')
 async def gacha400(bot,ev):
@@ -85,3 +88,4 @@ async def gacha400(bot,ev):
         tlmt.increase(f'{uid}')
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}')
+        traceback.print_exc()
