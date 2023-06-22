@@ -11,7 +11,7 @@ sv = Service('sv_gacha')
 clmt = DailyNumberLimiter(max_coin)
 tlmt = DailyNumberLimiter(max_400)
 
-@sv.on_prefix('sv抽卡','影之诗抽卡')
+@sv.on_prefix('sv抽卡','影之诗抽卡',only_to_me=True)
 async def gacha1(bot,ev):
     try:
         uid = ev.user_id
@@ -41,7 +41,7 @@ async def gacha1(bot,ev):
         await bot.send(ev,f'发送失败：{e}')
         traceback.print_exc()
 
-@sv.on_prefix('sv十连','影之诗十连','sv十包','影之诗十包')
+@sv.on_prefix('sv十连','影之诗十连','sv十包','影之诗十包',only_to_me=True)
 async def gacha10(bot,ev):
     try:
         uid = ev.user_id
@@ -71,7 +71,7 @@ async def gacha10(bot,ev):
         await bot.send(ev,f'发送失败：{e}')
         traceback.print_exc()
 
-@sv.on_prefix('sv井','影之诗井','sv井','影之诗井')
+@sv.on_prefix('sv井','影之诗井','sv一井','影之诗一井','SV一井',only_to_me=True)
 async def gacha400(bot,ev):
     try:
         uid = ev.user_id

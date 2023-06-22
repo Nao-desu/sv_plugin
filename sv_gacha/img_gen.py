@@ -33,6 +33,7 @@ async def draw_result_2(leadercard:list,card:dict)->str:
     绘制仅包含传说卡牌和异画的抽卡结果
     """
     cards ={}
+    cardlist = []
     if not leadercard and not card[1]:
         img = Image.new("RGBA",(536*5/4,698/2),(0,0,0,100))
     else:
@@ -41,18 +42,20 @@ async def draw_result_2(leadercard:list,card:dict)->str:
                 cards[i]+=1
             else:
                 cards[i]=1
+                cardlist.append(i)
         for i in card[1]:
             if i in cards:
                 cards[i]+=1
             else:
                 cards[i]=1
+                cardlist.append(i)
         num = len(cards)
         line = (num+4)//5
         img = Image.new("RGBA",(536*5,698*line),(0,0,0,100))
         draw = ImageDraw.Draw(img)
         for i in range(0,line):
             for j in range(0,5):
-                id = cards[j+i*5]
+                id = cardlist[j+i*5]
                 card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
                 img.paste(card_pic,(j*536,i*698),card_pic)
                 draw.text((j*536+400,i*698+40),f'x{card[id]}',(255,255,255),font)
