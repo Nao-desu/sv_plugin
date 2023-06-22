@@ -33,7 +33,7 @@ async def draw_result_2(leadercard:list,card:dict)->str:
     绘制仅包含传说卡牌和异画的抽卡结果
     """
     cards ={}
-    if not leadercard and not cards[1]:
+    if not leadercard and not card[1]:
         img = Image.new("RGBA",(536*5/4,698/2),(0,0,0,100))
     else:
         for i in leadercard:

@@ -24,6 +24,17 @@ async def gacha1(bot,ev):
             await bot.send(ev,'不存在此卡包！',at_sender= True)
         leadercard,card,result = await gachaing(card_set,1)
         msg = await draw_result_1(leadercard,card)
+        msg += '\n获得:'
+        if leadercard:
+            msg += f'\n异画x{len(leadercard)}'
+        if result[1]:
+            msg += f'\n传说卡x{result[1]}'
+        if result[2]:
+            msg += f'\n黄金卡x{result[2]}'
+        if result[3]:
+            msg += f'\n白银卡x{result[3]}'
+        if result[4]:
+            msg += f'\n青铜卡x{result[4]}'
         clmt.increase(f'{uid}',100)
         await bot.send(ev,msg,at_sender = True)
     except Exception as e:

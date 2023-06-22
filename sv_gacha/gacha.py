@@ -62,7 +62,7 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_legend:bool
                 n = r(1,prob1[1])
                 if legend_leader_prob:
                     if n in range(1,legend_leader_prob+1):
-                        leader.append(r1(legend_leader_card))
+                        leadercard.append(r1(legend_leader_card))
                         continue
                 if legend_alternate_prob:
                     if n in range(legend_leader_prob+1,legend_leader_prob+legend_alternate_prob+1):
@@ -74,7 +74,7 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_legend:bool
                 n = r(1,prob1[2])
                 if gold_leader_prob:
                     if n in range(1,gold_leader_prob+1):
-                        leader.append(r1(gold_leader_card))
+                        leadercard.append(r1(gold_leader_card))
                         continue
                 if only_legend:
                     continue
@@ -88,7 +88,7 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_legend:bool
                 n = r(1,prob2[3]) if no_bronze else r(1,prob1[3])
                 if silver_leader_prob:
                     if n in range(1,silver_leader_prob+1):
-                        leader.append(r1(silver_leader_card))
+                        leadercard.append(r1(silver_leader_card))
                         continue
                 if only_legend:
                     continue
@@ -102,7 +102,7 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_legend:bool
                 n = r(1,prob1[4])
                 if bronze_leader_prob:
                     if n in range(1,bronze_leader_prob+1):
-                        leader.append(r1(bronze_leader_card))
+                        leadercard.append(r1(bronze_leader_card))
                         continue
                 if only_legend:
                     continue
