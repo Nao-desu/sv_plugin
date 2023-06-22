@@ -55,10 +55,14 @@ async def draw_result_2(leadercard:list,card:dict)->str:
         draw = ImageDraw.Draw(img)
         for i in range(0,line):
             for j in range(0,5):
+                if j+i*5 >= len(cardlist):
+                    break
                 id = cardlist[j+i*5]
                 card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
                 img.paste(card_pic,(j*536,i*698),card_pic)
                 draw.text((j*536+400,i*698+40),f'x{cards[id]}',(255,255,255),font)
+            if j+i*5 >= len(cardlist):
+                break
     x,y = img.size
     img.resize((x//4,y//4))
     img = img.convert('RGB')
