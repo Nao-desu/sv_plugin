@@ -3,7 +3,7 @@ from ..info import text2cards,get_cards,judge_card
 from .img_gen import card_img_gen,cardlist_img_gen
 sv = Service('sv-index')
 
-@sv.on_prefix('sv查卡','查卡','影之诗查卡')
+@sv.on_prefix('sv查卡','查卡','影之诗查卡','SV查卡')
 async def sv_card_index(bot,ev):
     text = ev.message.extract_plain_text().replace(' #','#').replace('#', ' #').strip()
     try:
