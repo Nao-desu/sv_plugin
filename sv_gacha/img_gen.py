@@ -34,8 +34,12 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
     """
     cards ={}
     cardlist = []
-    if not leadercard and not card[1]:
-        img = Image.new("RGBA",(536*5//4,698//2),(255,255,255,100))
+    if not leadercard:
+        if only_leader:
+            img = Image.new("RGBA",(536*5//4,698//2),(255,255,255,100))
+        else:
+            if not card[1]:
+                img = Image.new("RGBA",(536*5//4,698//2),(255,255,255,100))
     else:
         for i in leadercard:
             if i in cards:
