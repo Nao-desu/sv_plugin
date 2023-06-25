@@ -87,7 +87,7 @@ async def gacha400(bot,ev):
         if not card_set:
             await bot.send(ev,'不存在此卡包！',at_sender= True)
             return
-        roll_time = 400 if  not tlmt.get_num() else 300
+        roll_time = 400 if  not tlmt.get_num(f'{uid}') else 300
         leadercard,card,result = await gachaing(card_set,roll_time,True)
         msg = await draw_result_2(leadercard,card,True)
         msg += f'\n进行了{roll_time}次抽卡,获得:'
