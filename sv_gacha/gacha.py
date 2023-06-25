@@ -2,7 +2,7 @@ from ..info import get_card_set
 from ..config import prob1,prob2
 from random import randint as r,choice as r1
 
-async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_legend:bool,no_bronze:bool):
+async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_leader:bool,only_legend:bool,no_bronze:bool):
     """
     确定具体卡牌
     """
@@ -64,6 +64,8 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_legend:bool
                     if n in range(1,legend_leader_prob+1):
                         leadercard.append(r1(legend_leader_card))
                         continue
+                if only_leader:
+                    pass
                 if legend_alternate_prob:
                     if n in range(legend_leader_prob+1,legend_leader_prob+legend_alternate_prob+1):
                         card[1].append(r1(legend_alternate_card))
@@ -113,7 +115,7 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_legend:bool
                 card[4].append(r1(cards[4]))
     return leadercard,card
                 
-async def gachaing(card_set:int,time:int) -> str:
+async def gachaing(card_set:int,time:int,only_leader:bool) -> str:
     """
     抽卡,返回结果
     """
@@ -132,8 +134,8 @@ async def gachaing(card_set:int,time:int) -> str:
             if n <= prob2[rare]:
                 result2[rare] += 1
                 break
-    leadercard,card = await rolls(result,leader,alternate,cards,False,False)
-    leadercard1,card1 = await rolls(result2,leader,alternate,cards,False,True)
+    leadercard,card = await rolls(result,leader,alternate,cards,only_leader,False,False)
+    leadercard1,card1 = await rolls(result2,leader,alternate,cards,only_leader,False,True)
     for i in leadercard1:
         leadercard.append(i)
     for i in card1:

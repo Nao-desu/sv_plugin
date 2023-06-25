@@ -28,7 +28,7 @@ async def draw_result_1(leadercard:list,card:dict)->str:
     msg = f'[CQ:image,file={base64_str}]'
     return msg
 
-async def draw_result_2(leadercard:list,card:dict)->str:
+async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
     """
     绘制仅包含传说卡牌和异画的抽卡结果
     """
@@ -43,12 +43,13 @@ async def draw_result_2(leadercard:list,card:dict)->str:
             else:
                 cards[i]=1
                 cardlist.append(i)
-        for i in card[1]:
-            if i in cards:
-                cards[i]+=1
-            else:
-                cards[i]=1
-                cardlist.append(i)
+        if not only_leader:
+            for i in card[1]:
+                if i in cards:
+                    cards[i]+=1
+                else:
+                    cards[i]=1
+                    cardlist.append(i)
         num = len(cards)
         line = (num+4)//5
         img = Image.new("RGBA",(536*5,698*line),(255,255,255,100))
