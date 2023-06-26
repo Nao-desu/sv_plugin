@@ -9,3 +9,5 @@
 /data/cards.json
 
 /data/cardlist.json
+
+/__pycache__
