@@ -3,12 +3,14 @@ from os import makedirs
 from tqdm import tqdm
 from io import BytesIO
 import requests,json
+from requests.adapters import HTTPAdapter
 from PIL import Image
 try:
     from .info import MOUDULE_PATH,get_latest_set
 except:
     from info import MOUDULE_PATH,get_latest_set
-
+r = requests.Session()
+r.mount('https://',HTTPAdapter(max_retries=5))
 cardinfo_url = 'https://shadowverse-portal.com/api/v1/cards'
 img_url_c = 'https://shadowverse-portal.com/image/card/phase2/common/C/C_'
 img_url_l = 'https://shadowverse-portal.com/image/card/phase2/common/L/L_'
@@ -23,7 +25,7 @@ def cardinfo_dl():
     if not exists(join(MOUDULE_PATH,'data')):
         makedirs(join(MOUDULE_PATH,'data'))
     print('下载卡牌信息')
-    cardinfo = requests.get(cardinfo_url,params={"format":"json","lang":"zh-tw"})
+    cardinfo = r.get(cardinfo_url,params={"format":"json","lang":"zh-tw"})
     cardlist = json.loads(cardinfo.text)["data"]["cards"]
     print("下载完成,正在处理卡牌信息")
     with tqdm(total= 2*len(cardlist),unit='card',desc='处理卡牌信息',position=0) as pbar:#构建进度条
@@ -93,29 +95,29 @@ def img_dl(card_dict):
     with tqdm(total= num,unit='img',desc='下载图片',position=0) as pbar:
         for i in range(0,31):
             if not exists(join(MOUDULE_PATH,f'img/cost/{i}.png')):
-                cost_pic = requests.get(f'{cost_url}{i}.png')
+                cost_pic = r.get(f'{cost_url}{i}.png')
                 with open(join(MOUDULE_PATH,f'img/cost/{i}.png',),'wb') as img:
                     img.write(cost_pic.content)
             pbar.update()
         for id in card_dict:
             if not exists(join(MOUDULE_PATH,f'img/C/C_{id}.png')):
                 if id == '910441030':
-                    card_pic = requests.get(f'{img_url_c}{int(id)-10}.png')
+                    card_pic = r.get(f'{img_url_c}{int(id)-10}.png')
                 else:
-                    card_pic = requests.get(f'{img_url_c}{id}.png')
-                card_name = requests.get(f'{img_url_n}{id}.png')
+                    card_pic = r.get(f'{img_url_c}{id}.png')
+                card_name = r.get(f'{img_url_n}{id}.png')
                 pic = img_gen(Image.open(BytesIO(card_pic.content)),Image.open(BytesIO(card_name.content)))
                 pic.save(join(MOUDULE_PATH,f'img/C/C_{id}.png'),'PNG')
             pbar.update()
             if card_dict[id]["char_type"] == 1:
                 if not exists(join(MOUDULE_PATH,f'img/E/E_{id}.png')):
-                    card_pic = requests.get(f'{img_url_e}{id}.png')
-                    card_name = requests.get(f'{img_url_n}{id}.png')
+                    card_pic = r.get(f'{img_url_e}{id}.png')
+                    card_name = r.get(f'{img_url_n}{id}.png')
                     pic = img_gen(Image.open(BytesIO(card_pic.content)),Image.open(BytesIO(card_name.content)))
                     pic.save(join(MOUDULE_PATH,f'img/E/E_{id}.png'),'PNG')
                 pbar.update()
             if not exists(join(MOUDULE_PATH,f'img/L/L_{id}.jpg')):
-                card_pic = requests.get(f'{img_url_l}{id}.jpg')
+                card_pic = r.get(f'{img_url_l}{id}.jpg')
                 with open(join(MOUDULE_PATH,f'img/L/L_{id}.jpg',),'wb') as img:
                     img.write(card_pic.content)
             pbar.update()

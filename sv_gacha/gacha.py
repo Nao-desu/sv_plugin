@@ -44,75 +44,74 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_leader:bool
         bronze_leader_prob += leader[4][i]
         for j in range(0,leader[4][i]):
             bronze_leader_card.append(i)
-    if not only_legend:
-        for i in alternate[2]:
-            gold_alternate_prob += alternate[2][i]
-            for j in range(0,alternate[2][i]):
-                gold_alternate_card.append(i)
-        for i in alternate[3]:
-            silver_alternate_prob += alternate[3][i]
-            for j in range(0,alternate[3][i]):
-                silver_alternate_card.append(i)
-        for i in alternate[4]:
-            bronze_alternate_prob += alternate[4][i]
-            for j in range(0,alternate[4][i]):
-                bronze_alternate_card.append(i)
-        if time[1]:
-            for i in range(0,time[1]):
-                n = r(1,prob1[1])
-                if legend_leader_prob:
-                    if n in range(1,legend_leader_prob+1):
-                        leadercard.append(r1(legend_leader_card))
-                        continue
-                if only_leader:
-                    pass
-                if legend_alternate_prob:
-                    if n in range(legend_leader_prob+1,legend_leader_prob+legend_alternate_prob+1):
-                        card[1].append(r1(legend_alternate_card))
-                        continue
-                card[1].append(r1(cards[1]))
-        if time[2]:
-            for i in range(0,time[2]):
-                n = r(1,prob1[2])
-                if gold_leader_prob:
-                    if n in range(1,gold_leader_prob+1):
-                        leadercard.append(r1(gold_leader_card))
-                        continue
-                if only_legend:
+    for i in alternate[2]:
+        gold_alternate_prob += alternate[2][i]
+        for j in range(0,alternate[2][i]):
+            gold_alternate_card.append(i)
+    for i in alternate[3]:
+        silver_alternate_prob += alternate[3][i]
+        for j in range(0,alternate[3][i]):
+            silver_alternate_card.append(i)
+    for i in alternate[4]:
+        bronze_alternate_prob += alternate[4][i]
+        for j in range(0,alternate[4][i]):
+            bronze_alternate_card.append(i)
+    if time[1]:
+        for i in range(0,time[1]):
+            n = r(1,prob1[1])
+            if legend_leader_prob:
+                if n in range(1,legend_leader_prob+1):
+                    leadercard.append(r1(legend_leader_card))
                     continue
-                if gold_alternate_prob:
-                    if n in range(gold_leader_prob+1,gold_leader_prob+gold_alternate_prob+1):
-                        card[2].append(r1(gold_alternate_card))
-                        continue
-                card[2].append(r1(cards[2]))
-        if time[3]:
-            for i in range(0,time[3]):
-                n = r(1,prob2[3]) if no_bronze else r(1,prob1[3])
-                if silver_leader_prob:
-                    if n in range(1,silver_leader_prob+1):
-                        leadercard.append(r1(silver_leader_card))
-                        continue
-                if only_legend:
+            if only_leader:
+                continue
+            if legend_alternate_prob:
+                if n in range(legend_leader_prob+1,legend_leader_prob+legend_alternate_prob+1):
+                    card[1].append(r1(legend_alternate_card))
                     continue
-                if silver_alternate_prob:
-                    if n in range(silver_leader_prob+1,silver_leader_prob+silver_alternate_prob+1):
-                        card[3].append(r1(silver_alternate_card))
-                        continue
-                card[3].append(r1(cards[3]))
-        if time[4]:
-            for i in range(0,time[4]):
-                n = r(1,prob1[4])
-                if bronze_leader_prob:
-                    if n in range(1,bronze_leader_prob+1):
-                        leadercard.append(r1(bronze_leader_card))
-                        continue
-                if only_legend:
+            card[1].append(r1(cards[1]))
+    if time[2]:
+        for i in range(0,time[2]):
+            n = r(1,prob1[2])
+            if gold_leader_prob:
+                if n in range(1,gold_leader_prob+1):
+                    leadercard.append(r1(gold_leader_card))
                     continue
-                if bronze_alternate_prob:
-                    if n in range(bronze_leader_prob+1,bronze_leader_prob+bronze_alternate_prob+1):
-                        card[4].append(r1(bronze_alternate_card))
-                        continue
-                card[4].append(r1(cards[4]))
+            if only_legend:
+                continue
+            if gold_alternate_prob:
+                if n in range(gold_leader_prob+1,gold_leader_prob+gold_alternate_prob+1):
+                    card[2].append(r1(gold_alternate_card))
+                    continue
+            card[2].append(r1(cards[2]))
+    if time[3]:
+        for i in range(0,time[3]):
+            n = r(1,prob2[3]) if no_bronze else r(1,prob1[3])
+            if silver_leader_prob:
+                if n in range(1,silver_leader_prob+1):
+                    leadercard.append(r1(silver_leader_card))
+                    continue
+            if only_legend:
+                continue
+            if silver_alternate_prob:
+                if n in range(silver_leader_prob+1,silver_leader_prob+silver_alternate_prob+1):
+                    card[3].append(r1(silver_alternate_card))
+                    continue
+            card[3].append(r1(cards[3]))
+    if time[4]:
+        for i in range(0,time[4]):
+            n = r(1,prob1[4])
+            if bronze_leader_prob:
+                if n in range(1,bronze_leader_prob+1):
+                    leadercard.append(r1(bronze_leader_card))
+                    continue
+            if only_legend:
+                continue
+            if bronze_alternate_prob:
+                if n in range(bronze_leader_prob+1,bronze_leader_prob+bronze_alternate_prob+1):
+                    card[4].append(r1(bronze_alternate_card))
+                    continue
+            card[4].append(r1(cards[4]))
     return leadercard,card
                 
 async def gachaing(card_set:int,time:int,only_leader:bool) -> str:
