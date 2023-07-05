@@ -1,11 +1,11 @@
 # SV-plugin
 适用于[hoshino](https://github.com/Ice9Coffee/HoshinoBot)的影之诗卡牌图鉴插件
 > 卡牌信息来自[shadowverse-portal](https://shadowverse-portal.com)
-## 仓库链接
+## 本仓库链接
 
-https://github.com/Nao-desu/shadowverse-index
+https://github.com/Nao-desu/sv_index
 
-## 功能
+## 插件功能
 - `svcard id` 查询对应id的卡牌信息  
 - `sv查卡 #条件 卡牌名/关键词` 查询卡牌信息，条件前要加#号进行区分,支持多条件,但是要在每个条件前都加#,关键词在卡牌名称与卡牌技能中匹配  
  支持的条件有:  
@@ -23,7 +23,7 @@ https://github.com/Nao-desu/shadowverse-index
 
     在 HoshinoBot\hoshino\modules 目录下使用以下命令拉取本项目
     ```
-    git clone https://github.com/Nao-desu/sv-plugin.git
+    git clone https://github.com/Nao-desu/sv_plugin.git
     ```
 2. 安装依赖：
 
