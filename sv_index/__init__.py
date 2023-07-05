@@ -3,6 +3,22 @@ from ..info import text2cards,get_cards,judge_card
 from .img_gen import card_img_gen,cardlist_img_gen
 sv = Service('sv-index')
 
+sv_help = 'svcard id: 查询对应id的卡牌信息\n\
+    sv查卡 #条件 卡牌名/关键词:查询卡牌信息，条件前要加#号进行区分,支持多条件,每个条件前都加#号\n\
+	当前支持的检索条件如下:\n\
+    `#3c` 指定费用为3\n\
+    `#AOA` 指定卡包为遥久学园，也可用文字或文字简写\n\
+    `#皇家` 指定职业为皇家\n\
+    `#学园` 指定种类为学院\n\
+    `#随从` 指定为随从卡\n\
+    `#atk3` 指定攻击力为3\n\
+    `#life3` 指定生命值为3\n\
+    `#虹卡` 指定卡牌稀有度为传说'
+
+@sv.on_fullmatch('sv帮助')
+async def get_help(bot, ev):
+    await bot.send(ev, sv_help)
+
 @sv.on_prefix('sv查卡','查卡','影之诗查卡','SV查卡')
 async def sv_card_index(bot,ev):
     text = ev.message.extract_plain_text().replace(' #','#').replace('#', ' #').strip()
