@@ -3,7 +3,12 @@ from .check_pic import get_pic,check_QR
 from .img_gen import deck_img_gen
 from ..info import clan2w
 import traceback
-sv = Service('sv-QRcode')
+
+sv_help = """
+被动技：当识别到世界服二维码时自动输出卡组信息
+"""
+
+sv = Service('sv-QRcode',help_=sv_help)
 
 @sv.on_message('group')
 async def sv_QRCR(bot,ev):

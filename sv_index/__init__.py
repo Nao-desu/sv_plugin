@@ -1,7 +1,6 @@
 from hoshino import Service
 from ..info import text2cards,get_cards,judge_card
 from .img_gen import card_img_gen,cardlist_img_gen
-sv = Service('sv-index')
 
 sv_help = 'svcard id: 查询对应id的卡牌信息\n\
     sv查卡 #条件 卡牌名/关键词:查询卡牌信息，条件前要加#号进行区分,支持多条件,每个条件前都加#号\n\
@@ -13,7 +12,11 @@ sv_help = 'svcard id: 查询对应id的卡牌信息\n\
     `#随从` 指定为随从卡\n\
     `#atk3` 指定攻击力为3\n\
     `#life3` 指定生命值为3\n\
-    `#虹卡` 指定卡牌稀有度为传说'
+    `#虹卡` 指定卡牌稀有度为传说\n\
+    `#333` 指定费用身材为3-3-3的随从\n\
+    `#指定` 只在指定系列中搜索卡牌'
+
+sv = Service('sv-index',help_=sv_help)
 
 @sv.on_fullmatch('sv帮助')
 async def get_help(bot, ev):

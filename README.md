@@ -6,6 +6,7 @@
 https://github.com/Nao-desu/sv_index
 
 ## 插件功能
+### 卡牌信息查询
 - `svcard id` 查询对应id的卡牌信息  
 - `sv查卡 #条件 卡牌名/关键词` 查询卡牌信息，条件前要加#号进行区分,支持多条件,但是要在每个条件前都加#,关键词在卡牌名称与卡牌技能中匹配  
  支持的条件有:  
@@ -17,6 +18,16 @@ https://github.com/Nao-desu/sv_index
 - `#atk3` 指定攻击力为3  
 - `#life3` 指定生命值为3  
 - `#虹卡` 指定卡牌稀有度为传说
+
+### 抽卡
+- `sv抽卡` 抽一包卡牌
+- `sv十连` 抽十包卡牌
+- `sv井` 抽一井卡牌
+以上指令均需@bot触发  
+默认抽最新卡包，可在指令后加卡包名或卡包ID抽指定卡包
+
+### 二维码识别
+当群内发送含世界服卡组二维码图片时，自动发送卡组信息
 
 ## 插件安装
 1. git clone本插件（注：一定要git clone，不要下载压缩包，另外请确保git环境变量正常）：
@@ -34,6 +45,6 @@ https://github.com/Nao-desu/sv_index
 3. 在 HoshinoBot\hoshino\config\ `__bot__.py` 文件的 MODULES_ON 加入 'sv-plugin'
 
 4. 下载图片资源(约4GB)：
-- 启动update.bat，可以自动下载
+- 启动update.bat，自动下载
 
 5. 重启HoshinoBot

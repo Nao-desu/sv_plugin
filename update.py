@@ -2,7 +2,7 @@ from os.path import join,exists
 from os import makedirs
 from tqdm import tqdm
 from io import BytesIO
-import requests,json
+import requests,json,os
 from requests.adapters import HTTPAdapter
 from PIL import Image
 try:
@@ -44,6 +44,21 @@ def cardinfo_dl():
         for card in cardlist:
             card_dict[str(card["card_id"])] = card
             pbar.update()
+    if exists(join(MOUDULE_PATH,'data/cardlist.json')):
+        print('发现已存在的卡牌信息，检查更新')
+        with open(join(MOUDULE_PATH,"data/cards.json"),'r', encoding="utf-8") as f:
+            card_dict_old = json.load(f)
+        for id in card_dict:
+            if id in card_dict_old and card_dict_old[id] != card_dict[id]:
+                if exists(join(MOUDULE_PATH,f'img/C/C_{id}.png')):
+                    os.remove(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+                if exists(join(MOUDULE_PATH,f'img/E/E_{id}.png')):
+                    os.remove(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
+                if exists(join(MOUDULE_PATH,f'img/L/L_{id}.png')):
+                    os.remove(join(MOUDULE_PATH,f'img/L/L_{id}.png'))
+                print(f'    卡牌【{card_dict_old[id]["card_name"]}】数据变动，已删除原卡图')
+            if id not in card_dict_old:
+                print(f'    添加新卡牌【{card_dict[id]["card_name"]}】')
     with open(join(MOUDULE_PATH,"data/cards.json"),'w', encoding="utf-8") as f:
         json.dump(card_dict, f, indent=4, ensure_ascii=False)
     with open(join(MOUDULE_PATH,"data/cardlist.json"),'w', encoding="utf-8") as f:
@@ -132,6 +147,7 @@ def update():
     for card in cards:
         if int(cards[card]["card_set_id"])>latest_set and int(cards[card]["card_set_id"])<20000:
             print('发现卡包更新，请尝试更新插件')
+            break
     print('已下载所有资源') 
 
                 
