@@ -33,7 +33,7 @@ async def check_QR(pic:list)->list:
         for decoded in decode_list:
             data = decoded.data
             if data.startswith(b'https://shadowverse-portal.com/deck/1.'):
-                data = data.replace(b'https://shadowverse-portal.com/deck/1.', b'').split('?')[0]
+                data = data.replace(b'https://shadowverse-portal.com/deck/1.', b'').split(b'?')[0]
             else:
                 continue
             cardlist_hash = data.decode('utf-8').split(".")
