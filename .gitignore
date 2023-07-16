@@ -6,8 +6,8 @@
 
 /img/cost/*
 
-/data/cards.json
+data/cards.json
 
-/data/cardlist.json
+data/cardlist.json
 
 /__pycache__
