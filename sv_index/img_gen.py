@@ -85,7 +85,7 @@ def img_gen_1(card) -> Image:
     bg = bg.crop((0,0,2200,ym+80))
     bgdraw = ImageDraw.Draw(bg)
     x,y = bg.size
-    bgdraw.text((x-300,y-100),f'id:{id}\ncode by Nao-desu\ngenerate by ddbot',text_color,font)
+    bgdraw.text((x-320,y-100),f'id:{id}\ncode by Nao-desu\ngenerate by koharu',text_color,font)
     return bg
 
 def img_gen_2(card) -> Image:
@@ -128,7 +128,7 @@ def img_gen_2(card) -> Image:
     bg = bg.crop((0,0,1640,ym+30))
     bgdraw = ImageDraw.Draw(bg)
     x,y = bg.size
-    bgdraw.text((x-300,y-100),f'id:{id}\ncode by Nao-desu\ngenerate by ddbot',text_color,font)
+    bgdraw.text((x-320,y-100),f'id:{id}\ncode by Nao-desu\ngenerate by koharu',text_color,font)
     return bg
 
 async def card_img_gen(card:dict) -> str:
