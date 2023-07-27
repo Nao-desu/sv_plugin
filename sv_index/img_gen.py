@@ -40,7 +40,10 @@ def img_gen_1(card) -> Image:
     des = text_split(card["description"])
     edes = text_split(card["evo_description"])
     cv = 'cv:' + card["cv"]
-    card_info = '卡包:' + card_set[card["card_set_id"]] + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
+    try:
+        card_info = '卡包:' + card_set[card["card_set_id"]] + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
+    except:
+        card_info = '卡包:' + card["card_set_id"]+ "(未知卡包)" + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
     y1 = font.getsize_multiline(des)[1]
     y2 = font.getsize_multiline(edes)[1]
     y3 = font.getsize_multiline(skill)[1]
