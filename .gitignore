@@ -6,6 +6,10 @@
 
 /img/cost/*
 
+/img/full/*
+
+/voice/*
+
 data/cards.json
 
 data/cardlist.json

@@ -1,1 +1,1 @@
-start cmd /K "py -c "import update;update.update()""
+start cmd /K "py -c "import update;import asyncio;asyncio.run(update.update_main(False))""

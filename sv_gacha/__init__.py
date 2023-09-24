@@ -18,6 +18,7 @@ sv = Service('sv_gacha',help_=sv_help)
 
 clmt = DailyNumberLimiter(max_coin)
 tlmt = DailyNumberLimiter(max_400)
+jlmt = DailyNumberLimiter(1)
 
 @sv.on_prefix('sv抽卡','影之诗抽卡',only_to_me=True)
 async def gacha1(bot,ev):
@@ -95,7 +96,7 @@ async def gacha400(bot,ev):
         if not card_set:
             await bot.send(ev,'不存在此卡包！',at_sender= True)
             return
-        roll_time = 400 if  not tlmt.get_num(f'{uid}') else 300
+        roll_time = 400 if  not jlmt.get_num(f'{uid}{card_set}') else 300
         leadercard,card,result = await gachaing(card_set,roll_time,True)
         msg = await draw_result_2(leadercard,card,True)
         msg += f'\n进行了{roll_time}次抽卡,获得:'
@@ -112,6 +113,7 @@ async def gacha400(bot,ev):
         msg += f'\n获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}'
         await bot.send(ev,msg,at_sender = True)
         tlmt.increase(f'{uid}')
+        jlmt.increase(f'{uid}{card_set}')
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}')
         traceback.print_exc()
