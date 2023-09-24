@@ -391,10 +391,10 @@ def get_lim(lim:str):
     """
     查找限制条件
     """
-    limite = False
+    limite = True
     clan = None
     if '无限' in lim:
-        limite = True
+        limite = False
     con = get_condition()
     for id in con["clan"]:
         for clanw in con["clan"][id]:
@@ -410,24 +410,24 @@ async def get_answer(limite,clan,flag)->int:
     cards = get_cards()
     choose = []
     if clan:
-        clan = [clan]
+        clanc = [clan]
     else:
-        clan = range(0,9)
+        clanc = range(0,9)
     if limite:
         for card in cards:
             last = get_latest_set()
-            if cards[card]["card_set_id"]>=last-4 and cards[card]["card_set_id"] <= last and cards[card]["clan"] in clan:
+            if cards[card]["card_set_id"]>=last-4 and cards[card]["card_set_id"] <= last and cards[card]["clan"] in clanc:
                 choose.append(cards[card])
     else:
         for card in cards:
-            if cards[card]["clan"] in clan:
+            if cards[card]["clan"] in clanc:
                 choose.append(cards[card])
     answer = random.choice(choose)["card_id"]
     if flag == 'voice':
-        while exists(join(MOUDULE_PATH,f'voice/{answer}')):
+        while not exists(join(MOUDULE_PATH,f'voice/{answer}')):
             answer = await get_answer(limite,clan,'voice')
-        while os.listdir(join(MOUDULE_PATH,f'voice/{answer}')):
+        while not os.listdir(join(MOUDULE_PATH,f'voice/{answer}')):
             answer = await get_answer(limite,clan,'voice')
-    while exists(join(MOUDULE_PATH,f'img/full/{answer}0.png')):
+    while not exists(join(MOUDULE_PATH,f'img/full/{answer}0.png')):
         answer = await get_answer(limite,clan,None)
     return answer
