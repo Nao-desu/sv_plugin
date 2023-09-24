@@ -58,7 +58,7 @@ async def voice_guess(bot,ev):
         limited,clan = get_lim(lim)
         answer = await get_answer(limited,clan,'voice')
         gm.start_game(gid,answer)
-        await guess_paint(bot,ev,limited,clan,answer)
+        await guess_voice(bot,ev,limited,clan,answer)
         await asyncio.sleep(GAME_TIME)
         if gm.is_playing(ev.group_id):
             img = f'[CQ:image,file=file:///{abspath(join(MOUDULE_PATH,f"img/full/{answer}"))}]'

@@ -25,4 +25,4 @@ def pic_corp(answer):
     buf = BytesIO()
     img.save(buf, format='JPEG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    msg += f'[CQ:image,file={base64_str}]'
+    return f'[CQ:image,file={base64_str}]'
