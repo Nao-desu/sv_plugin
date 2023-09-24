@@ -80,4 +80,4 @@
 
 5. 重启HoshinoBot
 
-- 如果
+- 如果你在启动hoshino时发现报错，请尝试安装[Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/zh-CN/download/details.aspx?id=40784)
