@@ -46,54 +46,56 @@ class GM:
             del self.playing[gid]
             del self.answer[gid]
 
+gm = GM()
+
 @sv.on_prefix('sv猜语音')
 async def voice_guess(bot,ev):
     gid = ev.group_id
     try:
-        if GM.is_playing(ev.group_id):
+        if gm.is_playing(ev.group_id):
             await bot.finish(ev, "游戏仍在进行中…")
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
         answer = await get_answer(limited,clan,'voice')
-        GM.start_game(gid,answer)
+        gm.start_game(gid,answer)
         await guess_paint(bot,ev,limited,clan,answer)
         await asyncio.sleep(GAME_TIME)
-        if GM.is_playing(ev.group_id):
+        if gm.is_playing(ev.group_id):
             img = f'[CQ:image,file=file:///{abspath(join(MOUDULE_PATH,f"img/full/{answer}"))}]'
             await bot.finish(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
-        GM.end_game(gid)
+        gm.end_game(gid)
     except Exception as e:
         await bot.send(ev,f'游戏发生错误，自动终止')
-        GM.end_game(gid)
+        gm.end_game(gid)
 
 @sv.on_prefix('sv猜卡面')
 async def voice_guess(bot,ev):
     gid = ev.group_id
     try:
-        if GM.is_playing(ev.group_id):
+        if gm.is_playing(ev.group_id):
             await bot.finish(ev, "游戏仍在进行中…")
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
         answer = await get_answer(limited,clan,False)
-        GM.start_game(gid,answer)
+        gm.start_game(gid,answer)
         await guess_paint(bot,ev,limited,clan,answer)
         await asyncio.sleep(GAME_TIME)
-        if GM.is_playing(ev.group_id):
+        if gm.is_playing(ev.group_id):
             img = f'[CQ:image,file=file:///{abspath(join(MOUDULE_PATH,f"img/full/{answer}"))}]'
             await bot.finish(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
-        GM.end_game(gid)
+        gm.end_game(gid)
     except Exception as e:
         await bot.send(ev,f'游戏发生错误，自动终止')
-        GM.end_game(gid)
+        gm.end_game(gid)
 
 @sv.on_message()
 async def on_input_chara_name(bot, ev):
     gid = ev.group_id
-    if  not GM.is_playing(gid):
+    if  not gm.is_playing(gid):
         return
-    answer = GM.get_ans(gid)
-    if GM.check_ans(zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
+    answer = gm.get_ans(gid)
+    if gm.check_ans(zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         img = f'[CQ:image,file=file:///{abspath(join(MOUDULE_PATH,f"img/full/{answer}"))}]'
         msg = f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n{Seg.at(ev.user_id)}猜对了，真厉害！\n(此轮游戏将在几秒后自动结束，请耐心等待)"
         await bot.send(ev, msg)
-        GM.end_game(gid)
+        gm.end_game(gid)
