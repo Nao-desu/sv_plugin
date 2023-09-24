@@ -82,7 +82,8 @@ async def voice_guess(bot,ev):
         await guess_paint(bot,ev,limited,clan,answer)
         await asyncio.sleep(GAME_TIME)
         if gm.is_playing(ev.group_id):
-            img = f'[CQ:image,file=file:///{abspath(join(MOUDULE_PATH,f"img/full/{answer}"))}]'
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+            img = f'[CQ:image,file=file:///{abspath(img_path)}]'
             await bot.finish(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
         gm.end_game(gid)
     except Exception as e:
@@ -95,8 +96,9 @@ async def on_input_chara_name(bot, ev):
     if  not gm.is_playing(gid):
         return
     answer = gm.get_ans(gid)
-    if gm.check_ans(zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
-        img = f'[CQ:image,file=file:///{abspath(join(MOUDULE_PATH,f"img/full/{answer}"))}]'
+    if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
+        img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+        img = f'[CQ:image,file=file:///{abspath(img_path)}]'
         msg = f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n{Seg.at(ev.user_id)}猜对了，真厉害！\n(此轮游戏将在几秒后自动结束，请耐心等待)"
         await bot.send(ev, msg)
         gm.end_game(gid)
