@@ -61,7 +61,8 @@ async def voice_guess(bot,ev):
         await guess_voice(bot,ev,limited,clan,answer)
         await asyncio.sleep(GAME_TIME)
         if gm.is_playing(ev.group_id):
-            img = f'[CQ:image,file=file:///{abspath(join(MOUDULE_PATH,f"img/full/{answer}"))}]'
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+            img = f'[CQ:image,file=file:///{abspath(img_path)}]'
             await bot.finish(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
         gm.end_game(gid)
     except Exception as e:

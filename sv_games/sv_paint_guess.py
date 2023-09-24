@@ -18,11 +18,11 @@ def pic_corp(answer):
     """
     img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.png'))
     w, h = img.size
-    x = random.randint(0, w - 250)
-    y = random.randint(0, h - 250)
+    x = random.randint(0, w - 100)
+    y = random.randint(0, h - 100)
     region = img.crop((x, y, x + 250, y + 250))
     region = region.convert('RGB')
     buf = BytesIO()
-    img.save(buf, format='JPEG')
+    region.save(buf, format='JPEG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
     return f'[CQ:image,file={base64_str}]'
