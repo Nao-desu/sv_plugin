@@ -108,5 +108,5 @@ async def on_input_chara_name(bot, ev):
         gm.end_game(gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         img = f'[CQ:image,file=file:///{abspath(img_path)}]'
-        msg = f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n{Seg.at(ev.user_id)}猜对了，真厉害！\n(此轮游戏将在几秒后自动结束，请耐心等待)"
+        msg = f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n{Seg.at(ev.user_id)}猜对了，真厉害！"
         await bot.send(ev, msg)
