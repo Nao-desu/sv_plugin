@@ -53,7 +53,8 @@ async def voice_guess(bot,ev):
     gid = ev.group_id
     try:
         if gm.is_playing(ev.group_id):
-            await bot.finish(ev, "游戏仍在进行中…")
+            await bot.send(ev, "游戏仍在进行中…")
+            return
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
         answer = await get_answer(limited,clan,'voice')
@@ -61,20 +62,24 @@ async def voice_guess(bot,ev):
         await guess_voice(bot,ev,limited,clan,answer)
         await asyncio.sleep(GAME_TIME)
         if gm.is_playing(ev.group_id):
+            if gm.get_ans(gid) != answer:
+                return
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
             img = f'[CQ:image,file=file:///{abspath(img_path)}]'
-            await bot.finish(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
+            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
+            return
         gm.end_game(gid)
     except Exception as e:
         await bot.send(ev,f'游戏发生错误，自动终止')
         gm.end_game(gid)
 
 @sv.on_prefix('sv猜卡面')
-async def voice_guess(bot,ev):
+async def paint_guess(bot,ev):
     gid = ev.group_id
     try:
         if gm.is_playing(ev.group_id):
-            await bot.finish(ev, "游戏仍在进行中…")
+            await bot.send(ev, "游戏仍在进行中…")
+            return
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
         answer = await get_answer(limited,clan,False)
@@ -82,9 +87,12 @@ async def voice_guess(bot,ev):
         await guess_paint(bot,ev,limited,clan,answer)
         await asyncio.sleep(GAME_TIME)
         if gm.is_playing(ev.group_id):
+            if gm.get_ans(gid) != answer:
+                return
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
             img = f'[CQ:image,file=file:///{abspath(img_path)}]'
-            await bot.finish(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
+            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
+            return
         gm.end_game(gid)
     except Exception as e:
         await bot.send(ev,f'游戏发生错误，自动终止')
