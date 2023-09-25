@@ -18,8 +18,8 @@ def pic_corp(answer):
     """
     img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.png'))
     w, h = img.size
-    x = random.randint(0, w - 100)
-    y = random.randint(0, h - 100)
+    x = random.randint(0, w - 250)
+    y = random.randint(0, h - 250)
     region = img.crop((x, y, x + 250, y + 250))
     region = region.convert('RGB')
     buf = BytesIO()
