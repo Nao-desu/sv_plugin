@@ -131,10 +131,8 @@ async def change_img(path:str):
     row = np.random.randint(0, img_arr.shape[0])
     col = np.random.randint(0, img_arr.shape[1])
 
-    # 生成一个随机的颜色值
-    color = np.random.randint(0, 256, 3)
+    color = (0,0,0,0)
 
-    # 将图片数组中对应位置的像素值替换为随机颜色值
     img_arr[row, col] = color
     new_img = Image.fromarray(img_arr)
     region = new_img.convert('RGB')
