@@ -7,8 +7,7 @@ from .sv_paint_guess import guess_paint
 from ..config import GAME_TIME
 from PIL import Image
 from io import BytesIO
-import asyncio,zhconv,base64
-import numpy as np
+import asyncio,zhconv,base64,random
 
 sv_help = """
 [sv猜卡面] 猜猜bot随机发送的卡面的一小部分来自哪张影之诗卡牌
@@ -125,18 +124,20 @@ async def change_img(path:str):
     """
     # 读取图片并转换为numpy数组
     img = Image.open(path)
-    img_arr = np.array(img)
-
-    # 生成一个随机的行索引和列索引
-    row = np.random.randint(0, img_arr.shape[0])
-    col = np.random.randint(0, img_arr.shape[1])
-
-    color = (0,0,0,0)
-
-    img_arr[row, col] = color
-    new_img = Image.fromarray(img_arr)
-    region = new_img.convert('RGB')
+    # 获取图片大小
+    width, height = img.size
+    # 获取一个可修改的像素对象
+    pix = img.load()
+    # 生成一个随机的坐标
+    x = random.randint(0, width - 1)
+    y = random.randint(0, height - 1)
+    # 生成一个随机的颜色值（RGB）
+    r = random.randint(0, 255)
+    g = random.randint(0, 255)
+    b = random.randint(0, 255)
+    # 修改该坐标处的像素值
+    pix[x, y] = (r, g, b,100)
     buf = BytesIO()
-    region.save(buf, format='JPEG')
+    img.save(buf, format='PNG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
     return f'[CQ:image,file={base64_str}]'
