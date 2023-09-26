@@ -68,7 +68,7 @@ async def voice_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-            img = change_img(img_path)
+            img = await change_img(img_path)
             gm.end_game(gid)
             await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
         return
@@ -93,7 +93,7 @@ async def paint_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-            img = change_img(img_path)
+            img = await change_img(img_path)
             gm.end_game(gid)
             await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
         return
@@ -110,7 +110,7 @@ async def on_input_chara_name(bot, ev):
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         gm.end_game(gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-        img = change_img(img_path)
+        img = await change_img(img_path)
         msg = f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n{Seg.at(ev.user_id)}猜对了，真厉害！"
         await bot.send(ev, msg)
 
