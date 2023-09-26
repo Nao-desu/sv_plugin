@@ -124,7 +124,7 @@ async def change_img(path:str):
     图片防吞
     """
     # 读取图片并转换为numpy数组
-    img = Image.open("example.jpg")
+    img = Image.open(path)
     img_arr = np.array(img)
 
     # 生成一个随机的行索引和列索引
