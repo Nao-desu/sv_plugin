@@ -69,7 +69,7 @@ async def voice_guess(bot,ev):
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
             img = await change_img(img_path)
             gm.end_game(gid)
-            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
+            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}很遗憾,没有人答对")
         return
     except Exception as e:
         gm.end_game(gid)
@@ -94,7 +94,7 @@ async def paint_guess(bot,ev):
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
             img = await change_img(img_path)
             gm.end_game(gid)
-            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n很遗憾,没有人答对")
+            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}很遗憾,没有人答对")
         return
     except Exception as e:
         gm.end_game(gid)
@@ -110,7 +110,7 @@ async def on_input_chara_name(bot, ev):
         gm.end_game(gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         img = await change_img(img_path)
-        msg = f"正确答案是:{get_cards()[str(answer)]['card_name']}\n{img}\n{Seg.at(ev.user_id)}猜对了，真厉害！"
+        msg = f"{Seg.at(ev.user_id)}猜对了，真厉害！\n正确答案是:{get_cards()[str(answer)]['card_name']}{img}"
         await bot.send(ev, msg)
 
 @sv.on_fullmatch('重置游戏')
