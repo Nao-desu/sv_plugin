@@ -69,7 +69,7 @@ async def voice_guess(bot,ev):
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
             img = await change_img(img_path)
             gm.end_game(gid)
-            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}很遗憾,没有人答对")
+            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}\n很遗憾,没有人答对")
         return
     except Exception as e:
         gm.end_game(gid)
@@ -94,7 +94,7 @@ async def paint_guess(bot,ev):
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
             img = await change_img(img_path)
             gm.end_game(gid)
-            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}很遗憾,没有人答对")
+            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}\n很遗憾,没有人答对")
         return
     except Exception as e:
         gm.end_game(gid)
