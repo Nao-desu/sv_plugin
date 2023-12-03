@@ -27,7 +27,7 @@ async def download(url,pbar,PATH,sem):
                     try:
                         req = await client.get(url=url,timeout=None)
                         break
-                    except httpx.ConnectError:
+                    except:
                         pass
             if req.status_code != 200:
                 if pbar:pbar.update()
@@ -48,7 +48,7 @@ async def download2(url1,url2,pbar,PATH,sem):
                         req1 = await client.get(url=url1,timeout=None)
                         req2 = await client.get(url=url2,timeout=None)
                         break
-                    except httpx.ConnectError:
+                    except:
                         pass
             pic = img_gen(Image.open(BytesIO(req1.content)),Image.open(BytesIO(req2.content)))
             pic.save(PATH,'PNG')
@@ -65,7 +65,7 @@ async def voicelist_dl(url,pbar,PATH,sem):
                     try:
                         req = await client.get(url=url,timeout=None)
                         break
-                    except httpx.ConnectError:
+                    except:
                         pass
             if req.status_code != 200:
                 pbar.update()
