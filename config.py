@@ -5,7 +5,7 @@
 '''
 
 ##是否自动更新数据
-auto_update=True
+auto_update=False
 
 #绘制卡牌信息时各职业边框颜色
 clan_color = {0:(220,220,220),
@@ -36,6 +36,6 @@ prob2 = {
 }
 
 max_400 = 5#一天抽井的次数
-max_coin = 10000#一天使用金币抽卡的次数
+max_coin = 10000#一天使用金币抽卡的数量
 
-GAME_TIME = 20#猜卡牌小游戏回答时间
+GAME_TIME = 30#猜卡牌小游戏回答时间

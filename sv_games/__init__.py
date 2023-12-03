@@ -1,7 +1,7 @@
 from hoshino import Service
 from hoshino.typing import MessageSegment as Seg
 from ..info import get_lim,get_answer,get_cards,MOUDULE_PATH
-from os.path import join,abspath
+from os.path import join
 from .sv_voice_gess import guess_voice
 from .sv_paint_guess import guess_paint
 from ..config import GAME_TIME
@@ -9,14 +9,14 @@ from PIL import Image
 from io import BytesIO
 import asyncio,zhconv,base64,random
 
-sv_help = """
+game_help = """
 [sv猜卡面] 猜猜bot随机发送的卡面的一小部分来自哪张影之诗卡牌
 [sv猜语音] 猜猜bot随机发送的语音来自哪张影之诗卡牌
 默认为指定模式卡牌
 在指令后添加‘无限’可以猜所有卡牌
 在指令后添加职业名可以猜特定职业卡牌
 """
-sv = Service('sv_games',help_=sv_help)
+sv = Service('sv_games',help_=game_help)
 
 class GM:
     def __init__(self):

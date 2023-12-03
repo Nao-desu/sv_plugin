@@ -151,24 +151,6 @@ async def card_img_gen(card:dict) -> str:
     img.save(buf, format='JPEG')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
     msg = f'[CQ:image,file={base64_str}]'
-    related = get_related_cards(card)
-    if related:
-        msg += '关联卡牌：\n'
-        for i in related:
-            if i["char_type"] == 1:
-                img = img_gen_1(i)
-            else:
-                img = img_gen_2(i)
-            img = img.convert('RGB')
-            buf = BytesIO()
-            img.save(buf, format='JPEG')
-            base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-            msg += f'[CQ:image,file={base64_str}]'
-    diff_card = find_all_card(card["card_id"])
-    if diff_card:
-        msg += '\n※此卡牌存在其他卡面：'
-        for id in diff_card:
-            msg += '\n  id:' + id
     return msg
 
 async def cardlist_img_gen(cards:list) -> str:

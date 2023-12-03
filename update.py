@@ -2,15 +2,13 @@ from os.path import join,exists
 from os import makedirs
 from tqdm import tqdm
 from io import BytesIO
-import requests,json,os,aiohttp
-from requests.adapters import HTTPAdapter
+import json,os,asyncio,traceback,httpx
+from httpx import AsyncClient
 from PIL import Image
 try:
-    from .info import MOUDULE_PATH,get_latest_set
+    from .info import MOUDULE_PATH
 except:
-    from info import MOUDULE_PATH,get_latest_set
-r = requests.Session()
-r.mount('https://',HTTPAdapter(max_retries=5))
+    from info import MOUDULE_PATH
 cardinfo_url = 'https://shadowverse-portal.com/api/v1/cards'
 img_url_c = 'https://shadowverse-portal.com/image/card/phase2/common/C/C_'
 img_url_l = 'https://shadowverse-portal.com/image/card/phase2/common/L/L_'
@@ -21,18 +19,73 @@ voice_api = 'https://svgdb.me/api/voices/'
 voice_url = 'https://svgdb.me/assets/audio/jp/'
 img_url_f = 'https://svgdb.me/assets/fullart/'
 
-async def download_file(url, save_path,pbar):
-    if not exists(save_path):
-        async with aiohttp.ClientSession() as session:
-            async with session.get(url) as response:
-                with open(save_path, 'wb') as f:
-                    while True:
-                        chunk = await response.content.read(1024)
-                        if not chunk:
-                            break
-                        f.write(chunk)
-    pbar.update()
+async def download(url,pbar,PATH,sem):
+    async with sem:
+        try:
+            async with AsyncClient() as client:
+                while(1):
+                    try:
+                        req = await client.get(url=url,timeout=None)
+                        break
+                    except httpx.ConnectError:
+                        pass
+            if req.status_code != 200:
+                if pbar:pbar.update()
+                return
+            with open(PATH,'wb') as f:
+                f.write(req.content)
+            if pbar:pbar.update()
+        except:
+            traceback.print_exc()
+            if pbar:pbar.update()
 
+async def download2(url1,url2,pbar,PATH,sem):
+    async with sem:
+        try:
+            async with AsyncClient() as client:
+                while(1):
+                    try:
+                        req1 = await client.get(url=url1,timeout=None)
+                        req2 = await client.get(url=url2,timeout=None)
+                        break
+                    except httpx.ConnectError:
+                        pass
+            pic = img_gen(Image.open(BytesIO(req1.content)),Image.open(BytesIO(req2.content)))
+            pic.save(PATH,'PNG')
+            pbar.update()
+        except:
+            traceback.print_exc()
+            pbar.update()
+
+async def voicelist_dl(url,pbar,PATH,sem):
+    async with sem:
+        try:
+            async with AsyncClient() as client:
+                while(1):
+                    try:
+                        req = await client.get(url=url,timeout=None)
+                        break
+                    except httpx.ConnectError:
+                        pass
+            if req.status_code != 200:
+                pbar.update()
+                return
+            voice_dict:dict = json.loads(req.content.decode())
+            makedirs(PATH)
+            tasks = []
+            semm = asyncio.Semaphore(10)
+            if voice_dict:
+                for act in voice_dict:
+                    for filename in voice_dict[act]:
+                        tasks.append(download(f'{voice_url}{filename}',None,join(PATH,f"{filename.replace('|','_')}"),semm))
+                await asyncio.wait(tasks)
+                pbar.update()
+            else:
+                pbar.update()
+                return
+        except:
+            traceback.print_exc()
+            pbar.update()
 
 async def cardinfo_dl():
     """
@@ -41,7 +94,8 @@ async def cardinfo_dl():
     if not exists(join(MOUDULE_PATH,'data')):
         makedirs(join(MOUDULE_PATH,'data'))
     print('下载卡牌信息')
-    cardinfo = r.get(cardinfo_url,params={"format":"json","lang":"zh-tw"})
+    async with AsyncClient() as client:
+        cardinfo = await client.get(cardinfo_url,params={"format":"json","lang":"zh-tw"},timeout=None)
     cardlist = json.loads(cardinfo.text)["data"]["cards"]
     with tqdm(total= 2*len(cardlist),unit='card',desc='处理卡牌信息',position=0) as pbar:#构建进度条
         nonamecard=[]
@@ -113,6 +167,7 @@ async def img_dl(card_dict:dict):
     下载卡牌图片
     """
     print("准备下载图片")
+    sem = asyncio.Semaphore(10)
     if not exists(join(MOUDULE_PATH,'img/C')):
         makedirs(join(MOUDULE_PATH,'img/C'))
     if not exists(join(MOUDULE_PATH,'img/E')):
@@ -130,73 +185,52 @@ async def img_dl(card_dict:dict):
         else:
             num += 5
     with tqdm(total= num,unit='file',desc='下载图片',position=0) as pbar:
+        tasks = []
         for i in range(0,31):
             if not exists(join(MOUDULE_PATH,f'img/cost/{i}.png')):
-                cost_pic = r.get(f'{cost_url}{i}.png')
-                with open(join(MOUDULE_PATH,f'img/cost/{i}.png'),'wb') as img:
-                    img.write(cost_pic.content)
-            pbar.update()
+                tasks.append(download(f'{cost_url}{i}.png',pbar,join(MOUDULE_PATH,f'img/cost/{i}.png',sem)))
+            else:pbar.update()
         for id in card_dict:
             if not exists(join(MOUDULE_PATH,f'img/C/C_{id}.png')):
                 if id == '910441030':
-                    card_pic = r.get(f'{img_url_c}{int(id)-10}.png')
+                    tasks.append(download2(f'{img_url_c}{int(id)-10}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png',sem)))
                 else:
-                    card_pic = r.get(f'{img_url_c}{id}.png')
-                card_name = r.get(f'{img_url_n}{id}.png')
-                pic = img_gen(Image.open(BytesIO(card_pic.content)),Image.open(BytesIO(card_name.content)))
-                pic.save(join(MOUDULE_PATH,f'img/C/C_{id}.png'),'PNG')
-            pbar.update()
+                    tasks.append(download2(f'{img_url_c}{int(id)}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png',sem)))
+            else:pbar.update()
             if not exists(join(MOUDULE_PATH,f'img/full/{id}0.png')):
                 if id == '910441030':
-                    card_pic = r.get(f'{img_url_f}{int(id)-10}0.png')
+                    tasks.append(download(f'{img_url_f}{int(id)-10}0.png',pbar,join(MOUDULE_PATH,f'img/full/{id}0.png'),sem))
                 else:
-                    card_pic = r.get(f'{img_url_f}{id}0.png')
-                if card_pic.status_code == 200:
-                    with open(join(MOUDULE_PATH,f'img/full/{id}0.png',),'wb') as img:
-                            img.write(card_pic.content)
-            pbar.update()
+                    tasks.append(download(f'{img_url_f}{int(id)}0.png',pbar,join(MOUDULE_PATH,f'img/full/{id}0.png'),sem))
+            else:pbar.update()
             if card_dict[id]["char_type"] == 1:
                 if not exists(join(MOUDULE_PATH,f'img/E/E_{id}.png')):
-                    card_pic = r.get(f'{img_url_e}{id}.png')
-                    card_name = r.get(f'{img_url_n}{id}.png')
-                    pic = img_gen(Image.open(BytesIO(card_pic.content)),Image.open(BytesIO(card_name.content)))
-                    pic.save(join(MOUDULE_PATH,f'img/E/E_{id}.png'),'PNG')
-                pbar.update()
+                    tasks.append(download2(f'{img_url_e}{id}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/E/E_{id}.png'),sem))
+                else:pbar.update()
                 if not exists(join(MOUDULE_PATH,f'img/full/{id}1.png')):
-                    card_pic = r.get(f'{img_url_f}{id}1.png')
-                    if card_pic.status_code == 200:
-                        with open(join(MOUDULE_PATH,f'img/full/{id}1.png',),'wb') as img:
-                            img.write(card_pic.content)
-                pbar.update()
+                    tasks.append(download(f'{img_url_f}{id}1.png',pbar,join(MOUDULE_PATH,f'img/full/{id}1.png'),sem))
+                else:pbar.update()
             if not exists(join(MOUDULE_PATH,f'img/L/L_{id}.jpg')):
-                card_pic = r.get(f'{img_url_l}{id}.jpg')
-                with open(join(MOUDULE_PATH,f'img/L/L_{id}.jpg',),'wb') as img:
-                    img.write(card_pic.content)
-            pbar.update()
+                tasks.append(download(f'{img_url_l}{id}.jpg',pbar,f'img/L/L_{id}.jpg',sem))
+            else:pbar.update()
+        await asyncio.wait(tasks)
 
 async def voice_dl(card:dict):
     """
     下载卡牌语音
     """
     print("准备下载语音")
+    sem = asyncio.Semaphore(10)
     if not exists(join(MOUDULE_PATH,'voice')):
         makedirs(join(MOUDULE_PATH,'voice'))
     num = len(card)
     with tqdm(total= num,unit='file',desc='下载语音',position=0) as pbar:
+        tasks = []
         for id in card:
             if not exists(join(MOUDULE_PATH,f'voice/{id}')):
-                req = r.get(f'{voice_api}{id}')
-                if req.status_code == 200:
-                    voice_dict:dict = json.loads(req.content.decode())
-                    makedirs(join(MOUDULE_PATH,f'voice/{id}'))
-                    for act in voice_dict:
-                        for filename in voice_dict[act]:
-                            voice = r.get(f'{voice_url}{filename}')
-                            if voice.status_code == 200:
-                                filename = filename.replace('|','_')
-                                with open(join(MOUDULE_PATH,f'voice/{id}/{filename}',),'wb') as img:
-                                    img.write(voice.content)
-            pbar.update()
+                tasks.append(voicelist_dl(f'{voice_api}{id}',pbar,join(MOUDULE_PATH,f'voice/{id}'),sem))
+            else:pbar.update()
+        await asyncio.wait(tasks)
             
             
 
