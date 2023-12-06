@@ -54,31 +54,3 @@
 默认为指定模式卡牌
 在指令后添加`无限`可以猜所有卡牌
 在指令后添加职业名可以猜特定职业卡牌
-
-## 插件安装
-
-1. git clone本插件：
-
-    在 HoshinoBot\hoshino\modules 目录下使用以下命令拉取本项目
-
-    ```shell
-    git clone https://github.com/Nao-desu/sv_plugin.git
-    ```
-
-2. 安装依赖：
-
-    到HoshinoBot\hoshino\modules\sv-plugin目录下，管理员方式打开powershell
-
-    ```shell
-    pip install -r requirements.txt -i https://pypi.tuna.tsinghua.edu.cn/simple --user
-    ```
-
-3. 在 HoshinoBot\hoshino\config\ `__bot__.py` 文件的 MODULES_ON 加入 'sv-plugin'
-
-4. 下载资源：
-    >由于卡牌非常非常多，每张卡牌都要下载本身卡牌和原画资源以及语音，这会占用相当大的空间
-    - 启动update.bat，自动下载 (更新资源也是这样操作)
-
-5. 重启HoshinoBot
-
-- 如果你在启动hoshino时发现报错，请尝试安装[Visual C++ Redistributable Packages for Visual Studio 2013](https://www.microsoft.com/zh-CN/download/details.aspx?id=40784)

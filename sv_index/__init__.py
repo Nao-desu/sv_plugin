@@ -46,9 +46,9 @@ async def sv_card_index(bot,ev):
             await bot.send(ev,f'{card["card_name"]}\n匹配度{cards[0]["score"]}{img}',at_sender = True)
         elif len(cards) > 50:
             await bot.send(ev,f'匹配到超过{len(cards)}张卡牌，请缩小范围\n'+index_help,at_sender = True)
-        elif len(cards) > 20:
-            await bot.send(ev,f'查询到近似结果{len(cards)}张\n只显示匹配度最高的20张\n使用/svcard+id可以查看卡牌详细信息',at_sender = True)
-            cards_sorted = sorted(cards,key = lambda x : x['score'],reverse=True)[:20] 
+        elif len(cards) > 16:
+            await bot.send(ev,f'查询到近似结果{len(cards)}张\n只显示匹配度最高的16张\n使用/svcard+id可以查看卡牌详细信息',at_sender = True)
+            cards_sorted = sorted(cards,key = lambda x : x['score'],reverse=True)[:16] 
             img = await cardlist_img_gen(cards_sorted)
             await bot.send(ev,img)
         else:
