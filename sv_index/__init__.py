@@ -2,6 +2,13 @@ from hoshino import Service
 from ..info import text2cards,get_cards,judge_card
 from .img_gen import card_img_gen,cardlist_img_gen
 
+sv_help= """
+——————————————————————
+艾特我，发送【查卡帮助】
+可以查看sv查卡的帮助信息
+——————————————————————
+"""
+
 index_help = """
 ——————————————
     指令说明
@@ -32,20 +39,20 @@ async def sv_card_index(bot,ev):
     text = ev.message.extract_plain_text().replace(' #','#').replace('#', ' #').strip()
     try:
         if text == '':
-            await bot.send(ev,'请输入条件&关键词!\n'+index_help,at_sender=True)
+            await bot.send(ev,'请输入条件&关键词!\n'+sv_help,at_sender=True)
             return
         cards:list = await text2cards(text)
         judge = judge_card(cards)
         if judge:
             cards = judge
         if len(cards) == 0:
-            await bot.send(ev,'抱歉,未查询到符合条件的卡牌\n'+index_help,at_sender = True)
+            await bot.send(ev,'抱歉,未查询到符合条件的卡牌\n'+sv_help,at_sender = True)
         elif len(cards) == 1:
             card = cards[0]['card']
             img = await card_img_gen(card)
             await bot.send(ev,f'{card["card_name"]}\n匹配度{cards[0]["score"]}{img}',at_sender = True)
         elif len(cards) > 50:
-            await bot.send(ev,f'匹配到超过{len(cards)}张卡牌，请缩小范围\n'+index_help,at_sender = True)
+            await bot.send(ev,f'匹配到超过{len(cards)}张卡牌，请缩小范围\n'+sv_help,at_sender = True)
         elif len(cards) > 20:
             await bot.send(ev,f'查询到近似结果{len(cards)}张\n只显示匹配度最高的20张\n使用/svcard+id可以查看卡牌详细信息',at_sender = True)
             cards_sorted = sorted(cards,key = lambda x : x['score'],reverse=True)[:16] 
