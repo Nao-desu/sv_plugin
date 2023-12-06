@@ -27,7 +27,7 @@ index_help = """
 
 sv = Service('sv-index',help_=index_help)
 
-@sv.on_prefix('sv查卡','查卡','影之诗查卡','SV查卡')
+@sv.on_prefix('sv查卡')
 async def sv_card_index(bot,ev):
     text = ev.message.extract_plain_text().replace(' #','#').replace('#', ' #').strip()
     try:

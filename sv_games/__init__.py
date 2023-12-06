@@ -8,6 +8,8 @@ from ..config import GAME_TIME
 from PIL import Image
 from io import BytesIO
 import asyncio,zhconv,base64,random
+from xpinyin import Pinyin
+p = Pinyin()
 
 game_help = """
 [sv猜卡面] 猜猜bot随机发送的卡面的一小部分来自哪张影之诗卡牌
@@ -28,7 +30,7 @@ class GM:
 
     def start_game(self, gid,answer):
         self.playing[gid] = answer
-        self.answer[gid] = get_cards()[str(answer)]["card_name"].split('‧')
+        self.answer[gid] = [p.get_pinyin(text) for text in get_cards()[str(answer)]["card_name"].split('‧')]
         return
 
     def get_ans(self,gid):
@@ -39,7 +41,7 @@ class GM:
 
     def check_ans(self,gid,text):
         if gid in self.playing:
-            if text in self.answer[gid]:
+            if p.get_pinyin(text) in self.answer[gid]:
                 return True
         return False
 
