@@ -10,7 +10,7 @@ async def guess_paint(bot,ev,limited,clan,answer):
     w1 = '指定' if limited else ''
     w2 = '' if not clan else clan2w[clan]
     msg = pic_corp(answer)
-    await bot.send(ev,f'猜猜这张图片来自哪张{w1}{w2}卡牌?\n{GAME_TIME}秒后公布答案\n@我加上你的答案\n名字中带‧的回答‧号前后名字即可~{msg}')
+    await bot.send(ev,f'猜猜这张图片来自哪张{w1}{w2}卡牌?\n{GAME_TIME}秒后公布答案\n艾特我+你的答案参与游戏\n卡牌名中带‧的回答‧号前后文本即可~{msg}')
 
 def pic_corp(answer):
     """

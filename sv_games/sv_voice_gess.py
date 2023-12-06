@@ -10,5 +10,5 @@ async def guess_voice(bot,ev,limited,clan,answer):
     w2 = '' if not clan else clan2w[clan]
     voice = random.choice(os.listdir(join(MOUDULE_PATH,f"voice\\{answer}")))
     rec = MessageSegment.record(f'file:///{MOUDULE_PATH}/voice/{answer}/{voice}')
-    await bot.send(ev,f'猜猜这段语音来自哪张{w1}{w2}卡牌?\n{GAME_TIME}秒后公布答案\n@我加上你的答案\n名字中带‧的回答‧号前后名字即可~')
+    await bot.send(ev,f'猜猜这段语音来自哪张{w1}{w2}卡牌?\n{GAME_TIME}秒后公布答案\n艾特我+你的答案参与游戏\n卡牌名中带‧的回答‧号前后文本即可~')
     await bot.send(ev,rec)
