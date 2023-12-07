@@ -22,9 +22,10 @@ async def sv_QRCR(bot,ev):
         await bot.send(ev,'发现世界服二维码！')
         for deck in decks:
             img = await deck_img_gen(deck)
-            if len(deck["clan"]) != 1:
-                msg = f'双职业：\n主职业{clan2w[deck["clan"][0]]}\n副职业{clan2w[deck["clan"][1]]}{img}'
-            else:msg = f'职业：\n{clan2w[deck["clan"][0]]}{img}'
+            if len(deck["clan"]) == 2:
+                msg = f'主职业：{clan2w[deck["clan"][0]]}\t副职业：{clan2w[deck["clan"][1]]}{img}'
+            elif len(deck["clan"]) == 2:msg = f'职业：\n{clan2w[deck["clan"][0]]}{img}'
+            else:msg = f'无法识别到职业：\n{img}'
             await bot.send(ev,msg)            
     except Exception as e:
         traceback.print_exc()
