@@ -42,7 +42,7 @@ async def check_QR(pic:list)->list:
             for i in cardlist_hash:
                 if len(i)==5:
                     break
-                deck['clan'].append(i)
+                deck['clan'].append(int(i))
             deck['deck'] = [hashToID(hash) for hash in cardlist_hash[len(deck['clan']):]]
             # if len(cardlist_hash) != 41:
             #     continue
