@@ -28,7 +28,7 @@ index_help = """
 #虹     [稀有度]
 #指定   [在指定卡牌中筛选]
 #333    [费用身材]
-（例如【sv查卡 #aoa #皇 #323 #虹】可以精确查找到校舍的黃昏‧莉夏與奈諾）
+例如:【sv查卡 #aoa #皇 #323 #虹】可以精确查找到校舍的黃昏‧莉夏與奈諾
 ——————————————
 """
 
@@ -37,6 +37,8 @@ sv = Service('sv-index',help_=index_help)
 @sv.on_prefix('sv查卡')
 async def sv_card_index(bot,ev):
     text = ev.message.extract_plain_text().replace(' #','#').replace('#', ' #').strip()
+    if text == "帮助":
+        return
     try:
         if text == '':
             await bot.send(ev,'请输入条件&关键词!\n'+sv_help,at_sender=True)

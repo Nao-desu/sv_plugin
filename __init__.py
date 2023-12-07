@@ -11,17 +11,19 @@ sv = Service('sv_auto_update',visible=False)
 sv_help = """
 影之诗相关查询机器人
 艾特我，发送以下指令查看具体功能帮助
-[查卡帮助]
+[sv查卡帮助]
 [抽卡帮助]
 [小游戏帮助]
+更多功能正在制作中。。。
 bug反馈/功能建议请加群1045372728
+（频道用户也可点击头像进入官方频道反馈）
 """
 
 @sv.on_fullmatch('sv帮助')
 async def sv_helper(bot,ev):
     await bot.send(ev,sv_help,at_sender = True)
 
-@sv.on_fullmatch('查卡帮助')
+@sv.on_fullmatch('sv查卡帮助')
 async def index_helper(bot,ev):
     await bot.send(ev,index_help,at_sender = True)
 
