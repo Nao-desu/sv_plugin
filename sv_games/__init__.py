@@ -38,11 +38,11 @@ class GM:
         a3 = ''.join(a1)
         self.answer[gid] = a1
         if a0 not in self.answer[gid]:
-            self.answer[gid](a0)
+            self.answer[gid].append(a0)
         if a2 not in self.answer[gid]:
-            self.answer[gid](a0)
+            self.answer[gid].append(a0)
         if a3 not in self.answer[gid]:
-            self.answer[gid](a0)
+            self.answer[gid].append(a0)
         return
 
     def get_ans(self,gid):
