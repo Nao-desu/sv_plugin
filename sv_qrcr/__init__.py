@@ -24,7 +24,7 @@ async def sv_QRCR(bot,ev):
             img = await deck_img_gen(deck)
             if len(deck["clan"]) == 2:
                 msg = f'主职业：{clan2w[deck["clan"][0]]}\t副职业：{clan2w[deck["clan"][1]]}{img}'
-            elif len(deck["clan"]) == 2:msg = f'职业：\n{clan2w[deck["clan"][0]]}{img}'
+            elif len(deck["clan"]) == 1:msg = f'职业：\n{clan2w[deck["clan"][0]]}{img}'
             else:msg = f'无法识别到职业：\n{img}'
             await bot.send(ev,msg)            
     except Exception as e:

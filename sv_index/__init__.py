@@ -3,10 +3,8 @@ from ..info import text2cards,get_cards,judge_card
 from .img_gen import card_img_gen,cardlist_img_gen
 
 sv_help= """
-——————————————————————
-艾特我，发送【查卡帮助】
-可以查看sv查卡的帮助信息
-——————————————————————
+艾特我，发送[sv查卡帮助]
+可以查看卡牌查询的帮助信息
 """
 
 index_help = """
@@ -20,6 +18,7 @@ index_help = """
 #3c     [费用]
 #AOA    [卡包]
 #token  [token]
+#333    [费用身材]
 #皇家   [职业]
 #学园   [种类]
 #随从   [卡牌类型]
@@ -27,7 +26,7 @@ index_help = """
 #life3  [生命值]
 #虹     [稀有度]
 #指定   [在指定卡牌中筛选]
-#333    [费用身材]
+#小仓唯  [声优]
 例如:【sv查卡 #aoa #皇 #323 #虹】可以精确查找到校舍的黃昏‧莉夏與奈諾
 ——————————————
 """
