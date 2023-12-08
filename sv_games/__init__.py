@@ -14,6 +14,7 @@ p = Pinyin()
 game_help = """
 [sv猜卡面] 猜猜bot随机发送的卡面的一小部分来自哪张影之诗卡牌
 [sv猜语音] 猜猜bot随机发送的语音来自哪张影之诗卡牌
+回答时需要at机器人，回答卡牌名的前后缀均可
 默认为指定模式卡牌
 在指令后添加[无限]可以猜所有卡牌
 在指令后添加[职业名]可以猜特定职业卡牌
@@ -31,7 +32,17 @@ class GM:
 
     def start_game(self, gid,answer):
         self.playing[gid] = answer
-        self.answer[gid] = [p.get_pinyin(text) for text in get_cards()[str(answer)]["card_name"].split('‧')]
+        a0 = get_cards()[str(answer)]["card_name"]
+        a1 = [p.get_pinyin(text) for text in a0.split('‧')]
+        a2 = a0.strip('詠唱：')
+        a3 = ''.join(a1)
+        self.answer[gid] = a1
+        if a0 not in self.answer[gid]:
+            self.answer[gid](a0)
+        if a2 not in self.answer[gid]:
+            self.answer[gid](a0)
+        if a3 not in self.answer[gid]:
+            self.answer[gid](a0)
         return
 
     def get_ans(self,gid):
