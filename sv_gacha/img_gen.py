@@ -35,9 +35,9 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
     cards ={}
     cardlist = []
     if only_leader and not leadercard:
-        img = Image.new("RGBA",(536*5//4,698//2),(255,255,255,100))
+        img = None
     if not leadercard and not card[1]:
-        img = Image.new("RGBA",(536*5//4,698//2),(255,255,255,100))
+        img = None
     else:
         for i in leadercard:
             if i in cards:
@@ -54,7 +54,9 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
                     cardlist.append(i)
         num = len(cards)
         line = (num+4)//5
-        img = Image.new("RGBA",(536*5,698*line),(255,255,255,100))
+        if line==1:
+            img = Image.new("RGBA",(536*num,698),(255,255,255,100))
+        else:img = Image.new("RGBA",(536*5,698*line),(255,255,255,100))
         draw = ImageDraw.Draw(img)
         for i in range(0,line):
             for j in range(0,5):
@@ -66,11 +68,13 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
                 draw.text((j*536+450,i*698+20),f'x{cards[id]}',(0,0,0),font)
             if j+i*5 >= len(cardlist):
                 break
-    x,y = img.size
-    img.resize((x//8,y//8))
-    img = img.convert('RGB')
-    buf = BytesIO()
-    img.save(buf, format='JPEG')
-    base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    msg = f'[CQ:image,file={base64_str}]'
+    if img:
+        x,y = img.size
+        img.resize((x//8,y//8))
+        img = img.convert('RGB')
+        buf = BytesIO()
+        img.save(buf, format='JPEG')
+        base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
+        msg = f'[CQ:image,file={base64_str}]'
+    else:msg = ''
     return msg
