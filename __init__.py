@@ -19,8 +19,7 @@ sv_help = f"""
 [小游戏帮助]
 更多功能正在制作中。。。
 bug反馈/功能建议/bot试用请扫码加入官方频道
-（频道用户也可点击头像直接加入官方频道）
-[CQ:image,file=file:///{abspath(filepath)}]
+(频道用户也可点击头像直接加入官方频道)[CQ:image,file=file:///{abspath(filepath)}]
 """
 
 @sv.on_fullmatch('sv帮助')
