@@ -1,4 +1,3 @@
-import hoshino
 from hoshino import Service
 from .config import auto_update
 from .update import update_main
@@ -6,7 +5,8 @@ from .sv_index import index_help
 from .sv_games import game_help
 from .sv_gacha import gacha_help
 from os.path import join,abspath
-from .info import MOUDULE_PATH 
+from .info import MOUDULE_PATH
+from sv_master.update import master_update
 
 sv = Service('sv_auto_update',visible=False)
 
@@ -38,7 +38,13 @@ async def gacha_helper(bot,ev):
 async def game_helper(bot,ev):
     await bot.send(ev,game_help,at_sender = True)
 
+@sv.scheduled_job('cron',hour = '*/3')
+async def auto_updater():
+    if auto_update:
+        await master_update()
+
 @sv.on_fullmatch('手动更新sv数据')
 async def sv_data_update(bot,ev):
     await bot.send(ev,'准备更新，请耐心等待')
+    await master_update()
     await update_main(False)

@@ -78,7 +78,8 @@ async def voicelist_dl(url,pbar,PATH,sem):
                 for act in voice_dict:
                     for filename in voice_dict[act]:
                         tasks.append(download(f'{voice_url}{filename}',None,join(PATH,f"{filename.replace('|','_')}"),semm))
-                await asyncio.wait(tasks)
+                if tasks:
+                    await asyncio.wait(tasks)
                 pbar.update()
             else:
                 pbar.update()
@@ -213,7 +214,8 @@ async def img_dl(card_dict:dict):
             if not exists(join(MOUDULE_PATH,f'img/L/L_{id}.jpg')):
                 tasks.append(download(f'{img_url_l}{id}.jpg',pbar,f'img/L/L_{id}.jpg',sem))
             else:pbar.update()
-        await asyncio.wait(tasks)
+        if tasks:
+            await asyncio.wait(tasks)
 
 async def voice_dl(card:dict):
     """
@@ -230,7 +232,8 @@ async def voice_dl(card:dict):
             if not exists(join(MOUDULE_PATH,f'voice/{id}')):
                 tasks.append(voicelist_dl(f'{voice_api}{id}',pbar,join(MOUDULE_PATH,f'voice/{id}'),sem))
             else:pbar.update()
-        await asyncio.wait(tasks)
+        if tasks:
+            await asyncio.wait(tasks)
             
             
 

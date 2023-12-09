@@ -1,8 +1,9 @@
 # SV-plugin
 
 适用于[hoshino](https://github.com/Ice9Coffee/HoshinoBot)的影之诗插件合集
-> 卡牌信息来自[shadowverse-portal](https://shadowverse-portal.com)
-> 卡牌原图和语音来自[SVGDB](https://svgdb.me/)
+> 卡牌信息来自[shadowverse-portal](https://shadowverse-portal.com)  
+> 卡牌原图和语音来自[SVGDB](https://svgdb.me/)  
+> 部分数据来自[shadowversemaster](https://shadowversemaster.com/)  
 
 ## 本仓库链接
 
@@ -54,3 +55,7 @@
 默认为指定模式卡牌
 在指令后添加`无限`可以猜所有卡牌
 在指令后添加职业名可以猜特定职业卡牌
+
+### 影之诗数据
+
+- `Ratings` 查看Ratings统计数据
