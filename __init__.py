@@ -6,7 +6,7 @@ from .sv_games import game_help
 from .sv_gacha import gacha_help
 from os.path import join,abspath
 from .info import MOUDULE_PATH
-from sv_master.update import master_update
+from .sv_master.update import master_update
 
 sv = Service('sv_auto_update',visible=False)
 
