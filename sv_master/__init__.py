@@ -1,5 +1,5 @@
 from hoshino import Service
-from ratings import get_ratings_data
+from .ratings import get_ratings_data
 
 sv = Service('sv_master')
 
