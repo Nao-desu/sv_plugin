@@ -152,7 +152,7 @@ async def change_img(path:str):
     # 修改该坐标处的像素值
     pix[x, y] = (r, g, b,100)
     buf = BytesIO()
-    img.convert('RGB')
+    img = img.convert('RGB')
     img.save(buf, format='jpeg')
     base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
     return f'[CQ:image,file={base64_str}]'
