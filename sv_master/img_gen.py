@@ -28,7 +28,7 @@ async def daily_ratings_img(time:str,data:dict):
     draw.text((850,220),'使用率',text_color,font3,'lm')
     draw.text((635,1430),'Code by Nao-desu & Data by shadowversemaster.com & Created by koharu',(200,200,200),font4,'mm')
     for i in range(1,9):
-        pic = Image.open(join(MOUDULE_PATH,f'clan/r_{i}.png'))
+        pic = Image.open(join(MOUDULE_PATH,f'img/clan/r_{i}.png'))
         img.paste(pic,(30,170+i*140),pic)
         draw.text((140,220+140*i),clan2w[i],text_color,font3,'lm')
         if data[str(i)][0] > 50:
@@ -67,7 +67,7 @@ def ten_ratings_img(data:dict):
         draw.text((80,y0),i[5:].replace('-','/'),text_color,font1,'mm')
         y0 += 60
     for i in range(1,9):
-        pic = Image.open(join(MOUDULE_PATH,f'clan/{i}.png'))
+        pic = Image.open(join(MOUDULE_PATH,f'img/clan/{i}.png'))
         img.paste(pic,(50+120*i,160),pic)
         y0 = 260
         for j in time:          
