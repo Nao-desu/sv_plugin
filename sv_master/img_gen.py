@@ -41,7 +41,7 @@ async def daily_ratings_img(time:str,data:dict):
         draw.text((850,220+140*i),f'{data[str(i)][1]}%',text_color,font3,'lm')
     return img
 
-def ten_ratings_img(data:dict):
+async def ten_ratings_img(data:dict):
     img = Image.new("RGBA",(1120,880),(0,0,0))
     x,y = 1080,680
     square = Image.new("RGBA",(x+6,y+6),(255,255,255,0))
