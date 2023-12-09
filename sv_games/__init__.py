@@ -32,7 +32,8 @@ class GM:
 
     def start_game(self, gid,answer):
         self.playing[gid] = answer
-        a0 = get_cards()[str(answer)]["card_name"]
+        card = get_cards()[str(answer)]
+        a0 = card["card_name"]
         a1 = [p.get_pinyin(text) for text in a0.split('‧')]
         a2 = a0.strip('詠唱：')
         a3 = ''.join(a1)
@@ -43,6 +44,8 @@ class GM:
             self.answer[gid].append(a0)
         if a3 not in self.answer[gid]:
             self.answer[gid].append(a0)
+        if card["char_type"] == 1:
+            self.answer[gid].append(f'{card["cost"]}{card["atk"]}{card["life"]}')
         return
 
     def get_ans(self,gid):
