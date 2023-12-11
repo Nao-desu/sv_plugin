@@ -3,6 +3,7 @@ from ..config import text_color
 from ..info import MOUDULE_PATH,clan2w,get_cards,get_deck_name,en_clan
 from os.path import join
 from ..sv_qrcr import deck_img_gen
+from ..config import clan_color
 
 async def daily_ratings_img(time:str,data:dict):
     img = Image.new("RGBA",(1250,1460),(0,0,0))
@@ -176,13 +177,14 @@ async def deck_img(deck:dict):
     mask = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
     draw2 = ImageDraw.Draw(mask)
     draw2.ellipse((0, 0, 200, 200), fill=(255, 255, 255, 100))
+    draw.ellipse((25,25,225,225),fill = clan_color(int(deck['clan'])))
     pic.paste(pic0,(20,20),mask)
     draw.text((240,20),deck_name_dict[deck_name][0],text_color,font1)
     if type(deck['wins']) == int:
         draw.text((240,110),f"{deck['auther']}|{deck['wins']}|{deck['creat_time']}",text_color,font2)
     else:
-        draw.text((240,110),f"{deck['auther']}|JCG winner",text_color,font2)
-    draw.text((240,160),f"from{deck['from']}",(150,150,150),font2)
+        draw.text((240,110),f"{deck['auther']} | JCG winner | {deck['creat_time']}",text_color,font2)
+    draw.text((240,160),f"from:{deck['from']}",(150,150,150),font2)
     pic.paste(img,(20,230))
-    draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3)
+    draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
     return pic
