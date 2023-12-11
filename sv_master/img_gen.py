@@ -137,7 +137,7 @@ async def deck_img_gen(deck:dict)->str:
     line = n_card//2 + 1
     if n_card%2 == 0:
         line -= 1 
-    img = Image.new('RGB',(1080,92*line),(255,255,255))
+    img = Image.new('RGB',(1080,92*line),(0,0,0))
     draw = ImageDraw.Draw(img)
     count = 1
     font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 30)
@@ -183,6 +183,9 @@ async def deck_img(deck:dict):
         draw.text((240,110),f"{deck['auther']}|{deck['wins']}|{deck['creat_time']}",text_color,font2)
     else:
         draw.text((240,110),f"{deck['auther']} | JCG winner | {deck['creat_time']}",text_color,font2)
+    if len(deck['from']) < 50:
+        fr = len(deck['from'])
+    else:fr = len(deck['from'])[:50] +'...'
     draw.text((240,160),f"from:{deck['from']}",(150,150,150),font2)
     pic.paste(img,(20,230))
     draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
