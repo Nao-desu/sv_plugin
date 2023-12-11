@@ -151,7 +151,7 @@ async def deck_img_gen(deck:dict)->str:
                 lcard = lcard.resize((540, int(lcard.size[1] * 540 / lcard.size[0])))
                 img.paste(lcard,((rol-1)*540,(row-1)*92))
                 costimg = Image.open(join(MOUDULE_PATH,f'img/cost/{cards[i]["cost"]}.png'))
-                costimg = costimg.resize((540, int(costimg.size[1] * 540 / costimg.size[0])))
+                costimg = costimg.resize((60,60))
                 img.paste(costimg,((rol-1)*540+20,(row-1)*92+20),costimg)
                 y = font.getsize(cards[i]['name'])[1]
                 draw_text_psd_style(draw=draw,xy=((rol-1)*540+90,int((row-1)*92+46-y/2)),text=cards[i]['name'],font=font,tracking=-60)
@@ -170,7 +170,7 @@ async def get_round_pic(name):
 async def deck_img(deck:dict):
     img = await deck_img_gen(deck["cards"])
     x,y = img.size 
-    pic = Image.new("RGB",(x+40,y+280))
+    pic = Image.new("RGB",(x+40,y+280),(0,0,0))
     draw = ImageDraw.Draw(pic)
     deck_name_dict = get_deck_name()
     font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
