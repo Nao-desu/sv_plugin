@@ -474,6 +474,9 @@ async def find_decks(text:str):
     result = []
     for deck in decks:
         name = deck["deck_name"]
+        if name not in deck_name:
+            print(name)
+            pass
         for i in deck_name[name]:
             if i in text:
                 result.append(deck)
