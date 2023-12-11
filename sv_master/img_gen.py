@@ -168,7 +168,7 @@ async def get_round_pic(name):
     return pic
 
 async def deck_img(deck:dict):
-    img = await deck_img_gen(deck["cards"])
+    img = await deck_img_gen(deck)
     x,y = img.size 
     pic = Image.new("RGB",(x+40,y+280),(0,0,0))
     draw = ImageDraw.Draw(pic)
