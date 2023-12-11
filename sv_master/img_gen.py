@@ -177,7 +177,6 @@ async def deck_img(deck:dict):
     mask = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
     draw2 = ImageDraw.Draw(mask)
     draw2.ellipse((0, 0, 200, 200), fill=(255, 255, 255, 100))
-    draw.ellipse((25,25,225,225),fill = clan_color[int(deck['clan'])])
     pic.paste(pic0,(20,20),mask)
     draw.text((240,20),deck_name_dict[deck_name][0],text_color,font1)
     if type(deck['wins']) == int:
