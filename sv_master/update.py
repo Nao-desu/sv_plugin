@@ -67,7 +67,10 @@ async def deck_img_dl(url,path):
                 break
             except:
                 pass
-        img = Image.open(io.BytesIO(req.content))
+        try:
+            img = Image.open(io.BytesIO(req.content))
+        except:
+            img = Image.new("RGB",(200,200),(0,0,0))
         img = img.resize((200,200))
         img = img.convert("RGB")
         img.save(path,format="JPEG")
