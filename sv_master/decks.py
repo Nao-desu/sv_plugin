@@ -13,4 +13,5 @@ async def get_deck_data(text):
         msg = f'[CQ:image,file={base64_str}]'
         return msg,len(decks)
     else:
-        return '',0
+        msg = ''
+        return msg,0

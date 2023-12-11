@@ -13,7 +13,7 @@ async def ratings_info(bot,ev):
 @sv.on_prefix('来一套')
 async def deck_info(bot,ev):
     text = ev.message.extract_plain_text().strip()
-    msg,num = get_deck_data(text)
+    msg,num = await get_deck_data(text)
     if num:
         await bot.send(ev,msg)
     else:
