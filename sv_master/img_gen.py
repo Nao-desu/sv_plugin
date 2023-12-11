@@ -161,6 +161,7 @@ async def deck_img_gen(deck:dict)->str:
 
 async def get_round_pic(name):
     pic = Image.open(join(MOUDULE_PATH,'img','deck',f'{name}.jpg'))
+    pic.convert("RGBA")
     mask = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
     draw = ImageDraw.Draw(mask)
     draw.ellipse((0, 0, 200, 200), fill=(255, 255, 255, 100))
