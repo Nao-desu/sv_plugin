@@ -175,6 +175,7 @@ async def deck_img(deck:dict):
     deck_name_dict = get_deck_name()
     font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
     font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 30)
+    font3 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
     if deck["deck_name"] in deck_name_dict:
         deck_name = deck["deck_name"]
     else:
@@ -187,6 +188,6 @@ async def deck_img(deck:dict):
     else:
         draw.text((240,110),f"{deck['auther']}|JCG winner",text_color,font2)
     draw.text((240,160),f"from{deck['from']}",(150,150,150),font2)
-    pic.paste(img,(20,230),img)
-    draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font2)
+    pic.paste(img,(20,230))
+    draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3)
     return pic
