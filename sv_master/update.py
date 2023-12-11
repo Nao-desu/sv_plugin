@@ -49,14 +49,14 @@ async def deck_update():
                 break
             except:
                 pass
-            d = json.loads(req1.text)['nodes'][1]['data']
-            d = await data_to_deck(d)
-            with open(join(MOUDULE_PATH,'data','deck3.json'),'w',encoding="utf-8") as f:
-                json.dump(d, f, indent=4, ensure_ascii=False)
-            d = json.loads(req2.text)['nodes'][1]['data']
-            d = await data_to_deck(d)
-            with open(join(MOUDULE_PATH,'data','deck1.json'),'w',encoding="utf-8") as f:
-                json.dump(d, f, indent=4, ensure_ascii=False)
+        d = json.loads(req1.text)['nodes'][1]['data']
+        d = await data_to_deck(d)
+        with open(join(MOUDULE_PATH,'data','deck3.json'),'w',encoding="utf-8") as f:
+            json.dump(d, f, indent=4, ensure_ascii=False)
+        d = json.loads(req2.text)['nodes'][1]['data']
+        d = await data_to_deck(d)
+        with open(join(MOUDULE_PATH,'data','deck1.json'),'w',encoding="utf-8") as f:
+            json.dump(d, f, indent=4, ensure_ascii=False)
     print("卡组数据更新完毕")
 
 async def deck_img_dl(url,path):
@@ -67,9 +67,9 @@ async def deck_img_dl(url,path):
                 break
             except:
                 pass
-            img = Image.open(io.BytesIO(req.content))
-            img = img.resize((200,200))
-            img.save(path,format="JPEG")
+        img = Image.open(io.BytesIO(req.content))
+        img = img.resize((200,200))
+        img.save(path,format="JPEG")
 
 async def deck_img_update():
     print("开始更新卡组图片")
