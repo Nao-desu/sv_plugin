@@ -17,4 +17,4 @@ async def deck_info(bot,ev):
     if num:
         await bot.send(ev,msg)
     else:
-        await bot.send(ev,"无法识别卡组名\n如果要查询无限制卡组，请在指令中加上'无限'")
+        await bot.send(ev,"卡组名错误或当前版本无人上传此卡组\n如果要查询无限制卡组，请在指令中加上'无限'")

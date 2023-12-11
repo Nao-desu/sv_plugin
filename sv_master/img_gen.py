@@ -183,9 +183,9 @@ async def deck_img(deck:dict):
         draw.text((240,110),f"{deck['auther']}|{deck['wins']}|{deck['creat_time']}",text_color,font2)
     else:
         draw.text((240,110),f"{deck['auther']} | JCG winner | {deck['creat_time']}",text_color,font2)
-    if len(deck['from']) < 50:
+    if len(deck['from']) < 40:
         fr = deck['from']
-    else:fr = deck['from'][:50] +'...'
+    else:fr = deck['from'][:40] +'...'
     draw.text((240,160),f"from:{fr}",(150,150,150),font2)
     pic.paste(img,(20,230))
     draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
