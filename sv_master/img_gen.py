@@ -186,7 +186,7 @@ async def deck_img(deck:dict):
     if len(deck['from']) < 50:
         fr = len(deck['from'])
     else:fr = len(deck['from'])[:50] +'...'
-    draw.text((240,160),f"from:{deck['from']}",(150,150,150),font2)
+    draw.text((240,160),f"from:{fr}",(150,150,150),font2)
     pic.paste(img,(20,230))
     draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
     return pic
