@@ -159,15 +159,6 @@ async def deck_img_gen(deck:dict)->str:
                 count +=1
     return img
 
-async def get_round_pic(name):
-    pic = Image.open(join(MOUDULE_PATH,'img','deck',f'{name}.jpg'))
-    pic.convert("RGBA")
-    mask = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
-    draw = ImageDraw.Draw(mask)
-    draw.ellipse((0, 0, 200, 200), fill=(255, 255, 255, 100))
-    pic.paste(mask, (0, 0), mask)
-    return pic
-
 async def deck_img(deck:dict):
     img = await deck_img_gen(deck)
     x,y = img.size 
@@ -181,8 +172,11 @@ async def deck_img(deck:dict):
         deck_name = deck["deck_name"]
     else:
         deck_name = 'other_' + en_clan[deck["clan"]]
-    head_img = await get_round_pic(deck_name)
-    pic.paste(head_img,(20,20),head_img)
+    pic0 = Image.open(join(MOUDULE_PATH,'img','deck',f'{deck_name}.jpg'))
+    mask = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+    draw2 = ImageDraw.Draw(mask)
+    draw2.ellipse((0, 0, 200, 200), fill=(255, 255, 255, 100))
+    pic.paste(pic0,(20,20),mask)
     draw.text((240,20),deck_name_dict[deck_name][0],text_color,font1)
     if type(deck['wins']) == int:
         draw.text((240,110),f"{deck['auther']}|{deck['wins']}|{deck['creat_time']}",text_color,font2)
