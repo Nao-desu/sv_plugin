@@ -123,7 +123,7 @@ async def deck_img_gen(deck:dict)->str:
     """
     通过卡组列表生成卡组图片
     """
-    card_ids = deck['deck']
+    card_ids = deck['cards']
     all_cards = get_cards()
     cards = {}
     for id in card_ids:
