@@ -69,6 +69,7 @@ async def deck_img_dl(url,path):
                 pass
         img = Image.open(io.BytesIO(req.content))
         img = img.resize((200,200))
+        img = img.convert("RGB")
         img.save(path,format="JPEG")
 
 async def deck_img_update():
