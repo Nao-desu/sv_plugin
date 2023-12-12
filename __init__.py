@@ -4,6 +4,7 @@ from .update import update_main
 from .sv_index import index_help
 from .sv_games import game_help
 from .sv_gacha import gacha_help
+from .sv_master import master_help
 from os.path import join,abspath
 from .info import MOUDULE_PATH
 from .sv_master.update import master_update
@@ -17,6 +18,7 @@ sv_help = f"""
 [sv查卡帮助]
 [抽卡帮助]
 [小游戏帮助]
+[实用数据帮助]
 更多功能正在制作中。。。
 bug反馈/功能建议/bot试用请扫码加入官方频道
 (频道用户也可点击头像直接加入官方频道)[CQ:image,file=file:///{abspath(filepath)}]
@@ -37,6 +39,10 @@ async def gacha_helper(bot,ev):
 @sv.on_fullmatch('小游戏帮助')
 async def game_helper(bot,ev):
     await bot.send(ev,game_help,at_sender = True)
+
+@sv.on_fullmatch('实用数据帮助')
+async def game_helper(bot,ev):
+    await bot.send(ev,master_help,at_sender = True)
 
 @sv.scheduled_job('cron',hour = '*/3')
 async def auto_updater():

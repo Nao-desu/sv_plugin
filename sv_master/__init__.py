@@ -3,6 +3,13 @@ from .ratings import get_ratings_data
 from .decks import get_deck_data,get_all_decks
 from ..info import find_decks
 
+master_help = """
+查询来自shadowversemaster的各种数据
+[Ratings] -查询ratings数据
+[卡组一览] -查看所有卡组，指令后加无限可查看无限卡组一览
+[来一套] -来一套卡组，指令后加无限查询无限卡组
+"""
+
 sv = Service('sv_master')
 
 @sv.on_prefix('Ratings')
