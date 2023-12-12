@@ -108,6 +108,10 @@ async def deck_update():
         json.dump(deckdata_r, f, indent=4, ensure_ascii=False)
     with open(join(MOUDULE_PATH,'data','deck1.json'),'w',encoding="utf-8") as f:
         json.dump(deckdata_l, f, indent=4, ensure_ascii=False)
+    with open(join(MOUDULE_PATH,'data','unlimited_deck.json'),'w',encoding="utf-8") as f:
+        json.dump(deckname_num_l, f, indent=4, ensure_ascii=False)
+    with open(join(MOUDULE_PATH,'data','rotation_deck.json'),'w',encoding="utf-8") as f:
+        json.dump(deckname_num_r, f, indent=4, ensure_ascii=False)
     deckdata_r = []
     deckdata_l = []
     deckname_num_r = {}
