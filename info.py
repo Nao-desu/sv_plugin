@@ -491,7 +491,7 @@ async def find_decks(text:str):
     for i in deck_name:
         for name in deck_name[i]:
             if name in text:
-                search_deck = name
+                search_deck = i
                 break
     if search_deck:
         if deck_num[search_deck]:
