@@ -69,7 +69,7 @@ async def get_deck_data(name,tag):
                 global deckname_num_l
                 deckname_num_l[name] = len(decks_map)
             for i in decks_map:
-                deck = []
+                deck = {}
                 deck_map = d[i]
                 deck["deck_name"] = name
                 deck["cards"] = hashtolist(d[deck_map["hash"]])
