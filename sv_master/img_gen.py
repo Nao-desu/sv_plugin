@@ -195,10 +195,9 @@ async def deck_img(deck:dict,flag):
     return pic
 
 async def all_deck_list_img(flag):
-    deck_list = await get_deck_name(flag)
-    decklist = deck_list
-    for i in deck_list:
-        if not deck_list[i]:
+    decklist = await get_deck_name(flag)
+    for i in list(decklist.keys()):
+        if not decklist[i]:
             del decklist[i]
     font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
     font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 30)
