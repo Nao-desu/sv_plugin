@@ -222,5 +222,5 @@ async def all_deck_list_img(flag):
         else:
             pic=Image.open(join(MOUDULE_PATH,'img','deck',f'l_{name}.jpg'))
         img.paste(pic,(20+230*(i%5),100+(i//5)*250))
-        draw.text((120+230*(i%5),325+i//5),f'{cn_name}({decklist[name]})',text_color,font2,'mm')
+        draw.text((120+230*(i%5),325+(i//5)*250),f'{cn_name}({decklist[name]})',text_color,font2,'mm')
     return img
