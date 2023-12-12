@@ -497,7 +497,7 @@ async def find_decks(text:str):
         if deck_num[search_deck]:
             for deck in decks:
                 if deck["deck_name"] == search_deck:
-                    result.append(search_deck)
+                    result.append(deck)
             return result,flag
         else:return -2 + flag,flag
     else:return -4 + flag,flag

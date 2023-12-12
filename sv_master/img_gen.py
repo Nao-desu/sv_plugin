@@ -2,7 +2,6 @@ from PIL import Image,ImageDraw,ImageFont
 from ..config import text_color
 from ..info import MOUDULE_PATH,clan2w,get_cards,get_deck_trans,en_clan,get_deck_name
 from os.path import join
-from ..sv_qrcr import deck_img_gen
 from ..config import clan_color
 
 async def daily_ratings_img(time:str,data:dict):
