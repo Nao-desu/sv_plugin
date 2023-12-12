@@ -60,7 +60,7 @@ async def get_deck_data(name,tag):
             except:
                 pass
         d = json.loads(req.text)['nodes'][1]['data']
-        decks_map = d[0]['decks']
+        decks_map = d[d[0]['decks']]
         if decks_map:
             if tag=='r':
                 global deckname_num_r
