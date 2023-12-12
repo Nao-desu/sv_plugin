@@ -205,14 +205,14 @@ async def all_deck_list_img(flag):
     rol = len(decklist) // 5 +1
     if len(decklist) % 5 == 0:
         rol -= 1
-    img = Image.new('RGB',(1160,250+250*rol))
+    img = Image.new('RGB',(1160,150+250*rol))
     deck_name = list(decklist.keys())
     draw = ImageDraw.Draw(img)
     if flag == 'r':
         draw.text((20,10),'指定卡组列表',text_color,font1)
     else:
         draw.text((20,10),'无限卡组列表',text_color,font1)
-    draw.text((580,220+250*rol),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
+    draw.text((580,120+250*rol),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
     for i in range(0,len(decklist)):
         name = deck_name[i]
         cn_name_list = await get_deck_trans()
@@ -221,6 +221,6 @@ async def all_deck_list_img(flag):
             pic=Image.open(join(MOUDULE_PATH,'img','deck',f'r_{name}.jpg'))
         else:
             pic=Image.open(join(MOUDULE_PATH,'img','deck',f'l_{name}.jpg'))
-        img.paste(pic,(20+230*(i%5),200+i//5))
-        draw.text((120+230*(i%5),425+i//5),f'{cn_name}({decklist[name]})',text_color,font2,'mm')
+        img.paste(pic,(20+230*(i%5),100+(i//5)*250))
+        draw.text((120+230*(i%5),325+i//5),f'{cn_name}({decklist[name]})',text_color,font2,'mm')
     return img
