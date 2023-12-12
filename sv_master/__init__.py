@@ -1,6 +1,7 @@
 from hoshino import Service
 from .ratings import get_ratings_data
-from .decks import get_deck_data
+from .decks import get_deck_data,get_all_decks
+from ..info import find_decks
 
 sv = Service('sv_master')
 
@@ -13,8 +14,30 @@ async def ratings_info(bot,ev):
 @sv.on_prefix('来一套')
 async def deck_info(bot,ev):
     text = ev.message.extract_plain_text().strip()
-    msg,num = await get_deck_data(text)
-    if num:
-        await bot.send(ev,msg)
+    if not text:
+        await bot.send(ev,"请指定卡组名,指令中加上'无限'可以查询无限制卡组")
+        return
+    decks,flag = await find_decks(text)
+    if decks == -1:
+        await bot.send(ev,"当前版本暂无此卡组数据")
+        return
+    elif decks == -2:
+        await bot.send(ev,"当前版本暂无此卡组数据\n如果你正在查询同名无限卡组，请在指令中加上'无限'")
+        return
+    elif decks == -3:
+        await bot.send(ev,"无法识别此卡组,请发送`卡组一览 无限`查看当前版本的所有卡组")
+        return
+    elif decks == -4:
+        await bot.send(ev,"无法识别此卡组,请发送`卡组一览`查看当前版本的所有卡组")
+        return        
+    msg = await get_deck_data(decks,flag)
+    await bot.send(ev,msg)
+
+@sv.on_prefix('卡组一览')
+async def all_decks_info(bot,ev):
+    text = ev.message.extract_plain_text().strip()
+    if '无限' in text:
+        msg = await get_all_decks('l')
     else:
-        await bot.send(ev,"卡组名错误或当前版本无人上传此卡组\n如果要查询无限制卡组，请在指令中加上'无限'")
+        msg = await get_all_decks('r')
+    await bot.send(ev,msg)

@@ -225,13 +225,24 @@ def get_ratings() -> dict:
         ratings = json.load(f)
     return ratings
 
-def get_deck_name() -> dict:
+async def get_deck_name(tag) -> dict:
     """
-    获取卡组名
+    返回卡组名
+    'r'指定，'l'无限
+    """
+    if tag == 'r':
+        with open(join(MOUDULE_PATH,'data/rotation_deck.json'),'r', encoding='UTF-8') as f:
+            return json.load(f)
+    elif tag == 'l':
+        with open(join(MOUDULE_PATH,'data/unlimited_deck.json'),'r', encoding='UTF-8') as f:
+            return json.load(f)
+
+async def get_deck_trans() -> dict:
+    """
+    返回卡组翻译
     """
     with open(join(MOUDULE_PATH,'data/en2cn.json'),'r', encoding='UTF-8') as f:
-        deck_name = json.load(f)
-    return deck_name
+        return json.load(f)
 
 """
 类型名
@@ -463,21 +474,30 @@ async def get_answer(limite,clan,flag)->int:
 async def find_decks(text:str):
     if "无限" in text:
         file = 'deck1.json'
+        file2 = 'rotation_deck.json'
+        flag = 1
     else:
         file = 'deck3.json'
+        file2 = 'unlimited_deck.json'
+        flag = 0
     with open(join(MOUDULE_PATH,'data/en2cn.json'),'r', encoding='UTF-8') as f:
         deck_name = json.load(f)
     with open(join(MOUDULE_PATH,'data',file),'r', encoding='UTF-8') as f:
         decks = json.load(f)
-    if not text:
-        return decks
+    with open(join(MOUDULE_PATH,'data',file2),'r', encoding='UTF-8') as f:
+        deck_num = json.load(f)
+    search_deck = None
     result = []
-    for deck in decks:
-        name = deck["deck_name"]
-        if name not in deck_name:
-            print(name)
-            pass
-        for i in deck_name[name]:
-            if i in text:
-                result.append(deck)
-    return result
+    for i in deck_name:
+        for name in deck_name[i]:
+            if name in text:
+                search_deck = name
+                break
+    if search_deck:
+        if deck_num[search_deck]:
+            for deck in decks:
+                if deck["deck_name"] == search_deck:
+                    result.append(search_deck)
+            return result,flag
+        else:return -2 + flag,flag
+    else:return -4 + flag,flag

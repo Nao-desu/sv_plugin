@@ -9,9 +9,12 @@ from PIL import Image
 from ..info import MOUDULE_PATH,hashToID,get_deck_name
 
 rating_url = "https://shadowversemaster.com/ratings/__data.json?x-sveltekit-invalidated=01"
-deck3_url = "https://shadowversemaster.com/decks/__data.json?&format=3"
-deck1_url = "https://shadowversemaster.com/decks/__data.json?&format=1"
+deck_url = "https://shadowversemaster.com/archetype/"
 deck_img_url = "https://d3n08lmbrfojvo.cloudfront.net/archetypes/rotation/"
+deckdata_r = []
+deckdata_l = []
+deckname_num_r = {}
+deckname_num_l = {}
 
 def hashtolist(hash:str):
     cardlist = []
@@ -19,75 +22,97 @@ def hashtolist(hash:str):
         cardlist.append(hashToID(card_hash))
     return cardlist
 
-async def data_to_deck(data:list):
-    map = data[1]
-    decks = []
-    for i in map:
-        deck = {}
-        deckmap = data[i]
-        deck["deck_name"] = data[deckmap["archetypeId"]]
-        deck["cards"] = hashtolist(data[deckmap["hash"]])
-        deck["clan"] = int(data[deckmap["clanId"]])
-        deck["auther"] = data[deckmap["playerName"]]
-        deck["creat_time"] = data[deckmap["createdAt"]][1][:10]
-        if "tournament" in deckmap:
-            deck["wins"] = 'winner'
-            deck["from"] = data[deckmap["tournament"]]
+def placement2wins(num:int,num2):
+    if num > 1000:
+        return num-1000
+    elif num == 10:
+        return 'JCG winner'
+    elif num == 7:
+        return 'JCG 2nd Place'
+    elif num == 3:
+        return 'JCG Top 4'
+    elif num == 2:
+        return 'JCG TOP 8'
+    elif num == 1:
+        return 'JCG TOP 16'
+    else:
+        if num2 == 3:
+            return 'JCG Top 32'
+        elif num2 == 2:
+            return 'JCG Top 64'
+        elif num2 == 1:
+            return 'JCG Top 128'
+        elif num2 == 0:
+            return 'JCG Top 256'
         else:
-            deck["wins"] = data[deckmap["wins"]]
-            deck["from"] = data[deckmap["source"]]
-        decks.append(deck)
-    return decks
+            return 'JCG Participant'
+         
+
+async def get_deck_data(name,tag):
+    async with AsyncClient() as client:
+        while(1):
+            try:
+                if tag=='r':
+                    req = await client.get(url=f'{deck_url}{name}/rotation/__data.json',timeout=None)
+                else:
+                    req = await client.get(url=f'{deck_url}{name}/unlimited/__data.json',timeout=None)
+                break
+            except:
+                pass
+        d = json.loads(req.text)['nodes'][1]['data']
+        decks_map = d[0]['decks']
+        if decks_map:
+            if tag=='r':
+                global deckname_num_r
+                deckname_num_r[name] = len(decks_map)
+            else:
+                global deckname_num_l
+                deckname_num_l[name] = len(decks_map)
+            for i in decks_map:
+                deck = []
+                deck_map = d[i]
+                deck["deck_name"] = name
+                deck["cards"] = hashtolist(d[deck_map["hash"]])
+                deck["clan"] = int(d[deck_map["craft_id"]])
+                deck["auther"] = d[deck_map["player_name"]]
+                deck["creat_time"] = d[deck_map["created_at"]][1][:10]
+                deck["wins"] = placement2wins(d[deck_map["placement"]],d[deck_map["total_wins"]])
+                s = d[deck_map["source"]]
+                if s:
+                    deck["from"] = s
+                else:
+                    deck["from"] = d[deck_map["deck_tournament"]]
+                if tag == 'r':
+                    global deckdata_r
+                    deckdata_r.append(deck)
+                else:
+                    global deckdata_l
+                    deckdata_l.append(deck)
+
 
 async def deck_update():
     print("开始更新卡组数据")
-    async with AsyncClient() as client:
-        while(1):
-            try:
-                req1 = await client.get(url=deck3_url,timeout=None)
-                req2 = await client.get(url=deck1_url,timeout=None)
-                break
-            except:
-                pass
-        d = json.loads(req1.text)['nodes'][1]['data']
-        d = await data_to_deck(d)
-        with open(join(MOUDULE_PATH,'data','deck3.json'),'w',encoding="utf-8") as f:
-            json.dump(d, f, indent=4, ensure_ascii=False)
-        d = json.loads(req2.text)['nodes'][1]['data']
-        d = await data_to_deck(d)
-        with open(join(MOUDULE_PATH,'data','deck1.json'),'w',encoding="utf-8") as f:
-            json.dump(d, f, indent=4, ensure_ascii=False)
-    print("卡组数据更新完毕")
-
-async def deck_img_dl(url,path):
-    async with AsyncClient() as client:
-        while(1):
-            try:
-                req = await client.get(url,timeout=None)
-                break
-            except:
-                pass
-        try:
-            img = Image.open(io.BytesIO(req.content))
-        except:
-            img = Image.new("RGB",(200,200),(0,0,0))
-        img = img.resize((200,200))
-        img = img.convert("RGB")
-        img.save(path,format="JPEG")
-
-async def deck_img_update():
-    print("开始更新卡组图片")
-    if not exists(join(MOUDULE_PATH,'img','deck')):
-        makedirs(join(MOUDULE_PATH,'img','deck'))
-    deck_name = get_deck_name()
+    global deckname_num_r
+    global deckname_num_l
+    global deckdata_r
+    global deckdata_l
+    deckname_num_r = await get_deck_name('r')
+    deckname_num_l = await get_deck_name('l')
     tasks = []
-    for name in deck_name:
-        if not exists(join(MOUDULE_PATH,'img','deck',f'{name}.jpg')):
-            tasks.append(deck_img_dl(deck_img_url+name,join(MOUDULE_PATH,'img','deck',f'{name}.jpg')))
-    if tasks:await asyncio.wait(tasks)
-    print("卡组图片更新完毕")
-
-
+    for deckname in deckname_num_r:
+        tasks.append(get_deck_data(deckname,'r'))
+    for deckname in deckname_num_l:
+        tasks.append(get_deck_data(deckname,'l'))
+    await asyncio.wait(tasks)
+    with open(join(MOUDULE_PATH,'data','deck3.json'),'w',encoding="utf-8") as f:
+        json.dump(deckdata_r, f, indent=4, ensure_ascii=False)
+    with open(join(MOUDULE_PATH,'data','deck1.json'),'w',encoding="utf-8") as f:
+        json.dump(deckdata_l, f, indent=4, ensure_ascii=False)
+    deckdata_r = []
+    deckdata_l = []
+    deckname_num_r = {}
+    deckname_num_l = {}
+    print("卡组数据更新完毕")
 
 async def rating_update():
     print("开始更新Ratings")
@@ -117,6 +142,6 @@ async def rating_update():
 
 
 async def master_update():
-    tasks = [rating_update(),deck_update(),deck_img_update()]
+    tasks = [rating_update(),deck_update()]
     await asyncio.wait(tasks)
 
