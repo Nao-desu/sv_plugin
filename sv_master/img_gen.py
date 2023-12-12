@@ -215,7 +215,7 @@ async def all_deck_list_img(flag):
     draw.text((580,220+250*rol),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
     for i in range(0,len(decklist)):
         name = deck_name[i]
-        cn_name = get_deck_trans()[name][0]
+        cn_name = await get_deck_trans()[name][0]
         if flag == 'r':
             pic=Image.open(join(MOUDULE_PATH,'img','deck',f'r_{name}.jpg'))
         else:
