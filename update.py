@@ -194,9 +194,9 @@ async def img_dl(card_dict:dict):
         for id in card_dict:
             if not exists(join(MOUDULE_PATH,f'img/C/C_{id}.png')):
                 if id == '910441030':
-                    tasks.append(download2(f'{img_url_c}{int(id)-10}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png',sem)))
+                    tasks.append(download2(f'{img_url_c}{int(id)-10}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png'),sem))
                 else:
-                    tasks.append(download2(f'{img_url_c}{int(id)}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png',sem)))
+                    tasks.append(download2(f'{img_url_c}{int(id)}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png'),sem))
             else:pbar.update()
             if not exists(join(MOUDULE_PATH,f'img/full/{id}0.png')):
                 if id == '910441030':
