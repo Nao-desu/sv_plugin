@@ -283,6 +283,7 @@ card_set = {
     10028:"遙久學園",
     10029:"密斯塔爾西亞的英雄",
     10030:"變革的恆規",
+    10031:"傳說復甦",
     70001:"主題牌組 第1彈",
     70002:"主題牌組 第2彈",
     70003:"Anigera合作",
@@ -474,11 +475,11 @@ async def get_answer(limite,clan,flag)->int:
 async def find_decks(text:str):
     if "无限" in text:
         file = 'deck1.json'
-        file2 = 'rotation_deck.json'
+        file2 = 'unlimited_deck.json'
         flag = 1
     else:
         file = 'deck3.json'
-        file2 = 'unlimited_deck.json'
+        file2 = 'rotation_deck.json'
         flag = 0
     with open(join(MOUDULE_PATH,'data/en2cn.json'),'r', encoding='UTF-8') as f:
         deck_name = json.load(f)
