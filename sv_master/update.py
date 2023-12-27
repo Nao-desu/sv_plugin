@@ -82,7 +82,7 @@ async def get_deck_data(name,tag):
                     deck["deck_name"] = name
                     deck["cards"] = hashtolist(d[deck_map["hash"]])
                     deck["clan"] = int(d[deck_map["clanId"]])
-                    deck["auther"] = d[deck_map["player_name"]]
+                    deck["auther"] = d[deck_map["playerName"]]
                     deck["creat_time"] = d[deck_map["createdAt"]][1][:10]
                     deck["wins"] = d[deck_map["wins"]]
                 s = d[deck_map["source"]]
