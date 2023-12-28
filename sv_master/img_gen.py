@@ -183,7 +183,10 @@ async def deck_img(deck:dict,flag):
     pic.paste(pic0,(20,20),mask)
     draw.text((240,20),deck_name_dict[deck_name][0],text_color,font1)
     if type(deck['wins']) == int:
-        draw.text((240,110),f"{deck['auther']}| {deck['wins']}连胜 |{deck['creat_time']}",text_color,font2)
+        if deck['wins'] != 0:
+            draw.text((240,110),f"{deck['auther']} | {deck['wins']}连胜 | {deck['creat_time']}",text_color,font2)
+        else:
+            draw.text((240,110),f"{deck['auther']} | {deck['creat_time']}",text_color,font2)
     else:
         draw.text((240,110),f"{deck['auther']} | {deck['wins']} | {deck['creat_time']}",text_color,font2)
     if len(deck['from']) < 40:
