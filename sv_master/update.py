@@ -71,7 +71,7 @@ async def get_deck_data(name,tag):
             for i in decks_map:
                 deck = {}
                 deck_map = d[i]
-                if "placementText" in deck_map:
+                if d[deck_map["placementText"]]:
                     deck["deck_name"] = name
                     deck["cards"] = hashtolist(d[deck_map["hash"]])
                     deck["clan"] = int(d[deck_map["clanId"]])

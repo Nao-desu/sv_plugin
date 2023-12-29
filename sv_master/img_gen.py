@@ -69,16 +69,18 @@ async def ten_ratings_img(data:dict):
         pic = Image.open(join(MOUDULE_PATH,f'img/clan/{i}.png'))
         img.paste(pic,(50+120*i,160),pic)
         y0 = 260
-        for j in time:          
-            if data[j][str(i)][0] > 50:
-                color = (127,255,0)
-            elif data[j][str(i)][0] < 50:
-                color = (255,0,0)
-            else:
-                color = text_color
-            draw.text((50+120*i,y0),str(data[j][str(i)][0]),color,font1,'mm')
-            draw.text((110+120*i,y0),str(data[j][str(i)][1]),text_color,font1,'mm')
-            y0+=60
+        try:
+            for j in time:          
+                if data[j][str(i)][0] > 50:
+                    color = (127,255,0)
+                elif data[j][str(i)][0] < 50:
+                    color = (255,0,0)
+                else:
+                    color = text_color
+                draw.text((50+120*i,y0),str(data[j][str(i)][0]),color,font1,'mm')
+                draw.text((110+120*i,y0),str(data[j][str(i)][1]),text_color,font1,'mm')
+                y0+=60
+        except:pass
     return img
 
 def draw_text_psd_style(draw, xy, text, font, tracking=0, leading=None, **kwargs):
@@ -160,70 +162,74 @@ async def deck_img_gen(deck:dict)->str:
     return img
 
 async def deck_img(deck:dict,flag):
-    img = await deck_img_gen(deck)
-    x,y = img.size 
-    pic = Image.new("RGB",(x+40,y+280),(0,0,0))
-    draw = ImageDraw.Draw(pic)
-    deck_name_dict = await get_deck_trans()
-    font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
-    font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 30)
-    font3 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
-    if deck["deck_name"] in deck_name_dict:
-        deck_name = deck["deck_name"]
-    else:
-        deck_name = 'other_' + en_clan[deck["clan"]]
-    if flag:
-        pic0 = Image.open(join(MOUDULE_PATH,'img','deck',f'l_{deck_name}.jpg'))
-    else:
-        pic0 = Image.open(join(MOUDULE_PATH,'img','deck',f'r_{deck_name}.jpg'))
-    mask = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
-    draw2 = ImageDraw.Draw(mask)
-    draw2.ellipse((0, 0, 200, 200), fill=(255, 255, 255, 225))
-    draw.ellipse((17, 17, 223, 223), fill=clan_color[int(deck['clan'])])
-    pic.paste(pic0,(20,20),mask)
-    draw.text((240,20),deck_name_dict[deck_name][0],text_color,font1)
-    if type(deck['wins']) == int:
-        if deck['wins'] != 0:
-            draw.text((240,110),f"{deck['auther']} | {deck['wins']}连胜 | {deck['creat_time']}",text_color,font2)
+    try:
+        img = await deck_img_gen(deck)
+        x,y = img.size 
+        pic = Image.new("RGB",(x+40,y+280),(0,0,0))
+        draw = ImageDraw.Draw(pic)
+        deck_name_dict = await get_deck_trans()
+        font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
+        font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 30)
+        font3 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
+        if deck["deck_name"] in deck_name_dict:
+            deck_name = deck["deck_name"]
         else:
-            draw.text((240,110),f"{deck['auther']} | {deck['creat_time']}",text_color,font2)
-    else:
-        draw.text((240,110),f"{deck['auther']} | {deck['wins']} | {deck['creat_time']}",text_color,font2)
-    if len(deck['from']) < 40:
-        fr = deck['from']
-    else:fr = deck['from'][:40] +'...'
-    draw.text((240,160),f"from:{fr}",(150,150,150),font2)
-    pic.paste(img,(20,230))
-    draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
+            deck_name = 'other_' + en_clan[deck["clan"]]
+        if flag:
+            pic0 = Image.open(join(MOUDULE_PATH,'img','deck',f'l_{deck_name}.jpg'))
+        else:
+            pic0 = Image.open(join(MOUDULE_PATH,'img','deck',f'r_{deck_name}.jpg'))
+        mask = Image.new("RGBA", (200, 200), (0, 0, 0, 0))
+        draw2 = ImageDraw.Draw(mask)
+        draw2.ellipse((0, 0, 200, 200), fill=(255, 255, 255, 225))
+        draw.ellipse((17, 17, 223, 223), fill=clan_color[int(deck['clan'])])
+        pic.paste(pic0,(20,20),mask)
+        draw.text((240,20),deck_name_dict[deck_name][0],text_color,font1)
+        if type(deck['wins']) == int:
+            if deck['wins'] != 0:
+                draw.text((240,110),f"{deck['auther']} | {deck['wins']}连胜 | {deck['creat_time']}",text_color,font2)
+            else:
+                draw.text((240,110),f"{deck['auther']} | {deck['creat_time']}",text_color,font2)
+        else:
+            draw.text((240,110),f"{deck['auther']} | {deck['wins']} | {deck['creat_time']}",text_color,font2)
+        if len(deck['from']) < 40:
+            fr = deck['from']
+        else:fr = deck['from'][:40] +'...'
+        draw.text((240,160),f"from:{fr}",(150,150,150),font2)
+        pic.paste(img,(20,230))
+        draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
+    except:pass
     return pic
 
 async def all_deck_list_img(flag):
-    decklist = await get_deck_name(flag)
-    for i in list(decklist.keys()):
-        if not decklist[i]:
-            del decklist[i]
-    font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
-    font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 30)
-    font3 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
-    rol = len(decklist) // 5 +1
-    if len(decklist) % 5 == 0:
-        rol -= 1
-    img = Image.new('RGB',(1160,150+250*rol))
-    deck_name = list(decklist.keys())
-    draw = ImageDraw.Draw(img)
-    if flag == 'r':
-        draw.text((20,10),'指定卡组列表',text_color,font1)
-    else:
-        draw.text((20,10),'无限卡组列表',text_color,font1)
-    draw.text((580,120+250*rol),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
-    for i in range(0,len(decklist)):
-        name = deck_name[i]
-        cn_name_list = await get_deck_trans()
-        cn_name = cn_name_list[name][0]
+    try:
+        decklist = await get_deck_name(flag)
+        for i in list(decklist.keys()):
+            if not decklist[i]:
+                del decklist[i]
+        font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
+        font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 30)
+        font3 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
+        rol = len(decklist) // 5 +1
+        if len(decklist) % 5 == 0:
+            rol -= 1
+        img = Image.new('RGB',(1160,150+250*rol))
+        deck_name = list(decklist.keys())
+        draw = ImageDraw.Draw(img)
         if flag == 'r':
-            pic=Image.open(join(MOUDULE_PATH,'img','deck',f'r_{name}.jpg'))
+            draw.text((20,10),'指定卡组列表',text_color,font1)
         else:
-            pic=Image.open(join(MOUDULE_PATH,'img','deck',f'l_{name}.jpg'))
-        img.paste(pic,(20+230*(i%5),100+(i//5)*250))
-        draw.text((120+230*(i%5),325+(i//5)*250),f'{cn_name}({decklist[name]})',text_color,font2,'mm')
+            draw.text((20,10),'无限卡组列表',text_color,font1)
+        draw.text((580,120+250*rol),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
+        for i in range(0,len(decklist)):
+            name = deck_name[i]
+            cn_name_list = await get_deck_trans()
+            cn_name = cn_name_list[name][0]
+            if flag == 'r':
+                pic=Image.open(join(MOUDULE_PATH,'img','deck',f'r_{name}.jpg'))
+            else:
+                pic=Image.open(join(MOUDULE_PATH,'img','deck',f'l_{name}.jpg'))
+            img.paste(pic,(20+230*(i%5),100+(i//5)*250))
+            draw.text((120+230*(i%5),325+(i//5)*250),f'{cn_name}({decklist[name]})',text_color,font2,'mm')
+    except:pass
     return img
