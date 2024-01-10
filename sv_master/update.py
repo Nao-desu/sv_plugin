@@ -35,12 +35,12 @@ async def get_deck_data(name,tag):
                 pass
         d = json.loads(req.text)['nodes'][1]['data']
         decks_map = d[d[0]['decks']]
+        global deckname_num_r
+        global deckname_num_l
         if decks_map:
             if tag=='r':
-                global deckname_num_r
                 deckname_num_r[name] = len(decks_map)
             else:
-                global deckname_num_l
                 deckname_num_l[name] = len(decks_map)
             for i in decks_map:
                 deck = {}
@@ -69,10 +69,8 @@ async def get_deck_data(name,tag):
                     deckdata_l.append(deck)
         else:
             if tag=='r':
-                global deckname_num_r
                 deckname_num_r[name] = 0
             else:
-                global deckname_num_l
                 deckname_num_l[name] = 0
 
 
