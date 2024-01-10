@@ -67,11 +67,6 @@ async def get_deck_data(name,tag):
                 else:
                     global deckdata_l
                     deckdata_l.append(deck)
-        else:
-            if tag=='r':
-                deckname_num_r[name] = 0
-            else:
-                deckname_num_l[name] = 0
 
 
 async def deck_update():
@@ -82,6 +77,10 @@ async def deck_update():
     global deckdata_l
     deckname_num_r = await get_deck_name('r')
     deckname_num_l = await get_deck_name('l')
+    for i in deckname_num_r:
+        deckname_num_r[i] = 0
+    for i in deckname_num_l:
+        deckname_num_l[i] = 0
     tasks = []
     for deckname in deckname_num_r:
         tasks.append(get_deck_data(deckname,'r'))
