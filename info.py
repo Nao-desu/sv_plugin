@@ -489,16 +489,17 @@ async def find_decks(text:str):
         deck_num = json.load(f)
     search_deck = None
     result = []
+    search_deck = []
     for i in deck_name:
         for name in deck_name[i]:
             if name in text:
-                search_deck = i
-                break
+                search_deck.append(i)
     if search_deck:
-        if deck_num[search_deck]:
-            for deck in decks:
-                if deck["deck_name"] == search_deck:
-                    result.append(deck)
-            return result,flag
-        else:return -2 + flag,flag
+        for i in search_deck:
+            if deck_num[i]:
+                for deck in decks:
+                    if deck["deck_name"] == i:
+                        result.append(deck)
+            else:return -2 + flag,flag
     else:return -4 + flag,flag
+    return result,flag
