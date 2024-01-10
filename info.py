@@ -500,6 +500,7 @@ async def find_decks(text:str):
                 for deck in decks:
                     if deck["deck_name"] == i:
                         result.append(deck)
-            else:return -2 + flag,flag
     else:return -4 + flag,flag
-    return result,flag
+    if len(result):
+        return result,flag
+    else:return -2 + flag,flag
