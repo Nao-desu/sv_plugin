@@ -22,32 +22,6 @@ def hashtolist(hash:str):
         cardlist.append(hashToID(card_hash))
     return cardlist
 
-def placement2wins(num:int,num2):
-    if num > 1000:
-        return num-1000
-    elif num == 10:
-        return 'JCG winner'
-    elif num == 7:
-        return 'JCG 2nd Place'
-    elif num == 3:
-        return 'JCG Top 4'
-    elif num == 2:
-        return 'JCG TOP 8'
-    elif num == 1:
-        return 'JCG TOP 16'
-    else:
-        if num2 == 3:
-            return 'JCG Top 32'
-        elif num2 == 2:
-            return 'JCG Top 64'
-        elif num2 == 1:
-            return 'JCG Top 128'
-        elif num2 == 0:
-            return 'JCG Top 256'
-        else:
-            return 'JCG Participant'
-         
-
 async def get_deck_data(name,tag):
     async with AsyncClient() as client:
         while(1):
@@ -93,6 +67,13 @@ async def get_deck_data(name,tag):
                 else:
                     global deckdata_l
                     deckdata_l.append(deck)
+        else:
+            if tag=='r':
+                global deckname_num_r
+                deckname_num_r[name] = 0
+            else:
+                global deckname_num_l
+                deckname_num_l[name] = 0
 
 
 async def deck_update():
@@ -141,7 +122,7 @@ async def rating_update():
         clanmap.sort(reverse=False)
         for datamap in clanmap:
             data = d[datamap]
-            time = d[data["updated_at"]][1][:10]
+            time = d[data["created_at"]][1][:10]
             if time not in realdata:
                 realdata[time] = {}
             realdata[time][i] = [d[data["win_rate"]],d[data["play_rate"]]]
