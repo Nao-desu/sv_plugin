@@ -1,16 +1,13 @@
 """
 自动获取&分析shadowversemaster.com的数据
 """
-import asyncio,json,io
+import asyncio,json
 from httpx import AsyncClient
-from os.path import join,exists
-from os import makedirs
-from PIL import Image
+from os.path import join
 from ..info import MOUDULE_PATH,hashToID,get_deck_name
 
 rating_url = "https://shadowversemaster.com/ratings/__data.json?x-sveltekit-invalidated=01"
 deck_url = "https://shadowversemaster.com/archetype/"
-deck_img_url = "https://d3n08lmbrfojvo.cloudfront.net/archetypes/rotation/"
 deckdata_r = []
 deckdata_l = []
 deckname_num_r = {}
@@ -22,51 +19,52 @@ def hashtolist(hash:str):
         cardlist.append(hashToID(card_hash))
     return cardlist
 
-async def get_deck_data(name,tag):
-    async with AsyncClient() as client:
-        while(1):
-            try:
+async def get_deck_data(name,tag,sem):
+    async with sem:
+        async with AsyncClient() as client:
+            while(1):
+                try:
+                    if tag=='r':
+                        req = await client.get(url=f'{deck_url}{name}/rotation/__data.json',timeout=None)
+                    else:
+                        req = await client.get(url=f'{deck_url}{name}/unlimited/__data.json',timeout=None)
+                    break
+                except:
+                    pass
+            d = json.loads(req.text)['nodes'][1]['data']
+            decks_map = d[d[0]['decks']]
+            global deckname_num_r
+            global deckname_num_l
+            if decks_map:
                 if tag=='r':
-                    req = await client.get(url=f'{deck_url}{name}/rotation/__data.json',timeout=None)
+                    deckname_num_r[name] = len(decks_map)
                 else:
-                    req = await client.get(url=f'{deck_url}{name}/unlimited/__data.json',timeout=None)
-                break
-            except:
-                pass
-        d = json.loads(req.text)['nodes'][1]['data']
-        decks_map = d[d[0]['decks']]
-        global deckname_num_r
-        global deckname_num_l
-        if decks_map:
-            if tag=='r':
-                deckname_num_r[name] = len(decks_map)
-            else:
-                deckname_num_l[name] = len(decks_map)
-            for i in decks_map:
-                deck = {}
-                deck_map = d[i]
-                if d[deck_map["placementText"]]:
-                    deck["deck_name"] = name
-                    deck["cards"] = hashtolist(d[deck_map["hash"]])
-                    deck["clan"] = int(d[deck_map["clanId"]])
-                    deck["auther"] = d[deck_map["playerName"]]
-                    deck["creat_time"] = d[deck_map["createdAt"]][1][:10]
-                    deck["wins"] = d[deck_map["placementText"]]
-                    deck["from"] = d[deck_map["tournament"]]
-                else:
-                    deck["deck_name"] = name
-                    deck["cards"] = hashtolist(d[deck_map["hash"]])
-                    deck["clan"] = int(d[deck_map["clanId"]])
-                    deck["auther"] = d[deck_map["playerName"]]
-                    deck["creat_time"] = d[deck_map["createdAt"]][1][:10]
-                    deck["wins"] = d[deck_map["wins"]]
-                    deck["from"] = d[deck_map["source"]]
-                if tag == 'r':
-                    global deckdata_r
-                    deckdata_r.append(deck)
-                else:
-                    global deckdata_l
-                    deckdata_l.append(deck)
+                    deckname_num_l[name] = len(decks_map)
+                for i in decks_map:
+                    deck = {}
+                    deck_map = d[i]
+                    if d[deck_map["placementText"]]:
+                        deck["deck_name"] = name
+                        deck["cards"] = hashtolist(d[deck_map["hash"]])
+                        deck["clan"] = int(d[deck_map["clanId"]])
+                        deck["auther"] = d[deck_map["playerName"]]
+                        deck["creat_time"] = d[deck_map["createdAt"]][1][:10]
+                        deck["wins"] = d[deck_map["placementText"]]
+                        deck["from"] = d[deck_map["tournament"]]
+                    else:
+                        deck["deck_name"] = name
+                        deck["cards"] = hashtolist(d[deck_map["hash"]])
+                        deck["clan"] = int(d[deck_map["clanId"]])
+                        deck["auther"] = d[deck_map["playerName"]]
+                        deck["creat_time"] = d[deck_map["createdAt"]][1][:10]
+                        deck["wins"] = d[deck_map["wins"]]
+                        deck["from"] = d[deck_map["source"]]
+                    if tag == 'r':
+                        global deckdata_r
+                        deckdata_r.append(deck)
+                    else:
+                        global deckdata_l
+                        deckdata_l.append(deck)
 
 
 async def deck_update():
@@ -75,6 +73,7 @@ async def deck_update():
     global deckname_num_l
     global deckdata_r
     global deckdata_l
+    sem = asyncio.Semaphore(5)
     deckname_num_r = await get_deck_name('r')
     deckname_num_l = await get_deck_name('l')
     for i in deckname_num_r:
@@ -83,9 +82,9 @@ async def deck_update():
         deckname_num_l[i] = 0
     tasks = []
     for deckname in deckname_num_r:
-        tasks.append(get_deck_data(deckname,'r'))
+        tasks.append(get_deck_data(deckname,'r',sem))
     for deckname in deckname_num_l:
-        tasks.append(get_deck_data(deckname,'l'))
+        tasks.append(get_deck_data(deckname,'l',sem))
     await asyncio.wait(tasks)
     with open(join(MOUDULE_PATH,'data','deck3.json'),'w',encoding="utf-8") as f:
         json.dump(deckdata_r, f, indent=4, ensure_ascii=False)
