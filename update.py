@@ -212,7 +212,7 @@ async def img_dl(card_dict:dict):
                     tasks.append(download(f'{img_url_f}{id}1.png',pbar,join(MOUDULE_PATH,f'img/full/{id}1.png'),sem))
                 else:pbar.update()
             if not exists(join(MOUDULE_PATH,f'img/L/L_{id}.jpg')):
-                tasks.append(download(f'{img_url_l}{id}.jpg',pbar,f'img/L/L_{id}.jpg',sem))
+                tasks.append(download(f'{img_url_l}{id}.jpg',pbar,join(MOUDULE_PATH,f'img/L/L_{id}.jpg'),sem))
             else:pbar.update()
         if tasks:
             await asyncio.wait(tasks)
