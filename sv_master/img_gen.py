@@ -1,8 +1,27 @@
 from PIL import Image,ImageDraw,ImageFont
 from ..config import text_color
-from ..info import MOUDULE_PATH,clan2w,get_cards,get_deck_trans,en_clan,get_deck_name
+from ..info import MOUDULE_PATH,clan2w,get_cards,get_deck_trans,en_clan,get_deck_name,idToHash
 from os.path import join
 from ..config import clan_color
+import qrcode
+
+async def qr_img_gen(deck:list,flag,clan:int):
+    qr = qrcode.QRCode(
+    version=1,  # 二维码的大小，取值1-40
+    box_size=10, # 二维码最小正方形的像素数量
+    error_correction=qrcode.constants.ERROR_CORRECT_H, # 二维码的纠错等级
+    border=2 # 白色边框的大小
+    )
+    if flag:
+        url = "https://shadowverse-portal.com/deck/3."
+    else:
+        url = "https://shadowverse-portal.com/deck/1."
+    url += f'.{clan}'
+    for i in deck:
+        url += f'.{idToHash(i)}'
+    url += '?lang=ja'
+    qr.add_data(url)
+    return qr.make_image()
 
 async def daily_ratings_img(time:str,data:dict):
     img = Image.new("RGBA",(1250,1460),(0,0,0))
@@ -198,6 +217,9 @@ async def deck_img(deck:dict,flag):
         draw.text((240,160),f"from:{fr}",(150,150,150),font2)
         pic.paste(img,(20,230))
         draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
+        qr_img = await qr_img_gen(deck['cards'],flag,deck['clan'])
+        qr_img = qr_img.resize((150,150))
+        pic.paste(qr_img,(900,20),qr_img)
     except:pass
     return pic
 

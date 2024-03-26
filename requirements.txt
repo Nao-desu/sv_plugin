@@ -4,3 +4,4 @@ pyzbar
 Requests
 tqdm
 xpinyin
+qrcode

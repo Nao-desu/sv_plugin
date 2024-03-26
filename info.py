@@ -130,6 +130,18 @@ def hashToID(hash:str) -> int:
             id = id * 64 + 63
     return id
 
+def idToHash(id: int) -> str:
+    """
+    卡牌id转哈希值
+    """
+    characters = "0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-_"
+    hash = ""
+    while id > 0:
+        hash = characters[id % 64] + hash
+        id //= 64
+    return hash
+
+
 def clear_pun(text:str) -> str:
     """
     去除文字内换行符和标点
