@@ -16,7 +16,7 @@ async def qr_img_gen(deck:list,flag,clan:int):
         url = "https://shadowverse-portal.com/deck/3."
     else:
         url = "https://shadowverse-portal.com/deck/1."
-    url += f'.{clan}'
+    url += f'{clan}'
     for i in deck:
         url += f'.{idToHash(i)}'
     url += '?lang=ja'
@@ -219,7 +219,7 @@ async def deck_img(deck:dict,flag):
         draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
         qr_img = await qr_img_gen(deck['cards'],flag,deck['clan'])
         qr_img = qr_img.resize((150,150))
-        pic.paste(qr_img,(900,20),qr_img)
+        pic.paste(qr_img,(900,10),qr_img)
     except:pass
     return pic
 
