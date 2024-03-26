@@ -188,7 +188,7 @@ async def deck_img(deck:dict,flag):
         draw = ImageDraw.Draw(pic)
         deck_name_dict = await get_deck_trans()
         font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
-        font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
+        font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 25)
         font3 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
         if deck["deck_name"] in deck_name_dict:
             deck_name = deck["deck_name"]
