@@ -7,8 +7,8 @@ import qrcode
 
 async def qr_img_gen(deck:list,flag,clan:int):
     qr = qrcode.QRCode(
-    version=1,  # 二维码的大小，取值1-40
-    box_size=10, # 二维码最小正方形的像素数量
+    version=5,  # 二维码的大小，取值1-40
+    box_size=1, # 二维码最小正方形的像素数量
     error_correction=qrcode.constants.ERROR_CORRECT_H, # 二维码的纠错等级
     border=2 # 白色边框的大小
     )
@@ -188,7 +188,7 @@ async def deck_img(deck:dict,flag):
         draw = ImageDraw.Draw(pic)
         deck_name_dict = await get_deck_trans()
         font1 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 70)
-        font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 30)
+        font2 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
         font3 = ImageFont.truetype(join(MOUDULE_PATH,'font/font2.ttc'),size = 20)
         if deck["deck_name"] in deck_name_dict:
             deck_name = deck["deck_name"]
@@ -211,14 +211,14 @@ async def deck_img(deck:dict,flag):
                 draw.text((240,110),f"{deck['auther']} | {deck['creat_time']}",text_color,font2)
         else:
             draw.text((240,110),f"{deck['auther']} | {deck['wins']} | {deck['creat_time']}",text_color,font2)
-        if len(deck['from']) < 40:
+        if len(deck['from']) < 35:
             fr = deck['from']
-        else:fr = deck['from'][:40] +'...'
+        else:fr = deck['from'][:35] +'...'
         draw.text((240,160),f"from:{fr}",(150,150,150),font2)
         pic.paste(img,(20,230))
         draw.text((int(x/2+20),y+250),f"Code by Nao-desu & Data by shadowversemaster.com & Created by koharu",(150,150,150),font3,'mm')
         qr_img = await qr_img_gen(deck['cards'],flag,deck['clan'])
-        qr_img = qr_img.resize((150,150))
+        qr_img = qr_img.resize((200,200))
         pic.paste(qr_img,(900,10),qr_img)
     except:pass
     return pic
