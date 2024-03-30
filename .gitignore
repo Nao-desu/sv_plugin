@@ -16,4 +16,8 @@ data/cardlist.json
 
 data/ratings.json
 
+data/rotation_deck.json
+
+data/unlimited_deck.json
+
 /__pycache__
