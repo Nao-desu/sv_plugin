@@ -8,7 +8,7 @@ tarot_help = """
 
 cache_data = {
     "date" : str(datetime.date.today()),
-    "data" :[]
+    "data" :{}
 }
 
 sv = Service("sv_tarot")
