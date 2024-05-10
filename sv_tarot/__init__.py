@@ -389,8 +389,7 @@ async def tarot(bot,ev):
     else:
         t_id = random.randint(0,21)
         t_pos = random.randint(0,1)
-        cache_data["data"][str(ev.real_user_id)]["id"] = t_id
-        cache_data["data"][str(ev.real_user_id)]["pos"] = t_pos
+        cache_data["data"][str(ev.real_user_id)] = {"id":t_id,"pos":t_pos}
     msg = await MDgen(t_id,t_pos,ev)
     await bot.send(ev,msg)
     return
