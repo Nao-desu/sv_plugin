@@ -377,6 +377,7 @@ async def MDgen(id,po,ev) -> str:
 
 @sv.on_fullmatch('塔罗牌')
 async def tarot(bot,ev):
+    global cache_data
     if cache_data["date"] != str(datetime.date.today()):
         cache_data = {
         "date" : str(datetime.date.today()),
