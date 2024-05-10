@@ -319,23 +319,23 @@ async def MDgen(id,po,ev) -> str:
             "params":[
                 {
                     "key":"text_1",
-                    "value":f"<@{ev.real_user_id}>抽到了：\r{name[id]}({pos[po]})"
+                    "value":[f"<@{ev.real_user_id}>抽到了：\r{name[id]}({pos[po]})"]
                 },
                 {
                     "key":"text_2",
-                    "value":keyword[id][po]
+                    "value":[keyword[id][po]]
                 },
                 {
                     "key":"img_dec",
-                    "value":"img#848px #1024px"
+                    "value":["img#848px #1024px"]
                 },
                 {
                     "key":"img_url",
-                    "value":link[id][po]
+                    "value":[link[id][po]]
                 },
                 {
                     "key":"text_4",
-                    "value":description[id][po]
+                    "value":[description[id][po]]
                 }
             ]
         },        
