@@ -374,6 +374,6 @@ async def MDgen(id,po,ev) -> str:
 async def tarot(bot,ev):
     t_id = random.randint(0,21)
     t_pos = random.randint(0,1)
-    msg = MDgen(t_id,t_pos,ev)
+    msg = await MDgen(t_id,t_pos,ev)
     await bot.send(ev,msg)
     return
