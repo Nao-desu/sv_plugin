@@ -1,10 +1,15 @@
 from hoshino import Service
-import random,json,base64
+import random,json,base64,datetime
 
 tarot_help = """
 [塔罗牌] 抽一张影之诗塔罗牌
 *图片资源来自bili@南_某人
 """
+
+cache_data = {
+    "date" : str(datetime.date.today()),
+    "data" :[]
+}
 
 sv = Service("sv_tarot")
 
@@ -319,7 +324,7 @@ async def MDgen(id,po,ev) -> str:
             "params":[
                 {
                     "key":"text_1",
-                    "values":[f"<@{ev.real_user_id}>抽到了：  \r{name[id]}({pos[po]})   \r"]
+                    "values":[f"<@{ev.real_user_id}>今日的塔罗牌是：  \r{name[id]}({pos[po]})   \r"]
                 },
                 {
                     "key":"text_2",
@@ -372,8 +377,19 @@ async def MDgen(id,po,ev) -> str:
 
 @sv.on_fullmatch('塔罗牌')
 async def tarot(bot,ev):
-    t_id = random.randint(0,21)
-    t_pos = random.randint(0,1)
+    if cache_data["date"] != str(datetime.date.today()):
+        cache_data = {
+        "date" : str(datetime.date.today()),
+        "data" : {}
+        }
+    if ev.real_user_id in cache_data["data"]:
+            t_id = cache_data["data"][ev.real_user_id]["id"]
+            t_pos = cache_data["data"][ev.real_user_id]["pos"]
+    else:
+        t_id = random.randint(0,21)
+        t_pos = random.randint(0,1)
+        cache_data["data"][ev.real_user_id]["id"] = t_id
+        cache_data["data"][ev.real_user_id]["pos"] = t_pos
     msg = await MDgen(t_id,t_pos,ev)
     await bot.send(ev,msg)
     return
