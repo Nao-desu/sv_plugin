@@ -52,12 +52,14 @@ def img_gen_1(card) -> Image:
     id = card["card_id"]
     #绘制左侧
     left = Image.new("RGBA",(1100,810+y1+y2),(255,255,255,0))
-    C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
-    E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
-    left.paste(C_pic,(0,0),C_pic)
-    left.paste(E_pic,(560,0),E_pic)
-    C_pic.close()
-    E_pic.close()
+    try:
+        C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+        E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
+        left.paste(C_pic,(0,0),C_pic)
+        left.paste(E_pic,(560,0),E_pic)
+        C_pic.close()
+        E_pic.close()
+    except:pass
     square = draw_rr(1100,90+y1+y2,card["clan"])
     left.paste(square,(0,720),square)
     square.close()
@@ -106,11 +108,13 @@ def img_gen_2(card) -> Image:
     y2 = font.getsize_multiline(des)[1]
     xcv = font.getsize_multiline(cv)[0]
     id = card["card_id"]
-    #绘制左侧
+    #绘制左
     left = Image.new("RGBA",(540,700),(255,255,255,0))
-    C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
-    left.paste(C_pic,(0,0),C_pic)
-    C_pic.close()
+    try:
+        C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+        left.paste(C_pic,(0,0),C_pic)
+        C_pic.close()
+    except:pass
     #绘制右侧
     right = Image.new("RGBA",(1000,350+y1+y2),(255,255,255,0))
     square = draw_rr(1000,120,card["clan"])
@@ -173,8 +177,10 @@ async def cardlist_img_gen(cards:list) -> str:
             id = card['card_id']
             name = card['card_name']
             text = f'id:{id}|匹配度:{score}'
-            C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
-            img.paste(C_img,(30+j*570,30+i*800),C_img)
+            try:
+                C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+                img.paste(C_img,(30+j*570,30+i*800),C_img)
+            except:pass
             count +=1
             draw.text((300+j*570,740+i*800),name,(0,0,0),font,'mm')
             draw.text((300+j*570,770+i*800),text,(0,0,0),font,'mm')

@@ -5,6 +5,7 @@ from .sv_index import index_help
 from .sv_games import game_help
 from .sv_gacha import gacha_help
 from .sv_master import master_help
+from .sv_tarot import tarot_help
 from os.path import join,abspath
 from .info import MOUDULE_PATH
 from .sv_master.update import master_update
@@ -18,6 +19,7 @@ sv_help = f"""
 [sv查卡帮助]
 [抽卡帮助]
 [小游戏帮助]
+[塔罗牌帮助]
 [实用数据帮助]
 更多功能正在制作中。。。
 bug反馈/功能建议/bot试用请扫码加入官方频道
@@ -43,6 +45,10 @@ async def game_helper(bot,ev):
 @sv.on_fullmatch('实用数据帮助')
 async def game_helper(bot,ev):
     await bot.send(ev,master_help,at_sender = True)
+
+@sv.on_fullmatch('塔罗牌帮助')
+async def tarot_helper(bot,ev):
+    await bot.send(ev,tarot_help,at_sender = True)
 
 @sv.scheduled_job('cron',hour = '*/3')
 async def auto_updater():
