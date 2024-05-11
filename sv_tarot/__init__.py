@@ -356,14 +356,12 @@ async def MDgen(id,po,ev) -> str:
                                     "visited_label": "我也要抽"
                                 },
                                 "action": {
-                                    "type": 2,
+                                    "type": 1,
                                     "permission": {
                                         "type": 2,
                                     },
-                                    "enter":True,
                                     "unsupport_tips": "兼容文本",
-                                    "data": "塔罗牌",
-                                    "at_bot_show_channel_list": True
+                                    "data": "塔罗牌"
                                 }
                             }
                         ]
