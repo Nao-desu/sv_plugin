@@ -45,9 +45,7 @@ data1 = {
                                 "unsupport_tips": "兼容文本",
                                 "data": "动漫角色搜索"
                             }
-                        }
-                    ],
-                    "buttons": [
+                        },
                         {
                             "id": "1",
                             "render_data": {
@@ -99,8 +97,8 @@ data2 = {
                         {
                             "id": "1",
                             "render_data": {
-                                "label": "搜动画",
-                                "visited_label": "搜动画"
+                                "label": "动画角色",
+                                "visited_label": "动画角色"
                             },
                             "action": {
                                 "type": 2,
@@ -110,14 +108,12 @@ data2 = {
                                 "unsupport_tips": "兼容文本",
                                 "data": "动漫角色搜索"
                             }
-                        }
-                    ],
-                    "buttons": [
+                        },
                         {
                             "id": "1",
                             "render_data": {
-                                "label": "搜gal",
-                                "visited_label": "搜gal"
+                                "label": "gal角色",
+                                "visited_label": "gal角色"
                             },
                             "action": {
                                 "type": 2,
@@ -181,9 +177,7 @@ async def MD_gen(name,aname,prob,x,y,url):
                                 "unsupport_tips": "兼容文本",
                                 "data": "动漫角色搜索"
                             }
-                        }
-                    ],
-                    "buttons": [
+                        },
                         {
                             "id": "1",
                             "render_data": {
