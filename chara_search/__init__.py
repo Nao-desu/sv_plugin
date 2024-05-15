@@ -3,6 +3,7 @@ from .msgs import csh_msg,bakaga_omae,result_msg
 from httpx import AsyncClient
 from uuid import uuid4
 from json import loads
+from io import BytesIO
 import re,html
 
 sv = Service('chara_search')
@@ -17,6 +18,7 @@ async def get_pic(ev):
     url = re.search(r"\[CQ:image,file=(.*),url=(.*)\]", match[0]).group(2)
     resp = await aiorequests.get(url)
     pic = await resp.content
+    pic = BytesIO(pic)
     return pic
 
 @sv.on_fullmatch("TA是谁")
