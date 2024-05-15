@@ -136,7 +136,7 @@ csh_msg = f'[CQ:markdown,data=base64://{raw_csh_msg}]'
 bakaga_omae = f'[CQ:markdown,data=base64://{raw_bakaga_omae}]'
 
 async def MD_gen(name,aname,prob,x,y,url):
-    data1 = {
+    data = {
     "markdown":{
         "custom_template_id": "102021217_1708318285",
         "params":[
@@ -199,7 +199,8 @@ async def MD_gen(name,aname,prob,x,y,url):
         }
     }
 }
-    return
+    raw_data = base64.b64encode(str(json.dumps(data,ensure_ascii=False).replace("\\r","\r")).encode("unicode_escape")).decode("utf-8")
+    return f'[CQ:markdown,data=base64://{raw_data}]'
 
 async def img_upload(pic,box):
     img = Image.open(pic)

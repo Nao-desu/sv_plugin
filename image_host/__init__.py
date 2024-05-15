@@ -22,20 +22,22 @@ if not exists(path):
         json.dump(a,f)
 
 async def memo_id(id):
-    with open(path,'r+', encoding="utf-8") as f:
-        id_list:list = json.load(f)
+    with open(path,'r', encoding="utf-8") as f:
+        id_list = json.load(f)
+    with open(path,'w', encoding="utf-8") as f:
         id_list.append(id)
-        print(id_list)
         json.dump(id_list,f)
     return
 
 async def delete_list():
-    with open(path,'r+', encoding="utf-8") as f:
+    with open(path,'r', encoding="utf-8") as f:
         id_list:list = json.load(f)
-        json.dump(id_list[:-100][:50],f)
-    de_list = id_list[:-100][:50]
-    if de_list:
-        return ','.join(de_list)
+    if len(id_list)>60:
+        with open(path,'w', encoding="utf-8") as f:
+            json.dump(id_list[50:],f)
+        de_list = id_list[:50]
+        if de_list:
+            return ','.join(de_list)
     return 0
 
 async def upload_img(img_name,img):
