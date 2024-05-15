@@ -40,6 +40,7 @@ async def upload_img(img_name,img):
     async with AsyncClient() as client:
         req = await client.post(url=upload_url,headers=headers,files={'image':(img_name,img)},timeout=None)
     data = json.loads(req.text)
+    print(data)
     await memo_id(data["data"]["id"])
     return data["data"]["url"]
 
