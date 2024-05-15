@@ -2,7 +2,7 @@ import base64,json
 from io import BytesIO
 from PIL import Image
 from uuid import uuid4
-from ...image_host import upload_img
+from ..image_host import upload_img
 
 data1 = {
     "markdown":{
