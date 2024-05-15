@@ -221,7 +221,7 @@ async def result_msg(data,pic,ev,bot):
                 aname = i["cartoonname"]
                 prob = round(i["acc_percent"],3)
                 img_url,x,y = await img_upload(pic,i["box"])
-                msg = MD_gen(name,aname,prob,x,y,img_url)
+                msg = await MD_gen(name,aname,prob,x,y,img_url)
                 await bot.send(ev,msg)
         else:await bot.send(ev,"未检出图中任何角色");return
     else:
@@ -234,7 +234,7 @@ async def result_msg(data,pic,ev,bot):
                 aname = data[m]["data"][i]["cartoonname"]
                 prob = round(data[m]["data"][i]["acc_percent"],3)
                 img_url,x,y = await img_upload(pic,data[m]["data"][i]["box"])
-                msg = MD_gen(name,aname,prob,x,y,img_url)
+                msg = await MD_gen(name,aname,prob,x,y,img_url)
                 await bot.send(ev,msg)
         else:await bot.send(ev,"未检出图中任何角色");return                
     return
