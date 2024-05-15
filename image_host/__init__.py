@@ -3,7 +3,6 @@
 """
 from hoshino import Service
 from os.path import exists,join
-from os import makedirs
 from ..config import token
 from ..info import MOUDULE_PATH
 from httpx import AsyncClient
@@ -19,7 +18,8 @@ headers = {'Token': token}
 
 if not exists(path):
     with open(path,'w', encoding="utf-8") as f:
-        json.dump([],f)
+        a = []
+        json.dump(a,f)
 
 async def memo_id(id):
     with open(path,'r+', encoding="utf-8") as f:
