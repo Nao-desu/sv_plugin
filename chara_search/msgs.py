@@ -97,8 +97,8 @@ data2 = {
                         {
                             "id": "1",
                             "render_data": {
-                                "label": "动画角色",
-                                "visited_label": "动画角色"
+                                "label": "搜动画",
+                                "visited_label": "搜动画"
                             },
                             "action": {
                                 "type": 2,
@@ -112,8 +112,8 @@ data2 = {
                         {
                             "id": "1",
                             "render_data": {
-                                "label": "gal角色",
-                                "visited_label": "gal角色"
+                                "label": "搜gal",
+                                "visited_label": "搜gal"
                             },
                             "action": {
                                 "type": 2,
