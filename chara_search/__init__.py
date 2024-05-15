@@ -1,5 +1,5 @@
 from hoshino import Service,aiorequests
-from msg import csh_msg,bakaga_omae,result_msg
+from .msgs import csh_msg,bakaga_omae,result_msg
 from httpx import AsyncClient
 from uuid import uuid4
 from json import loads
