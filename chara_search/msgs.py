@@ -210,7 +210,7 @@ async def img_upload(pic,box):
     x1,y1 = img.size()
     buf = BytesIO()
     img.save(buf,"JPEG")
-    url = await upload_img(uuid4().hex,buf)
+    url = await upload_img(uuid4().hex + '.jpg',buf)
     return url,x1,y1
 
 async def result_msg(data,pic,ev,bot):

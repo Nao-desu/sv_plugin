@@ -29,7 +29,7 @@ async def anime_search(bot,ev):
     if not pic:
         await bot.send(ev,bakaga_omae)
         return
-    file_name = uuid4().hex
+    file_name = uuid4().hex + '.jpg'
     async with AsyncClient() as client:
         req1 = await client.post(url=s_url,params={'model':'pre_stable','ai_detect':1,},files={'image':(file_name,pic)},timeout=None)        
         req2 = await client.post(url=s_url,params={'model':'anime_model_lovelive','ai_detect':1,},files={'image':(file_name,pic)},timeout=None)
@@ -44,7 +44,7 @@ async def gal_search(bot,ev):
     if not pic:
         await bot.send(ev,bakaga_omae)
         return
-    file_name = uuid4().hex
+    file_name = uuid4().hex + '.jpg'
     async with AsyncClient() as client:
         req1 = await client.post(url=s_url,params={'model':'game_model_kirakira','ai_detect':1,},files={'image':(file_name,pic)},timeout=None)        
     data = loads(req1.text)
