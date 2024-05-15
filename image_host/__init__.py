@@ -24,13 +24,15 @@ if not exists(path):
 async def memo_id(id):
     with open(path,'r+', encoding="utf-8") as f:
         id_list:list = json.load(f)
-        json.dump(id_list.append(id),f)
+        id_list.append(id)
+        print(id_list)
+        json.dump(id_list,f)
     return
 
 async def delete_list():
     with open(path,'r+', encoding="utf-8") as f:
         id_list:list = json.load(f)
-        json.dump(id_list[-100:],f)
+        json.dump(id_list[:-100][:50],f)
     de_list = id_list[:-100][:50]
     if de_list:
         return ','.join(de_list)
