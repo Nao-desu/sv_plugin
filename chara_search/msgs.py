@@ -134,9 +134,10 @@ data2 = {
         }
     }
 }
-
-csh_msg = f'[CQ:markdown,data=base64://{base64.b64encode(str(json.dumps(data1,ensure_ascii=False).replace("\\r","\r")).encode("unicode_escape")).decode("utf-8")}]'
-bakaga_omae = f'[CQ:markdown,data=base64://{base64.b64encode(str(json.dumps(data2,ensure_ascii=False).replace("\\r","\r")).encode("unicode_escape")).decode("utf-8")}]'
+raw_csh_msg = base64.b64encode(str(json.dumps(data1,ensure_ascii=False).replace("\\r","\r")).encode("unicode_escape")).decode("utf-8")
+raw_bakaga_omae = base64.b64encode(str(json.dumps(data2,ensure_ascii=False).replace("\\r","\r")).encode("unicode_escape")).decode("utf-8")
+csh_msg = f'[CQ:markdown,data=base64://{raw_csh_msg}]'
+bakaga_omae = f'[CQ:markdown,data=base64://{raw_bakaga_omae}]'
 
 async def MD_gen(name,aname,prob,x,y,url):
     data1 = {
