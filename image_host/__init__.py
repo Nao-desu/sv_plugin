@@ -18,7 +18,8 @@ delete_url = 'https://www.imgtp.com/api/delete'
 headers = {'Token': token}
 
 if not exists(path):
-    makedirs(path)
+    with open(path,'w', encoding="utf-8") as f:
+        json.dump([],f)
 
 async def memo_id(id):
     with open(path,'r+', encoding="utf-8") as f:
