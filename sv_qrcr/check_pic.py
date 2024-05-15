@@ -1,4 +1,4 @@
-import re
+import re,html
 from PIL import Image
 from io import BytesIO
 from hoshino import aiorequests
@@ -10,7 +10,7 @@ async def get_pic(ev) -> list:
     下载消息中的图片
     """
     pic = []
-    match = re.findall(r'(\[CQ:image,file=.*?,url=.*?\])', str(ev.message))
+    match = re.findall(r'(\[CQ:image,file=.*?,url=.*?\])', html.unescape(str(ev.message)))
     if not match:
         return pic
     for cq in match:
