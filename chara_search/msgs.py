@@ -205,7 +205,7 @@ async def img_upload(pic,box):
     img = Image.open(pic)
     x,y = img.size
     box1 = [int(box[0]*x),int(box[1]*y),int(box[2]*x),int(box[3]*y)]
-    img = img.crop(box)
+    img = img.crop(box1)
     img.convert("RGB")
     x1,y1 = img.size
     buf = BytesIO()
@@ -223,7 +223,7 @@ async def result_msg(data,pic,ev,bot):
                 img_url,x,y = await img_upload(pic,i["box"])
                 msg = MD_gen(name,aname,prob,x,y,img_url)
                 await bot.send(ev,msg)
-        else:await bot.send(ev,"未检出图中任何角色")
+        else:await bot.send(ev,"未检出图中任何角色");return
     else:
         if data[0]["data"]:
             for i in range(0,len(data[0]["data"])):
@@ -236,5 +236,5 @@ async def result_msg(data,pic,ev,bot):
                 img_url,x,y = await img_upload(pic,data[m]["data"][i]["box"])
                 msg = MD_gen(name,aname,prob,x,y,img_url)
                 await bot.send(ev,msg)
-        else:await bot.send(ev,"未检出图中任何角色")                
+        else:await bot.send(ev,"未检出图中任何角色");return                
     return

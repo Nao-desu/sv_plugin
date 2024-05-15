@@ -27,6 +27,7 @@ async def cs_help(bot,ev):
 
 @sv.on_prefix('动漫角色搜索')
 async def anime_search(bot,ev):
+    await bot.send(ev,'少女祈祷中......')
     pic = await get_pic(ev)
     if not pic:
         await bot.send(ev,bakaga_omae)
@@ -42,6 +43,7 @@ async def anime_search(bot,ev):
 
 @sv.on_prefix('gal角色搜索')
 async def gal_search(bot,ev):
+    await bot.send(ev,'少女祈祷中......')
     pic = await get_pic(ev)
     if not pic:
         await bot.send(ev,bakaga_omae)
