@@ -203,11 +203,11 @@ async def MD_gen(name,aname,prob,x,y,url):
 
 async def img_upload(pic,box):
     img = Image.open(pic)
-    x,y = img.size()
+    x,y = img.size
     box1 = [int(box[0]*x),int(box[1]*y),int(box[2]*x),int(box[3]*y)]
     img = img.crop(box)
     img.convert("RGB")
-    x1,y1 = img.size()
+    x1,y1 = img.size
     buf = BytesIO()
     img.save(buf,"JPEG")
     url = await upload_img(uuid4().hex + '.jpg',buf)
