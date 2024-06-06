@@ -13,22 +13,6 @@ from .sv_master.update import master_update
 sv = Service('sv_auto_update',visible=False)
 
 filepath = join(MOUDULE_PATH,f'img\chqr.jpg')
-sv_help = f"""
-影之诗相关查询机器人
-艾特我，发送以下指令查看具体功能帮助
-[sv查卡帮助]
-[抽卡帮助]
-[小游戏帮助]
-[塔罗牌帮助]
-[实用数据帮助]
-更多功能正在制作中。。。
-bug反馈/功能建议/bot试用请扫码加入官方频道
-(频道用户也可点击头像直接加入官方频道)[CQ:image,file=file:///{abspath(filepath)}]
-"""
-
-@sv.on_fullmatch('sv帮助')
-async def sv_helper(bot,ev):
-    await bot.send(ev,sv_help,at_sender = True)
 
 @sv.on_fullmatch('sv查卡帮助')
 async def index_helper(bot,ev):
@@ -42,7 +26,7 @@ async def gacha_helper(bot,ev):
 async def game_helper(bot,ev):
     await bot.send(ev,game_help,at_sender = True)
 
-@sv.on_fullmatch('实用数据帮助')
+@sv.on_fullmatch('卡组查询帮助')
 async def game_helper(bot,ev):
     await bot.send(ev,master_help,at_sender = True)
 
