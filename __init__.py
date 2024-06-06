@@ -6,13 +6,10 @@ from .sv_games import game_help
 from .sv_gacha import gacha_help
 from .sv_master import master_help
 from .sv_tarot import tarot_help
-from os.path import join,abspath
 from .info import MOUDULE_PATH
 from .sv_master.update import master_update
 
 sv = Service('sv_auto_update',visible=False)
-
-filepath = join(MOUDULE_PATH,f'img\chqr.jpg')
 
 @sv.on_fullmatch('sv查卡帮助')
 async def index_helper(bot,ev):
