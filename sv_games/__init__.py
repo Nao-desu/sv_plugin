@@ -191,10 +191,10 @@ async def rank(bot,ev):
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1(f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]]))
+                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1(f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]]))
+        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
         await bot.send(ev,msg)
 
 @sv.on_fullmatch('sv总排行')
@@ -210,8 +210,8 @@ async def total_rank(bot,ev):
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1(f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]]))
+                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1(f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]]))
+        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
         await bot.send(ev,msg)
