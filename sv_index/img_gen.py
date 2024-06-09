@@ -1,9 +1,11 @@
 from PIL import Image,ImageFont,ImageDraw
 from io import BytesIO
 from os.path import join
-from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos,get_related_cards,find_all_card
+from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos
 from ..config import clan_color,text_color
-import base64
+from ...image_host import upload_img
+from uuid import uuid4
+
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 30)
 def draw_rr(x,y,clan)-> Image:
     """
@@ -141,10 +143,10 @@ def img_gen_2(card) -> Image:
     bgdraw.text((x-320,y-100),f'id:{id}\nCode by Nao-desu\nCreate by koharu',text_color,font)
     return bg
 
-async def card_img_gen(card:dict) -> str:
+async def card_img_gen(card:dict):
     """
     通过卡牌信息生成图片
-    返回图片的cq码
+    返回图片链接和尺寸
     """
     if card["char_type"] == 1:
         img = img_gen_1(card)
@@ -153,13 +155,12 @@ async def card_img_gen(card:dict) -> str:
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
-    base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    msg = f'[CQ:image,file={base64_str}]'
-    return msg
+    url = await upload_img(uuid4().hex + '.jpg',buf)
+    return url,img.size
 
-async def cardlist_img_gen(cards:list) -> str:
+async def cardlist_img_gen(cards:list):
     """
-    通过卡牌列表，返回图片cq码
+    通过卡牌列表，返回图片链接和尺寸
     """
     img = Image.open(join(MOUDULE_PATH,'img/bg/bg3.png'))
     card_num = len(cards)
@@ -190,6 +191,5 @@ async def cardlist_img_gen(cards:list) -> str:
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
-    base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    img = f'[CQ:image,file={base64_str}]'
-    return img
+    url = await upload_img(uuid4().hex + '.jpg',buf)
+    return url,img.size
