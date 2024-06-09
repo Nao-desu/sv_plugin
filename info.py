@@ -229,14 +229,6 @@ def find_all_card(id:int)->list:
             relist.append(cardid)
     return relist
 
-def get_ratings() -> dict:
-    """
-    返回ratings数据
-    """
-    with open(join(MOUDULE_PATH,'data/ratings.json'),'r', encoding='UTF-8') as f:
-        ratings = json.load(f)
-    return ratings
-
 async def get_deck_name(tag) -> dict:
     """
     返回卡组名
