@@ -184,17 +184,17 @@ async def rank(bot,ev):
     button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                        {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
     if not records:
-        msg = MD_gen1(["暂无排行榜","此群还没有人答对过问题","点击下方按钮参与游戏吧！"],button)
+        msg = MD_gen1(["暂无排行榜","此群还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
         await bot.finish(ev,msg)
     else:
         for i in records:
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
+                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
+        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
         await bot.send(ev,msg)
 
 @sv.on_fullmatch('sv总排行')
@@ -203,15 +203,15 @@ async def total_rank(bot,ev):
     button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                        {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
     if not records:
-        msg = MD_gen1(["暂无总排行","还没有人答对过问题","点击下方按钮参与游戏吧！"],button)
+        msg = MD_gen1(["暂无总排行","还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
         await bot.finish(ev,msg)
     else:
         for i in records:
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
+                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
+        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
         await bot.send(ev,msg)
