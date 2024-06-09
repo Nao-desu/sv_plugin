@@ -76,11 +76,11 @@ async def sv_card_index(bot,ev):
             button = []
             leng = len(cards_sorted)
             while leng > 4:
-                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i['card']["card_id"]}') for i in cards_sorted[:4]]})
+                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted[:4]]})
                 cards_sorted=cards_sorted[4:]
                 leng -= 4
             else:
-                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i['card']["card_id"]}') for i in cards_sorted]})
+                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted]})
             button.append({"buttons":[button_gen(False,'查卡','sv查卡')]})
             msg = MD_gen([f'匹配到{len(cards)}张卡牌，只显示匹配度最高的16张',f'img#{size[0]}px #{size[1]}px',url,f'点击下方按钮查看卡牌详细信息','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
@@ -90,11 +90,11 @@ async def sv_card_index(bot,ev):
             button = []
             leng = len(cards_sorted)
             while leng > 4:
-                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i['card']["card_id"]}') for i in cards_sorted[:4]]})
+                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted[:4]]})
                 cards_sorted=cards_sorted[4:]
                 leng -= 4
             else:
-                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i['card']["card_id"]}') for i in cards_sorted]})
+                button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted]})
             button.append({"buttons":[button_gen(False,'查卡','sv查卡')]})
             msg = MD_gen([f'匹配到{len(cards)}张卡牌',f'img#{size[0]}px #{size[1]}px',url,f'点击下方按钮查看卡牌详细信息','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
