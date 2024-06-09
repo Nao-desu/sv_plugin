@@ -24,7 +24,7 @@ def MD_gen(param,button):
 def MD_gen1(param,button):
     data = {
         'markdown':{
-            'custom_template_id':MD_id,
+            'custom_template_id':MD_id1,
             'params':[
                 {'key':'text_1','values':[param[0]]},
                 {'key':'text_2','values':[param[1]]},
