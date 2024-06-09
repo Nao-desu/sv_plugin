@@ -30,4 +30,4 @@ async def pic_corp(answer):
     buf = BytesIO()
     region.save(buf, format='JPEG')
     url = await upload_img(uuid4().hex + '.jpg',buf)
-    return url,(x,y)
+    return url,(250,250)
