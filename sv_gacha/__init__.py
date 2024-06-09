@@ -69,7 +69,7 @@ async def gacha10(bot,ev):
         msg += f'  \r获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}'
         url,size = await draw_result_2(leadercard,card,False)
         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]}]
-        msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,'f'抽取卡包:{card_set[card_set_gacha]}'],button)
+        msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,f'抽取卡包:{card_set[card_set_gacha]}'],button)
         await bot.send(ev,msg)
         clmt.increase(f'{uid}',1000)
     except Exception as e:
@@ -104,7 +104,7 @@ async def gacha400(bot,ev):
         msg += f'  \r获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}'
         url,size = await draw_result_2(leadercard,card,True)
         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]}]
-        msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,'f'抽取卡包:{card_set[card_set_gacha]}'],button)
+        msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,f'抽取卡包:{card_set[card_set_gacha]}'],button)
         await bot.send(ev,msg)
         tlmt.increase(f'{uid}')
         jlmt.increase(f'{uid}{card_set_gacha}')
