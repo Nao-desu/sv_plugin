@@ -2,13 +2,14 @@ from PIL import Image,ImageDraw,ImageFont
 from ..info import MOUDULE_PATH
 from os.path import join
 from io import BytesIO
-import base64
+from ...image_host import upload_img
+from uuid import uuid4
 
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 50)
 
 async def draw_result_1(leadercard:list,card:dict)->str:
     """
-    绘制8张卡牌构成的图片
+    绘制8张卡牌构成的图片,返回图床链接和图片尺寸
     """
     img = Image.new("RGBA",(536*4,698*2),(255,255,255,100))
     cards = leadercard
@@ -24,13 +25,12 @@ async def draw_result_1(leadercard:list,card:dict)->str:
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
-    base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    msg = f'[CQ:image,file={base64_str}]'
-    return msg
+    url = await upload_img(uuid4().hex + '.jpg',buf)
+    return url,(536,349)
 
 async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
     """
-    绘制仅包含传说卡牌和异画的抽卡结果
+    绘制仅包含传说卡牌和异画的抽卡结果,返回图床链接和图片尺寸
     """
     cards ={}
     cardlist = []
@@ -68,13 +68,12 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
                 draw.text((j*536+450,i*698+20),f'x{cards[id]}',(0,0,0),font)
             if j+i*5 >= len(cardlist):
                 break
-    if img:
-        x,y = img.size
-        img.resize((x//8,y//8))
-        img = img.convert('RGB')
-        buf = BytesIO()
-        img.save(buf, format='JPEG')
-        base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-        msg = f'[CQ:image,file={base64_str}]'
-    else:msg = ''
-    return msg
+    if not img:
+        img = Image.new("RGBA",(536,698),(255,255,255,100))
+    x,y = img.size
+    img.resize((x//8,y//8))
+    img = img.convert('RGB')
+    buf = BytesIO()
+    img.save(buf, format='JPEG')
+    url = await upload_img(uuid4().hex + '.jpg',buf)
+    return url,(x//8,y//8)
