@@ -17,8 +17,7 @@ class GameRecord:
     
     def _create_table(self):
         with self.connect() as conn:
-            conn.execute("CREATE TABLE IF NOT EXISTS game_record",
-                         "(uid TEXT NOT NULL, gid TEXT NOT NULL, record INT NOT NULL, PRIMARY KEY (uid, gid))"
+            conn.execute("CREATE TABLE IF NOT EXISTS game_record(uid TEXT NOT NULL, gid TEXT NOT NULL, record INT NOT NULL, PRIMARY KEY (uid, gid))"
             )
 
     def add_record(self, uid, gid):
