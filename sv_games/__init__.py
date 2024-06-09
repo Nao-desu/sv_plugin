@@ -1,5 +1,4 @@
 from hoshino import Service
-from hoshino.typing import MessageSegment as Seg
 from ..info import get_lim,get_answer,get_cards,MOUDULE_PATH
 from os.path import join
 from .sv_voice_gess import guess_voice
@@ -7,7 +6,7 @@ from .sv_paint_guess import guess_paint
 from ..config import GAME_TIME
 from PIL import Image
 from io import BytesIO
-import asyncio,zhconv,base64,random
+import asyncio,zhconv,random
 from xpinyin import Pinyin
 from ..MDgen import *
 from ...image_host import upload_img

@@ -13,7 +13,7 @@ class GameRecord:
         self._create_table()
 
     def connect(self):
-        return sqlite3.connect(self.db_path)
+        return sqlite3.connect(self.path)
     
     def _create_table(self):
         with self.connect() as conn:
