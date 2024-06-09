@@ -9,6 +9,11 @@ from PIL import Image
 from io import BytesIO
 import asyncio,zhconv,base64,random
 from xpinyin import Pinyin
+from ..MDgen import *
+from ...image_host import upload_img
+from uuid import uuid4
+from .database import db
+
 p = Pinyin()
 
 game_help = """
@@ -86,9 +91,13 @@ async def voice_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-            img = await change_img(img_path)
+            url,size = await change_img(img_path)
             gm.end_game(gid)
-            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}\n很遗憾,没有人答对")
+            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
+                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
+                      {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+            msg = MD_gen([f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"],button)
+            await bot.send(ev,msg)
         return
     except Exception as e:
         gm.end_game(gid)
@@ -111,9 +120,13 @@ async def paint_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-            img = await change_img(img_path)
+            url,size = await change_img(img_path)
             gm.end_game(gid)
-            await bot.send(ev, f"正确答案是:{get_cards()[str(answer)]['card_name']}{img}\n很遗憾,没有人答对")
+            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
+                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
+                      {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+            msg = MD_gen([f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"],button)
+            await bot.send(ev,msg)
         return
     except Exception as e:
         gm.end_game(gid)
@@ -128,9 +141,13 @@ async def on_input_chara_name(bot, ev):
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         gm.end_game(gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-        img = await change_img(img_path)
-        msg = f"{Seg.at(ev.user_id)}猜对了，真厉害！\n正确答案是:{get_cards()[str(answer)]['card_name']}{img}"
+        url,size = await change_img(img_path)
+        button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
+                  {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
+                  {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+        msg = MD_gen([f"<@{ev.real_user_id}>猜对了，真厉害！",f"img#{size[0]}px #{size[1]}px",url,f"正确答案是:{get_cards()[str(answer)]['card_name']}","图片数据来自SVGDB"],button)
         await bot.send(ev, msg)
+        db.add_record(ev.real_user_id,ev.real_group_id)
 
 @sv.on_fullmatch('重置游戏')
 async def reset_games(bot,ev):
@@ -159,5 +176,43 @@ async def change_img(path:str):
     buf = BytesIO()
     img = img.convert('RGB')
     img.save(buf, format='jpeg')
-    base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
-    return f'[CQ:image,file={base64_str}]'
+    url = await upload_img(uuid4().hex + '.jpg',buf)
+    return url,(width,height)
+
+@sv.on_fullmatch('sv排行榜')
+async def rank(bot,ev):
+    records = await db.get_records_and_rankings(ev.real_group_id)
+    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
+                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+    if not records:
+        msg = MD_gen1(["暂无排行榜","此群还没有人答对过问题","点击下方按钮参与游戏吧！"],button)
+        await bot.finish(ev,msg)
+    else:
+        for i in records:
+            if i[0] == ev.real_user_id:
+                num = i[1]
+                rank = i[2]
+                msg = MD_gen1(f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]]))
+                await bot.send(ev,msg)
+                return
+        msg = MD_gen1(f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]]))
+        await bot.send(ev,msg)
+
+@sv.on_fullmatch('sv总排行')
+async def total_rank(bot,ev):
+    records = await db.get_total_records_and_rankings()
+    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
+                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+    if not records:
+        msg = MD_gen1(["暂无总排行","还没有人答对过问题","点击下方按钮参与游戏吧！"],button)
+        await bot.finish(ev,msg)
+    else:
+        for i in records:
+            if i[0] == ev.real_user_id:
+                num = i[1]
+                rank = i[2]
+                msg = MD_gen1(f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]]))
+                await bot.send(ev,msg)
+                return
+        msg = MD_gen1(f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]]))
+        await bot.send(ev,msg)
