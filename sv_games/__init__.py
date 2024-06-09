@@ -32,6 +32,7 @@ class GM:
     def __init__(self):
         self.playing = {}
         self.answer = {}
+        self.answerpic = {}
 
     def is_playing(self, gid):
         return gid in self.playing
@@ -66,10 +67,20 @@ class GM:
                 return True
         return False
 
+    def add_pic(self,gid,url,size):
+        self.answerpic[gid] = (url,size)
+
     def end_game(self,gid):
         if gid in self.playing:
             del self.playing[gid]
             del self.answer[gid]
+            del self.answerpic[gid]
+    
+    def get_pic(self,gid):
+        if gid in self.answerpic:
+            return self.answerpic[gid]
+        else:
+            return (None,None)
 
 gm = GM()
 
@@ -85,12 +96,13 @@ async def voice_guess(bot,ev):
         answer = await get_answer(limited,clan,'voice')
         gm.start_game(gid,answer)
         await guess_voice(bot,ev,limited,clan,answer)
+        img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+        url,size = await change_img(img_path)
+        gm.add_pic(gid,url,size)
         await asyncio.sleep(GAME_TIME)
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
-            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-            url,size = await change_img(img_path)
             gm.end_game(gid)
             button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                       {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
@@ -114,12 +126,13 @@ async def paint_guess(bot,ev):
         answer = await get_answer(limited,clan,False)
         gm.start_game(gid,answer)
         await guess_paint(bot,ev,limited,clan,answer)
+        img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+        url,size = await change_img(img_path)
+        gm.add_pic(gid,url,size)
         await asyncio.sleep(GAME_TIME)
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
-            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-            url,size = await change_img(img_path)
             gm.end_game(gid)
             button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                       {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
@@ -140,7 +153,9 @@ async def on_input_chara_name(bot, ev):
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         gm.end_game(gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-        url,size = await change_img(img_path)
+        url,size = gm.get_pic(gid)
+        if not url:
+            url,size = await change_img(img_path)
         button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                   {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
                   {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
