@@ -55,7 +55,7 @@ async def sv_card_index(bot,ev):
             button = []
             relist = find_all_card(card["card_id"])
             if relist:
-                button.append({"buttons":[button_gen(False,f'异画{i}',f'svcard {j}') for i,j in enumerate(relist)]})
+                button.append({"buttons":[button_gen(False,f'异画{i+1}',f'svcard {j}') for i,j in enumerate(relist)]})
             related_cards = get_related_cards(card)
             if related_cards:
                 leng = len(related_cards)
@@ -114,7 +114,7 @@ async def svcard_info(bot,ev):
             button = []
             relist = find_all_card(card["card_id"])
             if relist:
-                button.append({"buttons":[button_gen(False,f'异画{i}',f'svcard {j}') for i,j in enumerate(relist)]})
+                button.append({"buttons":[button_gen(False,f'异画{i+1}',f'svcard {j}') for i,j in enumerate(relist)]})
             related_cards = get_related_cards(card)
             if related_cards:
                 leng = len(related_cards)
