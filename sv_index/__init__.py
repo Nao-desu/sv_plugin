@@ -125,7 +125,7 @@ async def svcard_info(bot,ev):
                 else:
                     button.append({"buttons":[button_gen(False,i["card_name"],f'svcard {i["card_id"]}') for i in related_cards]})
             button.append({"buttons":[button_gen(False,'查卡','sv查卡')]})
-            msg = MD_gen([f'{card["card_name"]}',f'img#{size[0]}px #{size[1]}px',url,f'卡牌id{card["card_id"]}','data from shadowverse-portal'],button)
+            msg = MD_gen([f'{card["card_name"]}',f'img#{size[0]}px #{size[1]}px',url,f'{card["card_id"]}','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}',at_sender = True)
