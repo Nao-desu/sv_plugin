@@ -37,7 +37,7 @@ async def gacha1(bot,ev):
         clmt.increase(f'{uid}',100)
         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]}]
         msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,'',''],button)
-        await bot.send(ev,msg,at_sender = True)
+        await bot.send(ev,msg)
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}')
         traceback.print_exc()
@@ -70,7 +70,7 @@ async def gacha10(bot,ev):
         url,size = await draw_result_2(leadercard,card,False)
         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]}]
         msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,''],button)
-        await bot.send(ev,msg,at_sender = True)
+        await bot.send(ev,msg)
         clmt.increase(f'{uid}',1000)
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}')
@@ -105,7 +105,7 @@ async def gacha400(bot,ev):
         url,size = await draw_result_2(leadercard,card,True)
         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]}]
         msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,''],button)
-        await bot.send(ev,msg,at_sender = True)
+        await bot.send(ev,msg)
         tlmt.increase(f'{uid}')
         jlmt.increase(f'{uid}{card_set}')
     except Exception as e:
