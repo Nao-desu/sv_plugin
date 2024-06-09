@@ -1,5 +1,4 @@
 from hoshino import Service
-from .ratings import get_ratings_data
 from .decks import get_deck_data,get_all_decks
 from ..info import find_decks
 
@@ -10,12 +9,6 @@ master_help = """
 """
 
 sv = Service('sv_master')
-
-@sv.on_prefix('Ratings')
-async def ratings_info(bot,ev):
-    msg1,msg2 = await get_ratings_data()
-    await bot.send(ev,msg1)
-    await bot.send(ev,msg2)
 
 @sv.on_prefix('来一套')
 async def deck_info(bot,ev):
