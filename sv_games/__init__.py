@@ -151,9 +151,9 @@ async def on_input_chara_name(bot, ev):
         return
     answer = gm.get_ans(gid)
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
+        url,size = gm.get_pic(gid)
         gm.end_game(gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
-        url,size = gm.get_pic(gid)
         if not url:
             url,size = await change_img(img_path)
         button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
