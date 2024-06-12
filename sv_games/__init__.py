@@ -159,7 +159,7 @@ async def on_input_chara_name(bot, ev):
         button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                   {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
                   {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
-        msg = MD_gen([f"<@{ev.real_user_id}>猜对了，真厉害！",f"img#{size[0]}px #{size[1]}px",url,f"正确答案是:{get_cards()[str(answer)]['card_name']}","图片数据来自SVGDB"],button)
+        msg = MD_gen([f'<qqbot-at-user id="{ev.real_user_id}" />猜对了，真厉害！',f"img#{size[0]}px #{size[1]}px",url,f"正确答案是:{get_cards()[str(answer)]['card_name']}","图片数据来自SVGDB"],button)
         await bot.send(ev, msg)
         db.add_record(ev.real_user_id,ev.real_group_id)
 
@@ -206,10 +206,10 @@ async def rank(bot,ev):
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
+                msg = MD_gen1([f'<qqbot-at-user id="{ev.real_user_id}" />,你已经答对了{num}次，群排名第{rank}！',f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f'{i[2]}:<qqbot-at-user id="{i[0]}" /> 答对{i[1]}次' for i in records[:10]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
+        msg = MD_gen1([f'<qqbot-at-user id="{ev.real_user_id}" />,你还没有答对过问题',f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f'{i[2]}:<qqbot-at-user id="{i[0]}" /> 答对{i[1]}次' for i in records[:10]])],button)
         await bot.send(ev,msg)
 
 @sv.on_fullmatch('sv总排行')
@@ -225,8 +225,8 @@ async def total_rank(bot,ev):
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
+                msg = MD_gen1([f'<qqbot-at-user id="{ev.real_user_id}" />,你已经答对了{num}次，排名第{rank}！',f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f'{i[2]}:<qqbot-at-user id="{i[0]}" /> 答对{i[1]}次' for i in records[:20]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
+        msg = MD_gen1([f'<qqbot-at-user id="{ev.real_user_id}" />,你还没有答对过问题',f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f'{i[2]}:<qqbot-at-user id="{i[0]}" /> 答对{i[1]}次' for i in records[:20]])],button)
         await bot.send(ev,msg)
