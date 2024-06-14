@@ -18,8 +18,8 @@ def MD_gen(param,button):
         },
         'keyboard':{'content':{'rows':button}}
     }
-    raw_data = json.dumps(data,ensure_ascii=False).replace("\\r","\r")
-    return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data).encode("unicode_escape")).decode("utf-8")}]'
+    raw_data = json.dumps(data,ensure_ascii=False)
+    return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data).encode()).decode("utf-8")}]'
 
 def MD_gen1(param,button):
     data = {
@@ -33,8 +33,8 @@ def MD_gen1(param,button):
         },
         'keyboard':{'content':{'rows':button}}
     }
-    raw_data = json.dumps(data,ensure_ascii=False).replace("\\r","\r")
-    return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data).encode("unicode_escape")).decode("utf-8")}]'
+    raw_data = json.dumps(data,ensure_ascii=False)
+    return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data).encode()).decode("utf-8")}]'
 
 def button_gen(is_enter,lable,data):
     return {"render_data": {"label": lable,"visited_label": lable,"style":1},
