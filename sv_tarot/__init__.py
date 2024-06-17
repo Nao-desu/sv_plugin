@@ -372,7 +372,7 @@ async def MDgen(id,po,ev) -> str:
         }
     }
     raw_data = json.dumps(data,ensure_ascii=False)
-    return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data)).decode("utf-8")}]'
+    return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data).encode()).decode("utf-8")}]'
 
 @sv.on_fullmatch('塔罗牌')
 async def tarot(bot,ev):
