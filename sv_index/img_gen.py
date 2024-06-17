@@ -29,9 +29,9 @@ def draw_text_mulcolour(draw,x:int,y:int,text:str,pos:list,is_follower:bool):
                 draw.text((_x,y),text=word,fill=(255,205,69),font=font)
             else:
                 draw.text((_x,y),text=word,fill=text_color,font=font)
-            _x += draw.textsize(word,font)[0]
+            _x += draw.multiline_textbbox((0,0),word,font)[2]
             count += 1
-        y += draw.textsize(word,font)[1]
+        y += draw.multiline_textbbox((0,0),word,font)[3]
 
 def img_gen_1(card) -> Image:
     """
