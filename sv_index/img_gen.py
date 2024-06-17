@@ -47,11 +47,11 @@ def img_gen_1(card) -> Image:
     except:
         card_info = '卡包:' + str(card["card_set_id"]) + "(未知卡包)" + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
     draw = ImageDraw.Draw(Image.new("RGBA",(1,1),(255,255,255,0)))
-    y1 = draw.testsize(des,font)[1]
-    y2 = draw.testsize(edes,font)[1]
-    y3 = draw.testsize(skill,font)[1]
-    y4 = draw.testsize(eskill,font)[1]
-    xcv = draw.testsize(cv,font)[0]
+    y1 = ImageDraw.multiline_textbbox((0,0),des,font)[1]
+    y2 = ImageDraw.multiline_textbbox((0,0),edes,font)[1]
+    y3 = ImageDraw.multiline_textbbox((0,0),skill,font)[1]
+    y4 = ImageDraw.multiline_textbbox((0,0),eskill,font)[1]
+    xcv = ImageDraw.multiline_textbbox((0,0),cv,font)[0]
     id = card["card_id"]
     #绘制左侧
     left = Image.new("RGBA",(1100,810+y1+y2),(255,255,255,0))
@@ -107,10 +107,9 @@ def img_gen_2(card) -> Image:
         card_info = '卡包:' + card_set[card["card_set_id"]] + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
     except:
         card_info = '卡包:' + str(card["card_set_id"]) + "(未知卡包)" + '|類型:' + card["tribe_name"] + '|職業:' + clan2w[card["clan"]]
-    draw = ImageDraw.Draw(Image.new("RGBA",(1,1),(255,255,255,0)))
-    y1 = draw.testsize(skill,font)[1]
-    y2 = draw.testsize(des,font)[1]
-    xcv = draw.testsize(cv,font)[0]
+    y1 = ImageDraw.multiline_textbbox((0,0),skill,font)[1]
+    y2 = ImageDraw.multiline_textbbox((0,0),des,font)[1]
+    xcv = ImageDraw.multiline_textbbox((0,0),cv,font)[0]
     id = card["card_id"]
     #绘制左
     left = Image.new("RGBA",(540,700),(255,255,255,0))
