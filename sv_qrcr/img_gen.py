@@ -75,7 +75,7 @@ async def deck_img_gen(deck:dict)->str:
                 img.paste(lcard,((rol-1)*270,(row-1)*46))
                 costimg = Image.open(join(MOUDULE_PATH,f'img/cost/{cards[i]["cost"]}.png'))
                 img.paste(costimg,((rol-1)*270+10,(row-1)*46+10),costimg)
-                y = ImageDraw.multiline_textbbox((0,0),cards[i]['name'],font=font)[1]
+                y = ImageDraw.multiline_textbbox((0,0),cards[i]['name'],font=font)[3]
                 draw_text_psd_style(draw=draw,xy=((rol-1)*270+45,int((row-1)*46+23-y/2)),text=cards[i]['name'],font=font,tracking=-150)
                 draw.text(((rol)*270-10,(row-1)*46+23),f'x{cards[i]["num"]}',(255,255,255),font,'rm')
                 count +=1
