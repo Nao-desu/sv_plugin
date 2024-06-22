@@ -423,7 +423,7 @@ skill2w = {
     "turn_start_fixed_pp":"回合开始不再增加最大pp",
     "extra_turn":"额外回合"
 }
-with open('cardlist.json','r',encoding='utf-8') as f:
+with open(join(MOUDULE_PATH,'data/cardlist.json'),'r',encoding='utf-8') as f:
     cards = list(json.load(f))
 cv = []
 for i in cards:
