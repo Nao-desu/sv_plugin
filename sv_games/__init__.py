@@ -82,13 +82,13 @@ class GM:
         else:
             return None
 
-    async def end_game(self,bot,gid):
+    async def end_game(self,bot,ev,gid):
         if gid in self.playing:
             del self.playing[gid]
             del self.answer[gid]
             del self.answerpic[gid]
             for i in gm.get_msg_id(gid):            
-                await bot.delete_msg(i)
+                await bot.delete_msg(self_id=ev.self_id,message_id=i)
             del self.msg_id[gid]
     
     def get_pic(self,gid):
@@ -184,7 +184,7 @@ async def voice_guess(bot,ev):
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
-            await gm.end_game(bot,gid)
+            await gm.end_game(bot,ev,gid)
             button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                       {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
@@ -192,7 +192,7 @@ async def voice_guess(bot,ev):
             await bot.send(ev,msg)
         return
     except Exception as e:
-        await gm.end_game(bot,gid)
+        await gm.end_game(bot,ev,gid)
         await bot.send(ev,f'游戏发生错误，自动终止\n{e}')
 
 @sv.on_prefix('sv猜卡面')
@@ -228,7 +228,7 @@ async def paint_guess(bot,ev):
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
-            await gm.end_game(bot,gid)
+            await gm.end_game(bot,ev,gid)
             button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                       {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
@@ -236,7 +236,7 @@ async def paint_guess(bot,ev):
             await bot.send(ev,msg)
         return
     except Exception as e:
-        await gm.end_game(bot,gid)
+        await gm.end_game(bot,ev,gid)
         await bot.send(ev,f'游戏发生错误，自动终止\n{e}')
 
 @sv.on_message()
@@ -247,7 +247,7 @@ async def on_input_chara_name(bot, ev):
     answer = gm.get_ans(gid)
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         url,size = gm.get_pic(gid)
-        await gm.end_game(bot,gid)
+        await gm.end_game(bot,ev,gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         if not url:
             url,size = await change_img(img_path)
@@ -260,7 +260,7 @@ async def on_input_chara_name(bot, ev):
 
 @sv.on_fullmatch('重置游戏')
 async def reset_games(bot,ev):
-    await gm.end_game(bot,ev.group_id)
+    await gm.end_game(bot,ev,ev.group_id)
     await bot.send(ev,'已重置')
 
 async def change_img(path:str):
