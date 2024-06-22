@@ -89,7 +89,7 @@ async def get_hint(card,clan):
         hint['职业'] = clan2w[clan]
     hint['费用'] = card ['cost']
     hint['稀有度'] = get_condition()["rarity"][str(card['rarity'])][2]
-    hint['所属卡包'] = card_set[card['set_id']]
+    hint['所属卡包'] = card_set[card['card_set_id']]
     if card['char_type'] == 1:
         hint['攻击力'] = card['atk']
         hint['生命值'] = card['life']
