@@ -32,6 +32,7 @@ class GM:
         self.playing = {}
         self.answer = {}
         self.answerpic = {}
+        self.msg_id = {}
 
     def is_playing(self, gid):
         return gid in self.playing
@@ -69,11 +70,26 @@ class GM:
     def add_pic(self,gid,url,size):
         self.answerpic[gid] = (url,size)
 
-    def end_game(self,gid):
+    def add_msg_id(self,gid,msg_id):
+        if gid not in self.msg_id:
+            self.msg_id[gid] = [msg_id]
+        else:
+            self.msg_id[gid].append(msg_id)
+
+    def get_msg_id(self,gid):
+        if gid in self.msg_id:
+            return self.msg_id[gid]
+        else:
+            return None
+
+    async def end_game(self,bot,gid):
         if gid in self.playing:
             del self.playing[gid]
             del self.answer[gid]
             del self.answerpic[gid]
+            for i in gm.get_msg_id(gid):            
+                await bot.delete_msg(i)
+            del self.msg_id[gid]
     
     def get_pic(self,gid):
         if gid in self.answerpic:
@@ -124,7 +140,8 @@ async def give_hint(hint:dict,bot,ev,n):
         data = [f'提示{n}',f'这张卡牌的{key}是：{value}  \r',f'{int(GAME_TIME/4)}秒后公布答案']
     button = [{"buttons":[button_gen(False,'我要回答','')]}]
     msg = MD_gen1(data,button)
-    await bot.send(ev,msg)
+    _send = await bot.send(ev,msg)
+    gm.add_msg_id(ev.group_id,_send['message_id'])
     if key != '能力':
         del hint[key]
     else:
@@ -139,13 +156,16 @@ async def voice_guess(bot,ev):
     gid = ev.group_id
     try:
         if gm.is_playing(ev.group_id):
-            await bot.send(ev, "游戏仍在进行中…")
+            _send = await bot.send(ev, "游戏仍在进行中…")
+            gm.add_msg_id(ev.group_id,_send['message_id'])
             return
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
         answer = await get_answer(limited,clan,'voice')
         gm.start_game(gid,answer)
-        await guess_voice(bot,ev,limited,clan,answer)
+        id1,id2 = await guess_voice(bot,ev,limited,clan,answer)
+        gm.add_msg_id(gid,id1)
+        gm.add_msg_id(gid,id2)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
         gm.add_pic(gid,url,size)
@@ -164,7 +184,7 @@ async def voice_guess(bot,ev):
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
-            gm.end_game(gid)
+            await gm.end_game(bot,gid)
             button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                       {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
@@ -172,7 +192,7 @@ async def voice_guess(bot,ev):
             await bot.send(ev,msg)
         return
     except Exception as e:
-        gm.end_game(gid)
+        await gm.end_game(bot,gid)
         await bot.send(ev,f'游戏发生错误，自动终止\n{e}')
 
 @sv.on_prefix('sv猜卡面')
@@ -180,13 +200,16 @@ async def paint_guess(bot,ev):
     gid = ev.group_id
     try:
         if gm.is_playing(ev.group_id):
-            await bot.send(ev, "游戏仍在进行中…")
+            _send = await bot.send(ev, "游戏仍在进行中…")
+            gm.add_msg_id(ev.group_id,_send['message_id'])
             return
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
         answer = await get_answer(limited,clan,False)
         gm.start_game(gid,answer)
-        await guess_paint(bot,ev,limited,clan,answer)
+        id1,id2 = await guess_paint(bot,ev,limited,clan,answer)
+        gm.add_msg_id(gid,id1)
+        gm.add_msg_id(gid,id2)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
         gm.add_pic(gid,url,size)
@@ -205,7 +228,7 @@ async def paint_guess(bot,ev):
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
-            gm.end_game(gid)
+            await gm.end_game(bot,gid)
             button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                       {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
@@ -213,7 +236,7 @@ async def paint_guess(bot,ev):
             await bot.send(ev,msg)
         return
     except Exception as e:
-        gm.end_game(gid)
+        await gm.end_game(bot,gid)
         await bot.send(ev,f'游戏发生错误，自动终止\n{e}')
 
 @sv.on_message()
@@ -224,7 +247,7 @@ async def on_input_chara_name(bot, ev):
     answer = gm.get_ans(gid)
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         url,size = gm.get_pic(gid)
-        gm.end_game(gid)
+        await gm.end_game(bot,gid)
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         if not url:
             url,size = await change_img(img_path)
@@ -237,7 +260,7 @@ async def on_input_chara_name(bot, ev):
 
 @sv.on_fullmatch('重置游戏')
 async def reset_games(bot,ev):
-    gm.end_game(ev.group_id)
+    await gm.end_game(bot,ev.group_id)
     await bot.send(ev,'已重置')
 
 async def change_img(path:str):

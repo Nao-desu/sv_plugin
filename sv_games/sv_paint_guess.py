@@ -13,8 +13,9 @@ async def guess_paint(bot,ev,limited,clan,answer):
     img = await pic_corp(answer)
     button = [{"buttons":[button_gen(False,'我要回答','')]}]
     msg = MD_gen1([f'猜猜这张图片来自哪张{w1}{w2}卡牌？',f'{GAME_TIME}秒后公布答案  \r','艾特我+你的答案参与游戏'],button)
-    await bot.send(ev,msg)
-    await bot.send(ev,img)
+    _send1 = await bot.send(ev,msg)
+    _send2 = await bot.send(ev,img)
+    return _send1["message_id"],_send2["message_id"]
 
 async def pic_corp(answer):
     """
