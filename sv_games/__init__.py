@@ -88,7 +88,7 @@ class GM:
             del self.answer[gid]
             del self.answerpic[gid]
             for i in gm.get_msg_id(gid):            
-                await bot.delete_msg(self_id=ev.self_id,message_id=i)
+                await bot.delete_msg(self_id=ev.self_id,group_id=gid,message_id=i)
             del self.msg_id[gid]
     
     def get_pic(self,gid):
