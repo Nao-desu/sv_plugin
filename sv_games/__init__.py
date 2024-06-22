@@ -119,9 +119,9 @@ async def give_hint(hint:dict,bot,ev,n):
     if type(value) == list:
         value = random.choice(value)
     if n <=2:
-        data = [f'提示{n}',f'这张卡牌的{key}是：{value}',f'{GAME_TIME/4}秒后有新的提示']
+        data = [f'提示{n}',f'这张卡牌的{key}是：{value}  \r',f'{int(GAME_TIME/4)}秒后有新的提示']
     else:
-        data = [f'提示{n}',f'这张卡牌的{key}是：{value}',f'{GAME_TIME/4}秒后公布答案']
+        data = [f'提示{n}',f'这张卡牌的{key}是：{value}  \r',f'{int(GAME_TIME/4)}秒后公布答案']
     button = [{"buttons":[button_gen(False,'我要回答','')]}]
     msg = MD_gen1(data,button)
     await bot.send(ev,msg)
