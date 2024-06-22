@@ -178,6 +178,7 @@ async def voice_guess(bot,ev):
             if gm.is_playing(ev.group_id):
                 if gm.get_ans(gid) != answer:
                     return
+            else:return
             hint = await give_hint(hint,bot,ev,n)
             n += 1
         await asyncio.sleep(sleep_time)
@@ -222,6 +223,7 @@ async def paint_guess(bot,ev):
             if gm.is_playing(ev.group_id):
                 if gm.get_ans(gid) != answer:
                     return
+            else:return
             hint = await give_hint(hint,bot,ev,n)
             n += 1
         await asyncio.sleep(sleep_time)
