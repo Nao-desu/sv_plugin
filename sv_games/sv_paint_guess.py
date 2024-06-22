@@ -6,16 +6,15 @@ from os.path import join
 from io import BytesIO
 import random,base64
 from ..MDgen import *
-from ...image_host import upload_img
-from uuid import uuid4
 
 async def guess_paint(bot,ev,limited,clan,answer):
     w1 = '指定' if limited else ''
     w2 = '' if not clan else clan2w[clan]
-    url,size = await pic_corp(answer)
+    img = await pic_corp(answer)
     button = [{"buttons":[button_gen(False,'我要回答','')]}]
-    msg = MD_gen([f'猜猜这张图片来自哪张{w1}{w2}卡牌？',f'img#{size[0]}px #{size[1]}px',url,f'{GAME_TIME}秒后公布答案','艾特我+你的答案参与游戏'],button)
+    msg = MD_gen1([f'猜猜这张图片来自哪张{w1}{w2}卡牌？',f'{GAME_TIME}秒后公布答案  \r','艾特我+你的答案参与游戏'],button)
     await bot.send(ev,msg)
+    await bot.send(ev,img)
 
 async def pic_corp(answer):
     """
@@ -29,5 +28,5 @@ async def pic_corp(answer):
     region = region.convert('RGB')
     buf = BytesIO()
     region.save(buf, format='JPEG')
-    url = await upload_img(uuid4().hex + '.jpg',buf)
-    return url,(250,250)
+    base64_str = f'base64://{base64.b64encode(buf.getvalue()).decode()}'
+    return f'[CQ:image,file={base64_str}]'

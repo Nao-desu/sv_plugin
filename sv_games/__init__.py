@@ -1,5 +1,5 @@
 from hoshino import Service
-from ..info import get_lim,get_answer,get_cards,MOUDULE_PATH
+from ..info import get_lim,get_answer,get_cards,MOUDULE_PATH,clan2w,get_condition,card_set,skill2w
 from os.path import join
 from .sv_voice_gess import guess_voice
 from .sv_paint_guess import guess_paint
@@ -22,7 +22,6 @@ game_help = """
 默认为指定模式卡牌
 在指令后添加[无限]可以猜所有卡牌
 在指令后添加[职业名]可以猜特定职业卡牌
-注意：频道bot无法发送语音
 支持的回答方式（以殘酷的媚貓‧帷为例）
 [殘酷的媚貓‧帷][殘酷的媚貓][帷][殘酷的媚貓帷][213]
 """
@@ -84,6 +83,57 @@ class GM:
 
 gm = GM()
 
+async def get_hint(card,clan):
+    hint = {}
+    if clan != None:
+        hint['职业'] = clan2w[clan]
+    hint['费用'] = card ['cost']
+    hint['稀有度'] = get_condition()["rarity"][str(card['rarity'])][2]
+    hint['所属卡包'] = card_set[card['set_id']]
+    if card['char_type'] == 1:
+        hint['攻击力'] = card['atk']
+        hint['生命值'] = card['life']
+        hint["进化后攻击力"] = card['evo_atk']
+        hint["进化后生命值"] = card['evo_life']
+    if card["cv"] != "-":
+        hint['CV'] = card['cv']
+    if card['tribe_name'] != "-":
+        hint['类型'] = card['tribe_name']
+    skill = []
+    s = card['skill'].split(',')
+    for i in s:
+        ss = i.split(':')
+        for j in ss:
+            if j.split('@')[0] not in skill:
+                skill.append(j.split('@')[0])
+    if skill:
+        hint['能力'] = []
+        for i in skill:
+            if i in skill2w:
+                hint['能力'].append(skill2w[i])
+    return hint
+
+async def give_hint(hint:dict,bot,ev,n):
+    key = random.choice(list(hint.keys()))
+    value = hint[key]
+    if type(value) == list:
+        value = random.choice(value)
+    if n <=2:
+        data = [f'提示{n}',f'这张卡牌的{key}是：{value}',f'{GAME_TIME/4}秒后有新的提示']
+    else:
+        data = [f'提示{n}',f'这张卡牌的{key}是：{value}',f'{GAME_TIME/4}秒后公布答案']
+    button = [{"buttons":[button_gen(False,'我要回答','')]}]
+    msg = MD_gen1(data,button)
+    await bot.send(ev,msg)
+    if key != '能力':
+        del hint[key]
+    else:
+        if len(hint['能力']) == 1:
+            del hint['能力']
+        else:
+            hint['能力'].remove(value)
+    return hint
+
 @sv.on_prefix('sv猜语音')
 async def voice_guess(bot,ev):
     gid = ev.group_id
@@ -99,7 +149,18 @@ async def voice_guess(bot,ev):
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
         gm.add_pic(gid,url,size)
-        await asyncio.sleep(GAME_TIME)
+        card = get_cards()[str(answer)]
+        hint = await get_hint(card,clan)
+        sleep_time = GAME_TIME/4
+        n = 1
+        while n<4:
+            await asyncio.sleep(sleep_time)
+            if gm.is_playing(ev.group_id):
+                if gm.get_ans(gid) != answer:
+                    return
+            hint = await give_hint(hint,bot,ev,n)
+            n += 1
+        await asyncio.sleep(sleep_time)
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
@@ -129,7 +190,18 @@ async def paint_guess(bot,ev):
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
         gm.add_pic(gid,url,size)
-        await asyncio.sleep(GAME_TIME)
+        card = get_cards()[str(answer)]
+        hint = await get_hint(card,clan)
+        sleep_time = GAME_TIME/4
+        n = 1
+        while n<4:
+            await asyncio.sleep(sleep_time)
+            if gm.is_playing(ev.group_id):
+                if gm.get_ans(gid) != answer:
+                    return
+            hint = await give_hint(hint,bot,ev,n)
+            n += 1
+        await asyncio.sleep(sleep_time)
         if gm.is_playing(ev.group_id):
             if gm.get_ans(gid) != answer:
                 return
