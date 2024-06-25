@@ -1,5 +1,6 @@
 from hoshino import Service
 import random,json,base64,datetime
+from ...groupmaster.switch import sdb
 
 tarot_help = """
 [塔罗牌] 抽一张影之诗塔罗牌
@@ -376,6 +377,9 @@ async def MDgen(id,po,ev) -> str:
 
 @sv.on_fullmatch('塔罗牌')
 async def tarot(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'塔罗牌')
+    if not status:
+        return
     global cache_data
     if cache_data["date"] != str(datetime.date.today()):
         cache_data = {

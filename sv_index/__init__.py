@@ -2,6 +2,7 @@ from hoshino import Service
 from ..info import text2cards,get_cards,judge_card,find_all_card,get_related_cards
 from .img_gen import card_img_gen,cardlist_img_gen
 from ..MDgen import *
+from ...groupmaster.switch import sdb
 
 sv_help= """
 艾特我，发送[sv查卡帮助]
@@ -36,6 +37,9 @@ sv = Service('sv-index',help_=index_help)
 
 @sv.on_prefix('sv查卡')
 async def sv_card_index(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv查卡')
+    if not status:
+        return
     text = ev.message.extract_plain_text().replace(' #','#').replace('#', ' #').strip()
     if text == "帮助":
         return
@@ -103,6 +107,9 @@ async def sv_card_index(bot,ev):
 
 @sv.on_prefix('svcard')
 async def svcard_info(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv查卡')
+    if not status:
+        return
     id = ev.message.extract_plain_text().strip()[:9]
     card_dict = get_cards()
     try:

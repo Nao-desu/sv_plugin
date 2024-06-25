@@ -1,6 +1,7 @@
 from hoshino import Service
 from .decks import get_deck_data,get_all_decks
 from ..info import find_decks
+from ...groupmaster.switch import sdb
 
 master_help = """
 查询来自shadowversemaster的各种数据
@@ -12,6 +13,9 @@ sv = Service('sv_master')
 
 @sv.on_prefix('来一套')
 async def deck_info(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'卡组查询')
+    if not status:
+        return
     text = ev.message.extract_plain_text().strip()
     if not text:
         await bot.send(ev,"请指定卡组名,指令中加上'无限'可以查询无限制卡组")
@@ -34,6 +38,9 @@ async def deck_info(bot,ev):
 
 @sv.on_prefix('卡组一览')
 async def all_decks_info(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'卡组查询')
+    if not status:
+        return
     text = ev.message.extract_plain_text().strip()
     if '无限' in text:
         msg = await get_all_decks('l')

@@ -12,6 +12,7 @@ from ..MDgen import *
 from ...image_host import upload_img
 from uuid import uuid4
 from .database import db
+from ...groupmaster.switch import sdb
 
 p = Pinyin()
 
@@ -153,6 +154,9 @@ async def give_hint(hint:dict,bot,ev,n):
 
 @sv.on_prefix('sv猜语音')
 async def voice_guess(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv猜卡')
+    if not status:
+        return
     gid = ev.group_id
     try:
         if gm.is_playing(ev.group_id):
@@ -198,6 +202,9 @@ async def voice_guess(bot,ev):
 
 @sv.on_prefix('sv猜卡面')
 async def paint_guess(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv猜卡')
+    if not status:
+        return
     gid = ev.group_id
     try:
         if gm.is_playing(ev.group_id):
@@ -243,6 +250,9 @@ async def paint_guess(bot,ev):
 
 @sv.on_message()
 async def on_input_chara_name(bot, ev):
+    status = sdb.get_status(ev.real_group_id,'sv猜卡')
+    if not status:
+        return
     gid = ev.group_id
     if  not gm.is_playing(gid):
         return
@@ -262,6 +272,9 @@ async def on_input_chara_name(bot, ev):
 
 @sv.on_fullmatch('重置游戏')
 async def reset_games(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv猜卡')
+    if not status:
+        return
     await gm.end_game(bot,ev,ev.group_id)
     await bot.send(ev,'已重置')
 
@@ -292,6 +305,9 @@ async def change_img(path:str):
 
 @sv.on_fullmatch('sv排行榜')
 async def rank(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv猜卡')
+    if not status:
+        return
     records = await db.get_records_and_rankings(ev.real_group_id)
     button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                        {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
@@ -311,6 +327,9 @@ async def rank(bot,ev):
 
 @sv.on_fullmatch('sv总排行')
 async def total_rank(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv猜卡')
+    if not status:
+        return
     records = await db.get_total_records_and_rankings()
     button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
                        {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]

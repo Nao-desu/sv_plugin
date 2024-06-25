@@ -6,6 +6,7 @@ from .img_gen import draw_result_1,draw_result_2
 from ..config import max_400,max_coin
 import traceback
 from ..MDgen import *
+from ...groupmaster.switch import sdb
 
 gacha_help = '''
 `sv抽卡` 抽一包卡牌
@@ -22,6 +23,9 @@ jlmt = DailyNumberLimiter(1)
 
 @sv.on_prefix('sv抽卡')
 async def gacha1(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv抽卡')
+    if not status:
+        return
     try:
         uid = ev.user_id
         if not clmt.check(f'{uid}'):
@@ -44,6 +48,9 @@ async def gacha1(bot,ev):
 
 @sv.on_prefix('sv十连')
 async def gacha10(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv抽卡')
+    if not status:
+        return
     try:
         uid = ev.user_id
         if not clmt.check(f'{uid}'):
@@ -78,6 +85,9 @@ async def gacha10(bot,ev):
 
 @sv.on_prefix('sv井')
 async def gacha400(bot,ev):
+    status = sdb.get_status(ev.real_group_id,'sv抽卡')
+    if not status:
+        return
     try:
         uid = ev.user_id
         if not tlmt.check(f'{uid}'):
