@@ -122,7 +122,7 @@ async def gacha_rich(bot,ev):
     if not status:
         return
     try:
-        leadercard,card,_ = await gachalegend()
+        leadercard,card = await gachalegend()
         leadercard.append(random.choice(get_all_leadercard()))
         card[1] = card[1][:-1]
         url,size = await draw_result_1(leadercard,card)
