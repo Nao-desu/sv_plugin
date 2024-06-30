@@ -8,7 +8,7 @@ import random,base64
 from ..MDgen import *
 
 async def guess_paint(bot,ev,limited,clan,answer):
-    w1 = '指定' if limited else ''
+    w1 = '溯时指定' if limited else ''
     w2 = '' if not clan else clan2w[clan]
     img = await pic_corp(answer)
     button = [{"buttons":[button_gen(False,'我要回答','')]}]

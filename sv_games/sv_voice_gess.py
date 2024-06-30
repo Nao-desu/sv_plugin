@@ -7,7 +7,7 @@ from ..MDgen import *
 import random,os
 
 async def guess_voice(bot,ev,limited,clan,answer):
-    w1 = '指定' if limited else ''
+    w1 = '溯时指定' if limited else ''
     w2 = '' if not clan else clan2w[clan]
     voice = random.choice(os.listdir(join(MOUDULE_PATH,f"voice\\{answer}")))
     rec = MessageSegment.record(f'file:///{MOUDULE_PATH}/voice/{answer}/{voice}')

@@ -114,11 +114,11 @@ async def rolls(time:dict,leader:dict,alternate:dict,cards:dict,only_leader:bool
             card[4].append(r1(cards[4]))
     return leadercard,card
                 
-async def gachaing(card_set:int,time:int,only_leader:bool) -> str:
+async def gachaing(card_set:int,time:int,only_leader:bool,is_rot:bool) -> str:
     """
     抽卡,返回结果
     """
-    leader,alternate,cards = get_card_set(card_set)
+    leader,alternate,cards = get_card_set(card_set,is_rot)
     result = {1:0,2:0,3:0,4:0}
     result2 = {1:0,2:0,3:0,4:0}
     for i in range(0,7*time):

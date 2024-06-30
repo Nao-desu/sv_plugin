@@ -58,10 +58,9 @@ def get_condition() -> dict:
 
 def get_latest_set() -> int:
     """
-    获取最新卡包id
+    获取指定卡包id
     """
-    con = get_condition()
-    return int(list(con["card_set_id"].keys())[-1])
+    return 10015
 
 def check_condition(i:str) -> tuple:
     """
@@ -161,28 +160,28 @@ def get_related_cards(card:dict) -> list:
             related.append(cards[i])
     return related
 
-def check_set(text:str) -> int:
+def check_set(text:str):
     """
     获取卡包
     """
     latest_set = get_latest_set()
     if not text:
-        return latest_set
+        return latest_set,True
     if text.isdigit():
         if int(text)<=latest_set-10000:
             text += 10000
         if int(text) in range(10000,latest_set+1):
-            return int(text)
-        else:return False
+            return int(text),False
+        else:return False,False
     cond = get_condition()
     card_set = cond["card_set_id"]
     text = zhconv.convert(text,'zh-tw')
     for id in card_set:
         if text in card_set[id]:
             return int(id)
-    return False
+    return False,False
 
-def get_card_set(id:int):
+def get_card_set(id:int,is_rot:bool):
     """
     获取卡包内容，包括异画
     """
@@ -191,17 +190,45 @@ def get_card_set(id:int):
     leader = {1:{},2:{},3:{},4:{}}
     alternate = {1:{},2:{},3:{},4:{}}
     cards = {1:[],2:[],3:[],4:[]}
-    aa = aa[str(id)]
-    for cardid in aa:
-        if aa[cardid][2] == 1:
-            leader[aa[cardid][1]][int(cardid)] = aa[cardid][0]
-        elif aa[cardid][2] == 0:
-            alternate[aa[cardid][1]][int(cardid)] = aa[cardid][0]
+    if is_rot:
+        b = [aa[str(id)] for i in range(id-4,id+1)]
+        for cardset in b:
+            for cardid in cardset:
+                if cardset[cardid][2] == 1:
+                    leader[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]
+                elif cardset[cardid][2] == 0:
+                    alternate[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]
+    else:
+        b = aa[str(id)]
+        for cardid in b:
+            if b[cardid][2] == 1:
+                leader[b[cardid][1]][int(cardid)] = b[cardid][0]
+            elif b[cardid][2] == 0:
+                alternate[b[cardid][1]][int(cardid)] = b[cardid][0]
     card_dict = get_cards()
-    for card_id in card_dict:
-        if int(card_id) in range(100000000,200000000) and card_dict[card_id]["card_set_id"] == id:
-            cards[5 - card_dict[card_id]["rarity"]].append(int(card_id))
+    if is_rot:
+        for card_id in card_dict:
+            if int(card_id) in range(100000000,200000000) and card_dict[card_id]["card_set_id"] in range(id-4,id+1):
+                cards[5 - card_dict[card_id]["rarity"]].append(int(card_id))
+    else:
+        for card_id in card_dict:
+            if int(card_id) in range(100000000,200000000) and card_dict[card_id]["card_set_id"] == id:
+                cards[5 - card_dict[card_id]["rarity"]].append(int(card_id))
     return leader,alternate,cards
+
+def get_all_leadercard() -> list:
+    """
+    获取所有异画卡
+    """
+    with open(join(MOUDULE_PATH,'data/gacha.json'),'r', encoding='UTF-8') as f:
+        aa = json.load(f)
+    leadercard = []
+    for cardset in aa:
+        for cardid in aa[cardset]:
+            if aa[cardset][cardid][2] == 1:
+                leadercard.append(int(cardid))
+    return leadercard
+
 
 def judge_card(cards:list):
     """
