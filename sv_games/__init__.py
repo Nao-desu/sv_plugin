@@ -126,7 +126,10 @@ async def get_hint(card,clan):
     return hint
 
 async def give_hint(hint:dict,bot,ev,n):
-    key = random.choice(list(hint.keys()))
+    #提高能力出现概率
+    if '能力' in hint and random.randint(1,3) == 1:
+        key = '能力'
+    else:key = random.choice(list(hint.keys()))
     value = hint[key]
     if type(value) == list:
         value = random.choice(value)
