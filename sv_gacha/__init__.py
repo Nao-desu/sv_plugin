@@ -1,7 +1,7 @@
 from hoshino import Service
 from hoshino.util import DailyNumberLimiter
 from ..info import check_set,card_set,get_latest_set,get_all_leadercard
-from .gacha import gachaing
+from .gacha import gachaing,gachalegend
 from .img_gen import draw_result_1,draw_result_2
 import traceback
 from ..MDgen import *
@@ -122,10 +122,9 @@ async def gacha_rich(bot,ev):
     if not status:
         return
     try:
-        card_set = get_latest_set()
-        leadercard,card,_ = await gachaing(card_set,1,False,True)
+        leadercard,card,_ = await gachalegend()
         leadercard.append(random.choice(get_all_leadercard()))
-        card = card[:-1]
+        card[1] = card[1][:-1]
         url,size = await draw_result_1(leadercard,card)
         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连')]},
                   {"buttons":[button_gen(False,'异画包','八周年纪念'),button_gen(False,'一井','sv井')]}]

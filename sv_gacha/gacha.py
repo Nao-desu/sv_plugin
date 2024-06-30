@@ -1,4 +1,4 @@
-from ..info import get_card_set
+from ..info import get_card_set,get_legend_card_set
 from ..config import prob1,prob2
 from random import randint as r,choice as r1
 
@@ -142,6 +142,9 @@ async def gachaing(card_set:int,time:int,only_leader:bool,is_rot:bool) -> str:
             card[i].append(j)
     result = {1:result[1]+result2[1],2:result[2]+result2[2],3:result[3]+result2[3],4:result[4]+result2[4]}
     return leadercard,card,result
-    
-    
-    
+
+async def gachalegend():
+    leader,alternate,cards = get_legend_card_set()
+    result = {1:7,2:0,3:0,4:0}
+    leadercard,card = await rolls(result,leader,alternate,cards,False,True,False)
+    return leadercard,card

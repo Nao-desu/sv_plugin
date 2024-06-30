@@ -191,7 +191,7 @@ def get_card_set(id:int,is_rot:bool):
     alternate = {1:{},2:{},3:{},4:{}}
     cards = {1:[],2:[],3:[],4:[]}
     if is_rot:
-        b = [aa[str(id)] for i in range(id-4,id+1)]
+        b = [aa[str(i)] for i in range(id-4,id+1)]
         for cardset in b:
             for cardid in cardset:
                 if cardset[cardid][2] == 1:
@@ -214,6 +214,26 @@ def get_card_set(id:int,is_rot:bool):
         for card_id in card_dict:
             if int(card_id) in range(100000000,200000000) and card_dict[card_id]["card_set_id"] == id:
                 cards[5 - card_dict[card_id]["rarity"]].append(int(card_id))
+    return leader,alternate,cards
+
+def get_legend_card_set():
+    with open(join(MOUDULE_PATH,'data/gacha.json'),'r', encoding='UTF-8') as f:
+        aa = json.load(f)
+    leader = {1:{},2:{},3:{},4:{}}
+    alternate = {1:{},2:{},3:{},4:{}}
+    cards = {1:[],2:[],3:[],4:[]}
+    id = get_latest_set()
+    b = [aa[str(i)] for i in range(id-4,id+1)]
+    for cardset in b:
+        for cardid in cardset:
+            if cardset[cardid][2] == 1:
+                leader[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]
+            elif cardset[cardid][2] == 0 and cardset[cardid][1] == 1:
+                alternate[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]
+    card_dict = get_cards()
+    for card_id in card_dict:
+        if int(card_id) in range(100000000,200000000) and card_dict[card_id]["card_set_id"] in range(id-4,id+1) and card_dict[card_id]["rarity"] == 4:
+            cards[5 - card_dict[card_id]["rarity"]].append(int(card_id))
     return leader,alternate,cards
 
 def get_all_leadercard() -> list:
