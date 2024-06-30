@@ -124,7 +124,6 @@ async def gacha_rich(bot,ev):
     try:
         leadercard,card = await gachalegend()
         leadercard.append(random.choice(get_all_leadercard()))
-        card[1] = card[1][:-1]
         url,size = await draw_result_1(leadercard,card)
         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连')]},
                   {"buttons":[button_gen(False,'异画包','八周年纪念'),button_gen(False,'一井','sv井')]}]
