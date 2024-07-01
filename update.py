@@ -121,15 +121,16 @@ async def cardinfo_dl():
         with open(join(MOUDULE_PATH,"data/cards.json"),'r', encoding="utf-8") as f:
             card_dict_old = json.load(f)
         for id in card_dict:
-            if id in card_dict_old and card_dict_old[id] != card_dict[id]:
-                if exists(join(MOUDULE_PATH,f'img/C/C_{id}.png')):
-                    os.remove(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
-                if exists(join(MOUDULE_PATH,f'img/E/E_{id}.png')):
-                    os.remove(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
-                if exists(join(MOUDULE_PATH,f'img/L/L_{id}.png')):
-                    os.remove(join(MOUDULE_PATH,f'img/L/L_{id}.png'))
-                print(f'    卡牌【{card_dict_old[id]["card_name"]}】数据变动，已删除原卡图')
-                changed_card.append(id)
+            if id in card_dict_old:
+                card_old = card_dict_old[id]
+                card_new = card_dict[id]
+                if card_old["cost"] != card_new["cost"] or card_old["atk"] != card_new["atk"] or card_old["life"] != card_new["life"] or card_old["evo_atk"] != card_new["evo_atk"] or card_old["evo_life"] != card_new["evo_life"]:
+                    if exists(join(MOUDULE_PATH,f'img/C/C_{id}.png')):
+                        os.remove(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+                    if exists(join(MOUDULE_PATH,f'img/E/E_{id}.png')):
+                        os.remove(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
+                    print(f'    卡牌【{card_dict_old[id]["card_name"]}】数据变动，已删除原卡图')
+                    changed_card.append(id)
             if id not in card_dict_old:
                 print(f'    添加新卡牌【{card_dict[id]["card_name"]}】')
                 new_card.append(id)

@@ -59,7 +59,13 @@ async def sv_card_index(bot,ev):
             button = []
             relist = find_all_card(card["card_id"])
             if relist:
-                button.append({"buttons":[button_gen(False,f'异画{i+1}',f'svcard {j}') for i,j in enumerate(relist)]})
+                leng = len(relist)
+                while leng > 4:
+                    button.append({"buttons":[button_gen(False,f'异画' if j > 900000000 else '原画' if j < 200000000 else f'其它版本',f'svcard {j}') for j in relist[:4]]})
+                    relist = relist[4:]
+                    leng -= 4
+                else:
+                    button.append({"buttons":[button_gen(False,f'异画' if j > 900000000 else '原画' if j < 200000000 else f'其它版本',f'svcard {j}') for j in relist]})
             related_cards = get_related_cards(card)
             if related_cards:
                 leng = len(related_cards)
@@ -121,7 +127,13 @@ async def svcard_info(bot,ev):
             button = []
             relist = find_all_card(card["card_id"])
             if relist:
-                button.append({"buttons":[button_gen(False,f'异画{i+1}',f'svcard {j}') for i,j in enumerate(relist)]})
+                leng = len(relist)
+                while leng > 4:
+                    button.append({"buttons":[button_gen(False,f'异画' if j > 900000000 else '原画' if j < 200000000 else f'其它版本',f'svcard {j}') for j in relist[:4]]})
+                    relist = relist[4:]
+                    leng -= 4
+                else:
+                    button.append({"buttons":[button_gen(False,f'异画' if j > 900000000 else '原画' if j < 200000000 else f'其它版本',f'svcard {j}') for j in relist]})
             related_cards = get_related_cards(card)
             if related_cards:
                 leng = len(related_cards)
