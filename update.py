@@ -197,23 +197,38 @@ async def img_dl(card_dict:dict):
                 if id == '910441030':
                     tasks.append(download2(f'{img_url_c}{int(id)-10}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png'),sem))
                 else:
-                    tasks.append(download2(f'{img_url_c}{int(id)}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png'),sem))
+                    if card_dict[id]["cost"] < 0:
+                        pbar.update()
+                    else:
+                        tasks.append(download2(f'{img_url_c}{int(id)}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png'),sem))
             else:pbar.update()
             if not exists(join(MOUDULE_PATH,f'img/full/{id}0.png')):
                 if id == '910441030':
                     tasks.append(download(f'{img_url_f}{int(id)-10}0.png',pbar,join(MOUDULE_PATH,f'img/full/{id}0.png'),sem))
                 else:
-                    tasks.append(download(f'{img_url_f}{int(id)}0.png',pbar,join(MOUDULE_PATH,f'img/full/{id}0.png'),sem))
+                    if card_dict[id]["cost"] < 0:
+                        pbar.update()
+                    else:
+                        tasks.append(download(f'{img_url_f}{int(id)}0.png',pbar,join(MOUDULE_PATH,f'img/full/{id}0.png'),sem))
             else:pbar.update()
             if card_dict[id]["char_type"] == 1:
                 if not exists(join(MOUDULE_PATH,f'img/E/E_{id}.png')):
-                    tasks.append(download2(f'{img_url_e}{id}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/E/E_{id}.png'),sem))
+                    if card_dict[id]["cost"] < 0:
+                        pbar.update()
+                    else:
+                        tasks.append(download2(f'{img_url_e}{id}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/E/E_{id}.png'),sem))
                 else:pbar.update()
                 if not exists(join(MOUDULE_PATH,f'img/full/{id}1.png')):
-                    tasks.append(download(f'{img_url_f}{id}1.png',pbar,join(MOUDULE_PATH,f'img/full/{id}1.png'),sem))
+                    if card_dict[id]["cost"] < 0:
+                        pbar.update()
+                    else:
+                        tasks.append(download(f'{img_url_f}{id}1.png',pbar,join(MOUDULE_PATH,f'img/full/{id}1.png'),sem))
                 else:pbar.update()
             if not exists(join(MOUDULE_PATH,f'img/L/L_{id}.jpg')):
-                tasks.append(download(f'{img_url_l}{id}.jpg',pbar,join(MOUDULE_PATH,f'img/L/L_{id}.jpg'),sem))
+                if card_dict[id]["cost"] < 0:
+                    pbar.update()
+                else:
+                    tasks.append(download(f'{img_url_l}{id}.jpg',pbar,join(MOUDULE_PATH,f'img/L/L_{id}.jpg'),sem))
             else:pbar.update()
         if tasks:
             await asyncio.wait(tasks)
