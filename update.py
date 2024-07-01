@@ -103,7 +103,7 @@ async def cardinfo_dl():
         for card in cardlist:
             if card["card_name"] == None:#移除无名卡牌，一般是正常卡牌的激奏或者结晶卡
                 nonamecard.append(card)
-            elif int(card["base_card_id"]) in range(800000000,900000000):
+            elif int(card["card_id"]) in range(800000000,900000000):
                 nonamecard.append(card)
             else:
                 if card["char_type"]==3:#倒数护符和普通护符有区分，这里不需要这个特性
