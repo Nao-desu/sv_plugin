@@ -103,6 +103,8 @@ async def cardinfo_dl():
         for card in cardlist:
             if card["card_name"] == None:#移除无名卡牌，一般是正常卡牌的激奏或者结晶卡
                 nonamecard.append(card)
+            elif int(card["base_card_id"]) in range(800000000,900000000):
+                nonamecard.append(card)
             else:
                 if card["char_type"]==3:#倒数护符和普通护符有区分，这里不需要这个特性
                     card["char_type"] = 2
@@ -196,6 +198,8 @@ async def img_dl(card_dict:dict):
             if not exists(join(MOUDULE_PATH,f'img/C/C_{id}.png')):
                 if id == '910441030':
                     tasks.append(download2(f'{img_url_c}{int(id)-10}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/C/C_{id}.png'),sem))
+                elif int(id) in range(800000000,900000000):
+                    pbar.update()
                 else:
                     if card_dict[id]["cost"] < 0:
                         pbar.update()
@@ -205,6 +209,8 @@ async def img_dl(card_dict:dict):
             if not exists(join(MOUDULE_PATH,f'img/full/{id}0.png')):
                 if id == '910441030':
                     tasks.append(download(f'{img_url_f}{int(id)-10}0.png',pbar,join(MOUDULE_PATH,f'img/full/{id}0.png'),sem))
+                elif int(id) in range(800000000,900000000):
+                    pbar.update()
                 else:
                     if card_dict[id]["cost"] < 0:
                         pbar.update()
@@ -215,11 +221,15 @@ async def img_dl(card_dict:dict):
                 if not exists(join(MOUDULE_PATH,f'img/E/E_{id}.png')):
                     if card_dict[id]["cost"] < 0:
                         pbar.update()
+                    elif int(id) in range(800000000,900000000):
+                        pbar.update()
                     else:
                         tasks.append(download2(f'{img_url_e}{id}.png',f'{img_url_n}{id}.png',pbar,join(MOUDULE_PATH,f'img/E/E_{id}.png'),sem))
                 else:pbar.update()
                 if not exists(join(MOUDULE_PATH,f'img/full/{id}1.png')):
                     if card_dict[id]["cost"] < 0:
+                        pbar.update()
+                    elif int(id) in range(800000000,900000000):
                         pbar.update()
                     else:
                         tasks.append(download(f'{img_url_f}{id}1.png',pbar,join(MOUDULE_PATH,f'img/full/{id}1.png'),sem))

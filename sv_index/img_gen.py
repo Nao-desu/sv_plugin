@@ -57,8 +57,13 @@ def img_gen_1(card) -> Image:
     #绘制左侧
     left = Image.new("RGBA",(1100,810+y1+y2),(255,255,255,0))
     try:
-        C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
-        E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
+        if int(id) in range(800000000,900000000):
+            bid = card["base_card_id"]
+            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
+            E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{bid}.png'))
+        else:
+            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+            E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
         left.paste(C_pic,(0,0),C_pic)
         left.paste(E_pic,(560,0),E_pic)
         C_pic.close()
@@ -117,7 +122,11 @@ def img_gen_2(card) -> Image:
     #绘制左
     left = Image.new("RGBA",(540,700),(255,255,255,0))
     try:
-        C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+        if int(id) in range(800000000,900000000):
+            bid = card["base_card_id"]
+            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
+        else:
+            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
         left.paste(C_pic,(0,0),C_pic)
         C_pic.close()
     except:pass
@@ -183,7 +192,11 @@ async def cardlist_img_gen(cards:list):
             name = card['card_name']
             text = f'id:{id}|匹配度:{score}'
             try:
-                C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+                if int(id) in range(800000000,900000000):
+                    bid = card["base_card_id"]
+                    C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
+                else:
+                    C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
                 img.paste(C_img,(30+j*570,30+i*800),C_img)
             except:pass
             count +=1
