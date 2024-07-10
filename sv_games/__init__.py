@@ -152,6 +152,8 @@ async def give_hint(hint:dict,bot,ev,n):
 
 @sv.on_prefix('sv猜语音')
 async def voice_guess(bot,ev):
+    if ev.real_message_type == 'guild':
+        return
     status = sdb.get_status(ev.real_group_id,'sv猜卡')
     if not status:
         return
@@ -188,9 +190,10 @@ async def voice_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             await gm.end_game(bot,ev,gid)
-            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
-                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
-                      {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]},
+                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]}]
+            if ev.real_message_type == 'group':
+                button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
             msg = MD_gen([f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"],button)
             await bot.send(ev,msg)
         return
@@ -236,9 +239,10 @@ async def paint_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             await gm.end_game(bot,ev,gid)
-            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
-                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
-                      {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]},
+                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]}]
+            if ev.real_message_type == 'group':
+                button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
             msg = MD_gen([f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"],button)
             await bot.send(ev,msg)
         return
@@ -261,9 +265,10 @@ async def on_input_chara_name(bot, ev):
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         if not url:
             url,size = await change_img(img_path)
-        button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
-                  {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]},
-                  {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+        button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]},
+                    {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}")]}]
+        if ev.real_message_type == 'group':
+            button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
         msg = MD_gen([f"<@{ev.real_user_id}>猜对了，真厉害！",f"img#{size[0]}px #{size[1]}px",url,f"正确答案是:{get_cards()[str(answer)]['card_name']}","图片数据来自SVGDB"],button)
         await bot.send(ev, msg)
         db.add_record(ev.real_user_id,ev.real_group_id)
@@ -303,12 +308,15 @@ async def change_img(path:str):
 
 @sv.on_fullmatch('sv排行榜')
 async def rank(bot,ev):
+    if ev.real_message_type != 'group':
+        return
     status = sdb.get_status(ev.real_group_id,'sv猜卡')
     if not status:
         return
     records = await db.get_records_and_rankings(ev.real_group_id)
-    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
-                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]}]
+    if ev.real_message_type == 'group':
+        button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
     if not records:
         msg = MD_gen1(["暂无排行榜","此群还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
         await bot.finish(ev,msg)
@@ -325,12 +333,15 @@ async def rank(bot,ev):
 
 @sv.on_fullmatch('sv总排行')
 async def total_rank(bot,ev):
+    if ev.real_message_type != 'group':
+        return
     status = sdb.get_status(ev.real_group_id,'sv猜卡')
     if not status:
         return
     records = await db.get_total_records_and_rankings()
-    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")]},
-                       {"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]}]
+    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]}]
+    if ev.real_message_type == 'group':
+        button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
     if not records:
         msg = MD_gen1(["暂无总排行","还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
         await bot.finish(ev,msg)
