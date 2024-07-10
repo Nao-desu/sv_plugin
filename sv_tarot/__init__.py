@@ -325,7 +325,7 @@ async def MDgen(id,po,ev) -> str:
             "params":[
                 {
                     "key":"text_1",
-                    "values":[f"<@{ev.real_user_id}>今日的塔罗牌是：  \r{name[id]}({pos[po]})   \r"]
+                    "values":[f"<@{ev.real_user_id}>今日的塔罗牌是：  \r{name[id]}({pos[po]})   \r" if ev.real_message_type == "group" else f"今日的塔罗牌是：  \r{name[id]}({pos[po]})   \r"]
                 },
                 {
                     "key":"text_2",
