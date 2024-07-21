@@ -178,7 +178,7 @@ def check_set(text:str):
     text = zhconv.convert(text,'zh-tw')
     for id in card_set:
         if text in card_set[id]:
-            return int(id)
+            return int(id),False
     return False,False
 
 def get_card_set(id:int,is_rot:bool):
