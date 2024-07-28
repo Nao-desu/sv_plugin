@@ -60,7 +60,7 @@ def get_latest_set() -> int:
     """
     获取指定卡包id
     """
-    return 10015
+    return 10027
 
 def check_condition(i:str) -> tuple:
     """
@@ -195,9 +195,9 @@ def get_card_set(id:int,is_rot:bool):
         for cardset in b:
             for cardid in cardset:
                 if cardset[cardid][2] == 1:
-                    leader[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]
+                    leader[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]/5
                 elif cardset[cardid][2] == 0:
-                    alternate[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]
+                    alternate[cardset[cardid][1]][int(cardid)] = cardset[cardid][0]/5
     else:
         b = aa[str(id)]
         for cardid in b:
