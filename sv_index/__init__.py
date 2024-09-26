@@ -3,37 +3,7 @@ from ..info import text2cards,get_cards,judge_card,find_all_card,get_related_car
 from .img_gen import card_img_gen,cardlist_img_gen
 from ..MDgen import *
 from ...groupmaster.switch import sdb
-
-sv_help= """
-艾特我，发送[sv查卡帮助]
-可以查看卡牌查询的帮助信息
-"""
-
-index_help = """
-——————————————
-    指令说明
-——————————————
--sv查卡 #tag 关键词
-    查询卡牌信息，tag前要加#号进行区分,支持多tag
-    关键词在卡牌名和卡牌能力中匹配
-支持的tag有:
-#3c     [费用]
-#AOA    [卡包]
-#token  [token]
-#333    [费用身材]
-#皇家   [职业]
-#学园   [种类]
-#随从   [卡牌类型]
-#atk3   [攻击力]
-#life3  [生命值]
-#虹     [稀有度]
-#指定   [在指定卡牌中筛选]
-#小仓唯  [声优]
-例如:【sv查卡 #aoa #皇 #323 #虹】可以精确查找到校舍的黃昏‧莉夏與奈諾
-——————————————
-"""
-
-sv = Service('sv-index',help_=index_help)
+sv = Service('sv-index')
 
 @sv.on_prefix('sv查卡')
 async def sv_card_index(bot,ev):
@@ -45,14 +15,14 @@ async def sv_card_index(bot,ev):
         return
     try:
         if text == '':
-            await bot.send(ev,'请输入条件&关键词!\n'+sv_help,at_sender=True)
+            await bot.send(ev,'请输入条件&关键词!\n',at_sender=True)
             return
         cards:list = await text2cards(text)
         judge = judge_card(cards)
         if judge:
             cards = judge
         if len(cards) == 0:
-            await bot.send(ev,'抱歉,未查询到符合条件的卡牌\n'+sv_help,at_sender = True)
+            await bot.send(ev,'抱歉,未查询到符合条件的卡牌\n',at_sender = True)
         elif len(cards) == 1:
             card = cards[0]['card']
             url,size = await card_img_gen(card)
@@ -75,11 +45,11 @@ async def sv_card_index(bot,ev):
                     leng -= 4
                 else:
                     button.append({"buttons":[button_gen(False,i["card_name"],f'svcard {i["card_id"]}') for i in related_cards]})
-            button.append({"buttons":[button_gen(False,'查卡','sv查卡')]})
+            button.append({"buttons":[button_gen(False,'查卡','sv查卡'),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1')]})
             msg = MD_gen([f'{card["card_name"]}',f'img#{size[0]}px #{size[1]}px',url,f'匹配度{cards[0]["score"]}','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
         elif len(cards) > 50:
-            await bot.send(ev,f'匹配到超过{len(cards)}张卡牌，请缩小范围\n'+sv_help,at_sender = True)
+            await bot.send(ev,f'匹配到超过{len(cards)}张卡牌，请缩小范围\n',at_sender = True)
         elif len(cards) > 16:
             cards_sorted = sorted(cards,key = lambda x : x['score'],reverse=True)[:16] 
             url,size = await cardlist_img_gen(cards_sorted)
@@ -91,7 +61,7 @@ async def sv_card_index(bot,ev):
                 leng -= 4
             else:
                 button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted]})
-            button.append({"buttons":[button_gen(False,'查卡','sv查卡')]})
+            button.append({"buttons":[button_gen(False,'查卡','sv查卡'),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1')]})
             msg = MD_gen([f'匹配到{len(cards)}张卡牌，只显示匹配度最高的16张',f'img#{size[0]}px #{size[1]}px',url,f'点击下方按钮查看卡牌详细信息','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
         else:
@@ -105,7 +75,7 @@ async def sv_card_index(bot,ev):
                 leng -= 4
             else:
                 button.append({"buttons":[button_gen(False,i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted]})
-            button.append({"buttons":[button_gen(False,'查卡','sv查卡')]})
+            button.append({"buttons":[button_gen(False,'查卡','sv查卡'),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1')]})
             msg = MD_gen([f'匹配到{len(cards)}张卡牌',f'img#{size[0]}px #{size[1]}px',url,f'点击下方按钮查看卡牌详细信息','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
     except Exception as e:
@@ -143,7 +113,7 @@ async def svcard_info(bot,ev):
                     leng -= 4
                 else:
                     button.append({"buttons":[button_gen(False,i["card_name"],f'svcard {i["card_id"]}') for i in related_cards]})
-            button.append({"buttons":[button_gen(False,'查卡','sv查卡')]})
+            button.append({"buttons":[button_gen(False,'查卡','sv查卡'),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1')]})
             msg = MD_gen([f'{card["card_name"]}',f'img#{size[0]}px #{size[1]}px',url,f'{card["card_id"]}','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
     except Exception as e:

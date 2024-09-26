@@ -5,7 +5,7 @@
 '''
 
 ##是否自动更新数据
-auto_update=False
+auto_update=True
 
 #绘制卡牌信息时各职业边框颜色
 clan_color = {0:(220,220,220),

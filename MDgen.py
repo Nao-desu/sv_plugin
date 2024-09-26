@@ -36,10 +36,10 @@ def MD_gen1(param,button):
     raw_data = json.dumps(data,ensure_ascii=False)
     return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data).encode()).decode("utf-8")}]'
 
-def button_gen(is_enter,lable,data):
-    return {"render_data": {"label": lable,"visited_label": lable,"style":1},
+def button_gen(is_enter,lable,data,style=1):
+    return {"render_data": {"label": lable,"visited_label": lable,"style":style},
             "action": {"type": 2 ,"permission": {"type": 2,},"enter":is_enter,"unsupport_tips":"兼容文本","data": data}}
 
-def link_button(lable,link):
-    return {"render_data": {"label": lable,"visited_label": lable},
+def link_button(lable,link,style=1):
+    return {"render_data": {"label": lable,"visited_label": lable,"style":style},
             "action": {"type": 0 ,"permission": {"type": 2,},"unsupport_tips":"兼容文本","data": link}}

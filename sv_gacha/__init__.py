@@ -8,14 +8,7 @@ from ..MDgen import *
 from ...groupmaster.switch import sdb
 import random
 
-gacha_help = '''
-`sv抽卡` 抽一包卡牌
-`sv十连` 抽十包卡牌
-`sv井` 抽一井卡牌
-默认抽最新卡包，可在指令后加卡包名或卡包ID抽指定卡包
-'''
-
-sv = Service('sv_gacha',help_=gacha_help)
+sv = Service('sv_gacha')
 
 jlmt = DailyNumberLimiter(1)
 
@@ -32,9 +25,7 @@ async def gacha1(bot,ev):
             return
         leadercard,card,_ = await gachaing(card_set_gacha,1,False,is_rot)
         url,size = await draw_result_1(leadercard,card)
-        button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]},
-            # {"buttons":[button_gen(False,'异画包','八周年纪念'),button_gen(False,'一井','sv井')]}
-            ]
+        button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井'),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E6%A8%A1%E6%8B%9F%E6%8A%BD%E5%8D%A1')]}]
         if is_rot:
             msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,'下次运气会更好！',f'抽取卡包:溯时指定'],button)
         else:
@@ -69,9 +60,7 @@ async def gacha10(bot,ev):
             msg += f'  \r青铜卡x{result[4]}'
         msg += f'  \r获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}  \r'
         url,size = await draw_result_2(leadercard,card,False)
-        button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]},
-            # {"buttons":[button_gen(False,'异画包','八周年纪念'),button_gen(False,'一井','sv井')]}
-            ]
+        button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井'),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E6%A8%A1%E6%8B%9F%E6%8A%BD%E5%8D%A1')]}]
         if is_rot:
             msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,f'抽取卡包:溯时指定'],button)
         else:msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,f'抽取卡包:{card_set[card_set_gacha]}'],button)
@@ -107,9 +96,7 @@ async def gacha400(bot,ev):
             msg += f'  \r青铜卡x{result[4]}'
         msg += f'  \r获得以太{result[1]*1000+result[2]*250+result[3]*50+result[4]*10}  \r'
         url,size = await draw_result_2(leadercard,card,True)
-        button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井')]},
-                #   {"buttons":[button_gen(False,'异画包','八周年纪念'),button_gen(False,'一井','sv井')]}
-                ]
+        button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连'),button_gen(False,'一井','sv井'),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E6%A8%A1%E6%8B%9F%E6%8A%BD%E5%8D%A1')]}]
         if is_rot:
             msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,f'抽取卡包:溯时指定'],button)
         else:msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,msg,f'抽取卡包:{card_set[card_set_gacha]}'],button)
@@ -118,20 +105,3 @@ async def gacha400(bot,ev):
     except Exception as e:
         await bot.send(ev,f'发送失败：{e}')
         traceback.print_exc()
-
-# @sv.on_fullmatch('八周年纪念')
-# async def gacha_rich(bot,ev):
-#     status = sdb.get_status(ev.real_group_id,'sv抽卡')
-#     if not status:
-#         return
-#     try:
-#         leadercard,card = await gachalegend()
-#         leadercard.append(random.choice(get_all_leadercard()))
-#         url,size = await draw_result_1(leadercard,card)
-#         button = [{"buttons":[button_gen(False,'单抽','sv抽卡'),button_gen(False,'十连','sv十连')]},
-#                   {"buttons":[button_gen(False,'异画包','八周年纪念'),button_gen(False,'一井','sv井')]}]
-#         msg = MD_gen(['抽卡结果',f'img#{size[0]}px #{size[1]}px',url,'哇！爆率真的很高！',f'抽取卡包:八周年纪念'],button)
-#         await bot.send(ev,msg)
-#     except Exception as e:
-#         await bot.send(ev,f'发送失败：{e}')
-#         traceback.print_exc()

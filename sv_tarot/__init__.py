@@ -376,7 +376,7 @@ async def MDgen(id,po,ev) -> str:
     return f'[CQ:markdown,data=base64://{base64.b64encode(str(raw_data).encode()).decode("utf-8")}]'
 
 @sv.on_fullmatch('塔罗牌')
-async def tarot(bot,ev):
+async def tarot(bot,ev,keep = True):
     status = sdb.get_status(ev.real_group_id,'塔罗牌')
     if not status:
         return
@@ -386,7 +386,7 @@ async def tarot(bot,ev):
         "date" : str(datetime.date.today()),
         "data" : {}
         }
-    if str(ev.real_user_id) in cache_data["data"]:
+    if str(ev.real_user_id) in cache_data["data"] and keep:
             t_id = cache_data["data"][str(ev.real_user_id)]["id"]
             t_pos = cache_data["data"][str(ev.real_user_id)]["pos"]
     else:
@@ -394,5 +394,7 @@ async def tarot(bot,ev):
         t_pos = random.randint(0,1)
         cache_data["data"][str(ev.real_user_id)] = {"id":t_id,"pos":t_pos}
     msg = await MDgen(t_id,t_pos,ev)
-    await bot.send(ev,msg)
+    recall = await bot.send(ev,msg)
+    if recall['message_id'] == '123':
+        await tarot(bot,ev,False)
     return
