@@ -60,7 +60,7 @@ def get_latest_set() -> int:
     """
     获取指定卡包id
     """
-    return 10012
+    return 10024
 
 def check_condition(i:str) -> tuple:
     """
