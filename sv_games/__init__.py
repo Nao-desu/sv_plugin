@@ -193,7 +193,7 @@ async def voice_guess(bot,ev):
             await gm.end_game(bot,ev,gid)
             button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
             if ev.real_message_type == 'group':
-                button.append[button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")]
+                button.append(button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行"))
             button = generate_buttons(button)
             data = [f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"]
             msg = generate_md(2,data,button)
@@ -243,7 +243,7 @@ async def paint_guess(bot,ev):
             await gm.end_game(bot,ev,gid)
             button = [[button_gen("猜语音","sv猜语音"),button_gen("猜卡面","sv猜卡面"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
             if ev.real_message_type == 'group':
-                button.append[button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")]
+                button.append(button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行"))
             button = generate_buttons(button)
             data = [f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"]
             msg = generate_md(2,data,button)
@@ -270,7 +270,7 @@ async def on_input_chara_name(bot, ev):
             url,size = await change_img(img_path)
         button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
         if ev.real_message_type == 'group':
-            button.append[button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")]
+            button.append(button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行"))
         button = generate_buttons(button)
         data = [f"<@{ev.real_user_id}>猜对了，真厉害！",f"img#{size[0]}px #{size[1]}px",url,f"正确答案是:{get_cards()[str(answer)]['card_name']}","图片数据来自SVGDB"]
         msg = generate_md(2,data,button)
