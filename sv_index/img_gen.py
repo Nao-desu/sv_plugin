@@ -3,7 +3,7 @@ from io import BytesIO
 from os.path import join
 from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos
 from ..config import clan_color,text_color
-from ...image_host import upload_img
+from hoshino.image_host import upload_img
 from uuid import uuid4
 
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 30)
@@ -168,7 +168,7 @@ async def card_img_gen(card:dict):
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
-    url = await upload_img(uuid4().hex + '.jpg',buf)
+    url = await upload_img(buf)
     return url,img.size
 
 async def cardlist_img_gen(cards:list):
@@ -208,5 +208,5 @@ async def cardlist_img_gen(cards:list):
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
-    url = await upload_img(uuid4().hex + '.jpg',buf)
+    url = await upload_img(buf)
     return url,img.size

@@ -8,11 +8,11 @@ from PIL import Image
 from io import BytesIO
 import asyncio,zhconv,random
 from xpinyin import Pinyin
-from ..MDgen import *
-from ...image_host import upload_img
+from hoshino.image_host import upload_img
 from uuid import uuid4
 from .database import db
 from ...groupmaster.switch import sdb
+from hoshino.MD import *
 
 p = Pinyin()
 
@@ -137,8 +137,9 @@ async def give_hint(hint:dict,bot,ev,n):
         data = [f'提示{n}',f'这张卡牌的{key}是：{value}  \r',f'{int(GAME_TIME/4)}秒后有新的提示']
     else:
         data = [f'提示{n}',f'这张卡牌的{key}是：{value}  \r',f'{int(GAME_TIME/4)}秒后公布答案']
-    button = [{"buttons":[button_gen(False,'我要回答',''),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')]}]
-    msg = MD_gen1(data,button)
+    button = [[button_gen('我要回答',' ',style=4),button_gen('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F',style = 0,type_int=0)]]
+    button = generate_buttons(button)
+    msg = generate_md(3,data,button)
     _send = await bot.send(ev,msg)
     gm.add_msg_id(ev.group_id,_send['message_id'])
     if key != '能力':
@@ -190,11 +191,12 @@ async def voice_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             await gm.end_game(bot,ev,gid)
-            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]},
-                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}"),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')]}]
+            button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
             if ev.real_message_type == 'group':
-                button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
-            msg = MD_gen([f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"],button)
+                button.append[button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")]
+            button = generate_buttons(button)
+            data = [f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"]
+            msg = generate_md(2,data,button)
             await bot.send(ev,msg)
         return
     except Exception as e:
@@ -239,11 +241,12 @@ async def paint_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             await gm.end_game(bot,ev,gid)
-            button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]},
-                      {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}"),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')]}]
+            button = [[button_gen("猜语音","sv猜语音"),button_gen("猜卡面","sv猜卡面"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
             if ev.real_message_type == 'group':
-                button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
-            msg = MD_gen([f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"],button)
+                button.append[button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")]
+            button = generate_buttons(button)
+            data = [f"正确答案是:{get_cards()[str(answer)]['card_name']}",f"img#{size[0]}px #{size[1]}px",url,"很遗憾,没有人答对","图片数据来自SVGDB"]
+            msg = generate_md(2,data,button)
             await bot.send(ev,msg)
         return
     except Exception as e:
@@ -265,11 +268,12 @@ async def on_input_chara_name(bot, ev):
         img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         if not url:
             url,size = await change_img(img_path)
-        button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音")] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面")]},
-                    {"buttons":[button_gen(False,"这是什么卡？",f"svcard {answer}"),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')]}]
+        button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
         if ev.real_message_type == 'group':
-            button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
-        msg = MD_gen([f"<@{ev.real_user_id}>猜对了，真厉害！",f"img#{size[0]}px #{size[1]}px",url,f"正确答案是:{get_cards()[str(answer)]['card_name']}","图片数据来自SVGDB"],button)
+            button.append[button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")]
+        button = generate_buttons(button)
+        data = [f"<@{ev.real_user_id}>猜对了，真厉害！",f"img#{size[0]}px #{size[1]}px",url,f"正确答案是:{get_cards()[str(answer)]['card_name']}","图片数据来自SVGDB"]
+        msg = generate_md(2,data,button)
         await bot.send(ev, msg)
         db.add_record(ev.real_user_id,ev.real_group_id)
 
@@ -303,7 +307,7 @@ async def change_img(path:str):
     buf = BytesIO()
     img = img.convert('RGB')
     img.save(buf, format='jpeg')
-    url = await upload_img(uuid4().hex + '.jpg',buf)
+    url = await upload_img(buf)
     return url,(width,height)
 
 @sv.on_fullmatch('sv排行榜')
@@ -314,21 +318,22 @@ async def rank(bot,ev):
     if not status:
         return
     records = await db.get_records_and_rankings(ev.real_group_id)
-    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音"),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面"),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')]}]
+    button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
     if ev.real_message_type == 'group':
-        button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
+        button.append([button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")])
+    button = generate_buttons(button)
     if not records:
-        msg = MD_gen1(["暂无排行榜","此群还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
+        msg = generate_md(3,["暂无排行榜","此群还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
         await bot.finish(ev,msg)
     else:
         for i in records:
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
+                msg = generate_md(3,[f"<@{ev.real_user_id}>,你已经答对了{num}次，群排名第{rank}！",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
+        msg = generate_md(3,[f"<@{ev.real_user_id}>,你还没有答对过问题",f"此群共有{len(records)}人参与游戏  \r", "群排名(最多显示10名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:10]])],button)
         await bot.send(ev,msg)
 
 @sv.on_fullmatch('sv总排行')
@@ -339,19 +344,20 @@ async def total_rank(bot,ev):
     if not status:
         return
     records = await db.get_total_records_and_rankings()
-    button = [{"buttons":[button_gen(False,"猜卡面","sv猜卡面"),button_gen(False,"猜语音","sv猜语音"),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')] if ev.real_message_type != 'guild' else [button_gen(False,"猜卡面","sv猜卡面"),link_button('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F')]}]
+    button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
     if ev.real_message_type == 'group':
-        button.append({"buttons":[button_gen(False,"排行榜","sv排行榜"),button_gen(False,"总排行","sv总排行")]})
+        button.append([button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")])
+    button = generate_buttons(button)
     if not records:
-        msg = MD_gen1(["暂无总排行","还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
+        msg = generate_md(3,["暂无总排行","还没有人答对过问题  \r","点击下方按钮参与游戏吧！"],button)
         await bot.finish(ev,msg)
     else:
         for i in records:
             if i[0] == ev.real_user_id:
                 num = i[1]
                 rank = i[2]
-                msg = MD_gen1([f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
+                msg = generate_md(3,[f"<@{ev.real_user_id}>,你已经答对了{num}次，排名第{rank}！",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
                 await bot.send(ev,msg)
                 return
-        msg = MD_gen1([f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
+        msg = generate_md(3,[f"<@{ev.real_user_id}>,你还没有答对过问题",f"共有{len(records)}人参与游戏  \r", "总排名(最多显示20名)  \r"+"  \r".join([f"{i[2]}:<@{i[0]}> 答对{i[1]}次" for i in records[:20]])],button)
         await bot.send(ev,msg)

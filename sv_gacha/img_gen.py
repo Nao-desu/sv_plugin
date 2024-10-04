@@ -2,7 +2,7 @@ from PIL import Image,ImageDraw,ImageFont
 from ..info import MOUDULE_PATH
 from os.path import join
 from io import BytesIO
-from ...image_host import upload_img
+from hoshino.image_host import upload_img
 from uuid import uuid4
 
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 50)
@@ -25,7 +25,7 @@ async def draw_result_1(leadercard:list,card:dict)->str:
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
-    url = await upload_img(uuid4().hex + '.jpg',buf)
+    url = await upload_img(buf)
     return url,(536,349)
 
 async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
@@ -75,5 +75,5 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
     img = img.convert('RGB')
     buf = BytesIO()
     img.save(buf, format='JPEG')
-    url = await upload_img(uuid4().hex + '.jpg',buf)
+    url = await upload_img(buf)
     return url,(x//8,y//8)
