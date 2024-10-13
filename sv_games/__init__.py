@@ -171,8 +171,8 @@ async def voice_guess(bot,ev):
         id1,id2 = await guess_voice(bot,ev,limited,clan,answer)
         gm.add_msg_id(gid,id1)
         gm.add_msg_id(gid,id2)
-        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")):
-            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")
+        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")):
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")
         else:
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
@@ -224,8 +224,8 @@ async def paint_guess(bot,ev):
         id1,id2 = await guess_paint(bot,ev,limited,clan,answer)
         gm.add_msg_id(gid,id1)
         gm.add_msg_id(gid,id2)
-        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")):
-            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")
+        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")):
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")
         else:
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
@@ -271,8 +271,8 @@ async def on_input_chara_name(bot, ev):
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         url,size = gm.get_pic(gid)
         await gm.end_game(bot,ev,gid)
-        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")):
-            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")
+        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")):
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")
         else:
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         if not url:

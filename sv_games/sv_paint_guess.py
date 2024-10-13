@@ -22,8 +22,8 @@ async def pic_corp(answer):
     """
     随机裁剪
     """
-    if exists(join(MOUDULE_PATH,f'img/full/{answer}0.jpg')):
-        img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.jpg'))
+    if exists(join(MOUDULE_PATH,f'img/full/{answer}0.webp')):
+        img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.webp'))
     else:
         img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.png'))
     w, h = img.size

@@ -58,21 +58,21 @@ def img_gen_1(card) -> Image:
     try:
         if int(id) in range(800000000,900000000):
             bid = card["base_card_id"]
-            if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg')):
-                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.webp')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.webp'))
             else:
                 C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
-            if exists(join(MOUDULE_PATH,f'img/E/E_{bid}.jpg')):
-                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{bid}.jpg'))
+            if exists(join(MOUDULE_PATH,f'img/E/E_{bid}.webp')):
+                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{bid}.webp'))
             else:
                 E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{bid}.png'))
         else:
-            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
-                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.webp')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.webp'))
             else:
                 C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
-            if exists(join(MOUDULE_PATH,f'img/E/E_{id}.jpg')):
-                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.jpg'))
+            if exists(join(MOUDULE_PATH,f'img/E/E_{id}.webp')):
+                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.webp'))
             else:
                 E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
         left.paste(C_pic,(0,0),C_pic)
@@ -135,13 +135,13 @@ def img_gen_2(card) -> Image:
     try:
         if int(id) in range(800000000,900000000):
             bid = card["base_card_id"]
-            if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg')):
-                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.webp')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.webp'))
             else:
                 C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
         else:
-            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
-                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.webp')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.webp'))
             else:
                 C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
         left.paste(C_pic,(0,0),C_pic)
@@ -211,13 +211,13 @@ async def cardlist_img_gen(cards:list):
             try:
                 if int(id) in range(800000000,900000000):
                     bid = card["base_card_id"]
-                    if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg')):
-                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg'))
+                    if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.webp')):
+                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.webp'))
                     else:
                         C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
                 else:
-                    if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
-                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+                    if exists(join(MOUDULE_PATH,f'img/C/C_{id}.webp')):
+                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.webp'))
                     else:
                         C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
                 img.paste(C_img,(30+j*570,30+i*800),C_img)

@@ -19,8 +19,8 @@ async def draw_result_1(leadercard:list,card:dict)->str:
     for i in range(0,2):
         for j in range(0,4):
             id = cards[j+i*4]
-            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
-                card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.webp')):
+                card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.webp'))
             else:
                 card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
             img.paste(card_pic,(j*536,i*698),card_pic)
@@ -66,8 +66,8 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
                 if j+i*5 >= len(cardlist):
                     break
                 id = cardlist[j+i*5]
-                if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
-                    card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+                if exists(join(MOUDULE_PATH,f'img/C/C_{id}.webp')):
+                    card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.webp'))
                 else:
                     card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
                 img.paste(card_pic,(j*536,i*698),card_pic)
