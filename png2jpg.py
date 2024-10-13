@@ -20,7 +20,7 @@ folder = ["C","E","full"]
 def main():
     all_png = []
     for i in folder:
-        f_path = path.join(PATH, i)
+        f_path = path.join(PATH, 'img' ,i)
         for file in os.listdir(f_path):
             if file.endswith('.png'):
                 all_png.append(path.join(f_path, file))
