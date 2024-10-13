@@ -2,7 +2,7 @@ from ..info import clan2w
 from ..config import GAME_TIME
 from ..info import MOUDULE_PATH
 from PIL import Image
-from os.path import join
+from os.path import join,exists
 from io import BytesIO
 import random,base64
 from hoshino.MD import *
@@ -22,7 +22,10 @@ async def pic_corp(answer):
     """
     随机裁剪
     """
-    img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.png'))
+    if exists(join(MOUDULE_PATH,f'img/full/{answer}0.jpg')):
+        img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.jpg'))
+    else:
+        img = Image.open(join(MOUDULE_PATH,f'img/full/{answer}0.png'))
     w, h = img.size
     x = random.randint(0, w - 250)
     y = random.randint(0, h - 250)

@@ -1,6 +1,6 @@
 from hoshino import Service
 from ..info import get_lim,get_answer,get_cards,MOUDULE_PATH,clan2w,get_condition,card_set,skill2w
-from os.path import join
+from os.path import join,exists
 from .sv_voice_gess import guess_voice
 from .sv_paint_guess import guess_paint
 from ..config import GAME_TIME
@@ -171,7 +171,10 @@ async def voice_guess(bot,ev):
         id1,id2 = await guess_voice(bot,ev,limited,clan,answer)
         gm.add_msg_id(gid,id1)
         gm.add_msg_id(gid,id2)
-        img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")):
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")
+        else:
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
         gm.add_pic(gid,url,size)
         card = get_cards()[str(answer)]
@@ -221,7 +224,10 @@ async def paint_guess(bot,ev):
         id1,id2 = await guess_paint(bot,ev,limited,clan,answer)
         gm.add_msg_id(gid,id1)
         gm.add_msg_id(gid,id2)
-        img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")):
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")
+        else:
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         url,size = await change_img(img_path)
         gm.add_pic(gid,url,size)
         card = get_cards()[str(answer)]
@@ -265,7 +271,10 @@ async def on_input_chara_name(bot, ev):
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
         url,size = gm.get_pic(gid)
         await gm.end_game(bot,ev,gid)
-        img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
+        if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")):
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.jpg")
+        else:
+            img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         if not url:
             url,size = await change_img(img_path)
         button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]

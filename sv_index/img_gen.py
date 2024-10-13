@@ -1,10 +1,9 @@
 from PIL import Image,ImageFont,ImageDraw
 from io import BytesIO
-from os.path import join
+from os.path import join,exists
 from ..info import text_split,card_set,clan2w,MOUDULE_PATH,get_textcolor_pos
 from ..config import clan_color,text_color
 from hoshino.image_host import upload_img
-from uuid import uuid4
 
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 30)
 def draw_rr(x,y,clan)-> Image:
@@ -59,11 +58,23 @@ def img_gen_1(card) -> Image:
     try:
         if int(id) in range(800000000,900000000):
             bid = card["base_card_id"]
-            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
-            E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{bid}.png'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg'))
+            else:
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
+            if exists(join(MOUDULE_PATH,f'img/E/E_{bid}.jpg')):
+                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{bid}.jpg'))
+            else:
+                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{bid}.png'))
         else:
-            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
-            E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+            else:
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+            if exists(join(MOUDULE_PATH,f'img/E/E_{id}.jpg')):
+                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.jpg'))
+            else:
+                E_pic = Image.open(join(MOUDULE_PATH,f'img/E/E_{id}.png'))
         left.paste(C_pic,(0,0),C_pic)
         left.paste(E_pic,(560,0),E_pic)
         C_pic.close()
@@ -124,9 +135,15 @@ def img_gen_2(card) -> Image:
     try:
         if int(id) in range(800000000,900000000):
             bid = card["base_card_id"]
-            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg'))
+            else:
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
         else:
-            C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+            else:
+                C_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
         left.paste(C_pic,(0,0),C_pic)
         C_pic.close()
     except:pass
@@ -194,9 +211,15 @@ async def cardlist_img_gen(cards:list):
             try:
                 if int(id) in range(800000000,900000000):
                     bid = card["base_card_id"]
-                    C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
+                    if exists(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg')):
+                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.jpg'))
+                    else:
+                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{bid}.png'))
                 else:
-                    C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+                    if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
+                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+                    else:
+                        C_img = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
                 img.paste(C_img,(30+j*570,30+i*800),C_img)
             except:pass
             count +=1

@@ -3,7 +3,7 @@ from ..info import MOUDULE_PATH
 from os.path import join
 from io import BytesIO
 from hoshino.image_host import upload_img
-from uuid import uuid4
+from os.path import exists
 
 font = ImageFont.truetype(join(MOUDULE_PATH,'font/font.ttf'),size = 50)
 
@@ -19,7 +19,10 @@ async def draw_result_1(leadercard:list,card:dict)->str:
     for i in range(0,2):
         for j in range(0,4):
             id = cards[j+i*4]
-            card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+            if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
+                card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+            else:
+                card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
             img.paste(card_pic,(j*536,i*698),card_pic)
     img.resize((536,349))
     img = img.convert('RGB')
@@ -63,7 +66,10 @@ async def draw_result_2(leadercard:list,card:dict,only_leader:bool)->str:
                 if j+i*5 >= len(cardlist):
                     break
                 id = cardlist[j+i*5]
-                card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
+                if exists(join(MOUDULE_PATH,f'img/C/C_{id}.jpg')):
+                    card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.jpg'))
+                else:
+                    card_pic = Image.open(join(MOUDULE_PATH,f'img/C/C_{id}.png'))
                 img.paste(card_pic,(j*536,i*698),card_pic)
                 draw.text((j*536+450,i*698+20),f'x{cards[id]}',(0,0,0),font)
             if j+i*5 >= len(cardlist):

@@ -606,7 +606,7 @@ async def get_answer(limite,clan,flag)->int:
             answer = await get_answer(limite,clan,'voice')
         while not os.listdir(join(MOUDULE_PATH,f'voice/{answer}')):
             answer = await get_answer(limite,clan,'voice')
-    while not exists(join(MOUDULE_PATH,f'img/full/{answer}0.png')):
+    while not exists(join(MOUDULE_PATH,f'img/full/{answer}0.png')) and not exists(join(MOUDULE_PATH,f'img/full/{answer}0.jpg')):
         answer = await get_answer(limite,clan,None)
     return answer
 
