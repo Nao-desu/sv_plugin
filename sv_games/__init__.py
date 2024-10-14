@@ -41,7 +41,7 @@ class GM:
     def start_game(self, gid,answer):
         self.playing[gid] = answer
         card = get_cards()[str(answer)]
-        sv.logger.info(f"{gid} start game {[card['card_name'],answer]}")
+        sv.logger.info(f"Group:{gid} start game {[card['card_name'],answer]}")
         a0 = card["card_name"]
         a1 = [p.get_pinyin(text) for text in a0.split('‧')]
         a2 = a0.strip('詠唱：')
@@ -270,7 +270,7 @@ async def on_input_chara_name(bot, ev):
         return
     answer = gm.get_ans(gid)
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
-        sv.logger.info(f"{ev.group_id}{ev.user_id} right answer")
+        sv.logger.info(f"User:{ev.user_id} from Group:{ev.group_id} answered correctly")
         url,size = gm.get_pic(gid)
         await gm.end_game(bot,ev,gid)
         if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")):
