@@ -53,8 +53,6 @@ def draw_text_psd_style(draw, xy, text, font, tracking=0, leading=None, **kwargs
     for line in lines:
         for a, b in stutter_chunk(line, 2, 1, ' '):
             w = font.getlength(a + b) - font.getlength(b)
-            # dprint("[debug] kwargs")
-            print("[debug] kwargs:{}".format(kwargs))
                 
             draw.text((x, y), a, font=font, **kwargs)
             x += w + (tracking / 1000) * font_size

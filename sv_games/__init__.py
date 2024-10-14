@@ -41,6 +41,7 @@ class GM:
     def start_game(self, gid,answer):
         self.playing[gid] = answer
         card = get_cards()[str(answer)]
+        sv.logger.info(f"{gid} start game {[card['card_name'],answer]}")
         a0 = card["card_name"]
         a1 = [p.get_pinyin(text) for text in a0.split('‧')]
         a2 = a0.strip('詠唱：')
@@ -269,6 +270,7 @@ async def on_input_chara_name(bot, ev):
         return
     answer = gm.get_ans(gid)
     if gm.check_ans(gid,zhconv.convert(ev.message.extract_plain_text(),'zh-tw')):
+        sv.logger.info(f"{ev.group_id}{ev.user_id} right answer")
         url,size = gm.get_pic(gid)
         await gm.end_game(bot,ev,gid)
         if exists(join(MOUDULE_PATH,f"img\\full\\{answer}0.webp")):
@@ -285,14 +287,6 @@ async def on_input_chara_name(bot, ev):
         msg = generate_md(2,data,button)
         await bot.send(ev, msg)
         db.add_record(ev.real_user_id,ev.real_group_id)
-
-@sv.on_fullmatch('重置游戏')
-async def reset_games(bot,ev):
-    status = sdb.get_status(ev.real_group_id,'sv猜卡')
-    if not status:
-        return
-    await gm.end_game(bot,ev,ev.group_id)
-    await bot.send(ev,'已重置')
 
 async def change_img(path:str):
     """
