@@ -395,6 +395,4 @@ async def tarot(bot,ev,keep = True):
         cache_data["data"][str(ev.real_user_id)] = {"id":t_id,"pos":t_pos}
     msg = await MDgen(t_id,t_pos,ev)
     recall = await bot.send(ev,msg)
-    if recall['message_id'] == '123' or recall['message_id'] == 123:
-        await tarot(bot,ev,False)
     return
