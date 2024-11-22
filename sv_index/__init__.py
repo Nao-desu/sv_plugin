@@ -43,7 +43,7 @@ async def sv_card_index(bot,ev):
                     leng -= 4
                 else:
                     button.append([button_gen(i["card_name"],f'svcard {i["card_id"]}') for i in related_cards])
-            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
+            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
             button = generate_buttons(button)
             msg = generate_md(2,[f'{card["card_name"]}',f'img#{size[0]}px #{size[1]}px',url,f'匹配度{cards[0]["score"]}','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
@@ -60,7 +60,7 @@ async def sv_card_index(bot,ev):
                 leng -= 4
             else:
                 button.append([button_gen(i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted])
-            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
+            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
             button = generate_buttons(button)
             msg = generate_md(2,[f'匹配到{len(cards)}张卡牌，只显示匹配度最高的16张',f'img#{size[0]}px #{size[1]}px',url,f'点击下方按钮查看卡牌详细信息','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
@@ -75,7 +75,7 @@ async def sv_card_index(bot,ev):
                 leng -= 4
             else:
                 button.append([button_gen(i['card']["card_name"],f'svcard {i["card"]["card_id"]}') for i in cards_sorted])
-            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
+            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
             button = generate_buttons(button)
             msg = generate_md(2,[f'匹配到{len(cards)}张卡牌',f'img#{size[0]}px #{size[1]}px',url,f'点击下方按钮查看卡牌详细信息','data from shadowverse-portal'],button)
             await bot.send(ev,msg)
@@ -114,7 +114,7 @@ async def svcard_info(bot,ev):
                     leng -= 4
                 else:
                     button.append([button_gen(i["card_name"],f'svcard {i["card_id"]}') for i in related_cards])
-            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
+            button.append([button_gen('查卡','sv查卡'),button_gen('帮助','https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#sv%E6%9F%A5%E5%8D%A1',type_int=0)])
             button = generate_buttons(button)
             msg = generate_md(2,[f'{card["card_name"]}',f'img#{size[0]}px #{size[1]}px',url,f'{card["card_id"]}','data from shadowverse-portal'],button)
             await bot.send(ev,msg)

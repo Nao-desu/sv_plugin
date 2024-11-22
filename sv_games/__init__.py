@@ -138,7 +138,7 @@ async def give_hint(hint:dict,bot,ev,n):
         data = [f'提示{n}',f'这张卡牌的{key}是：{value}  \r',f'{int(GAME_TIME/4)}秒后有新的提示']
     else:
         data = [f'提示{n}',f'这张卡牌的{key}是：{value}  \r',f'{int(GAME_TIME/4)}秒后公布答案']
-    button = [[button_gen('我要回答',' ',style=4),button_gen('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F',style = 0,type_int=0)]]
+    button = [[button_gen('我要回答',' ',style=4),button_gen('帮助','https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F',style = 0,type_int=0)]]
     button = generate_buttons(button)
     msg = generate_md(3,data,button)
     _send = await bot.send(ev,msg)
@@ -195,7 +195,7 @@ async def voice_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             await gm.end_game(bot,ev,gid)
-            button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
+            button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
             if ev.real_message_type == 'group':
                 button.append([button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")])
             button = generate_buttons(button)
@@ -248,7 +248,7 @@ async def paint_guess(bot,ev):
             if gm.get_ans(gid) != answer:
                 return
             await gm.end_game(bot,ev,gid)
-            button = [[button_gen("猜语音","sv猜语音"),button_gen("猜卡面","sv猜卡面"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
+            button = [[button_gen("猜语音","sv猜语音"),button_gen("猜卡面","sv猜卡面"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
             if ev.real_message_type == 'group':
                 button.append([button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")])
             button = generate_buttons(button)
@@ -279,7 +279,7 @@ async def on_input_chara_name(bot, ev):
             img_path = join(MOUDULE_PATH,f"img\\full\\{answer}0.png")
         if not url:
             url,size = await change_img(img_path)
-        button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
+        button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("这是什么卡？",f"svcard {answer}"),button_gen("帮助","https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
         if ev.real_message_type == 'group':
             button.append([button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")])
         button = generate_buttons(button)
@@ -321,7 +321,7 @@ async def rank(bot,ev):
     if not status:
         return
     records = await db.get_records_and_rankings(ev.real_group_id)
-    button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
+    button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("帮助","https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
     if ev.real_message_type == 'group':
         button.append([button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")])
     button = generate_buttons(button)
@@ -347,7 +347,7 @@ async def total_rank(bot,ev):
     if not status:
         return
     records = await db.get_total_records_and_rankings()
-    button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("帮助","https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
+    button = [[button_gen("猜卡面","sv猜卡面"),button_gen("猜语音","sv猜语音"),button_gen("帮助","https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F",type_int=0)]]
     if ev.real_message_type == 'group':
         button.append([button_gen("排行榜","sv排行榜"),button_gen("总排行","sv总排行")])
     button = generate_buttons(button)

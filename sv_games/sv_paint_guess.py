@@ -11,7 +11,7 @@ async def guess_paint(bot,ev,limited,clan,answer):
     w1 = '溯时指定' if limited else ''
     w2 = '' if not clan else clan2w[clan]
     img = await pic_corp(answer)
-    button = [[button_gen('我要回答',' ',style=4),button_gen('帮助','https://www.koharu.cn/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F',style = 0,type_int=0)]]
+    button = [[button_gen('我要回答',' ',style=4),button_gen('帮助','https://www.koharu.cn:8149/docs/shadowverse/shadowverse.html#%E7%8C%9C%E5%8D%A1%E6%B8%B8%E6%88%8F',style = 0,type_int=0)]]
     button = generate_buttons(button)
     msg = generate_md(3,[f'猜猜这张图片来自哪张{w1}{w2}卡牌？',f'{GAME_TIME}秒后公布答案  \r','艾特我+你的答案参与游戏'],button)
     _send1 = await bot.send(ev,msg)
