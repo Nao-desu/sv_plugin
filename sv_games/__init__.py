@@ -167,6 +167,7 @@ async def voice_guess(bot,ev):
             return
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
+        limited = False
         answer = await get_answer(limited,clan,'voice')
         gm.start_game(gid,answer)
         id1,id2 = await guess_voice(bot,ev,limited,clan,answer)
@@ -220,6 +221,7 @@ async def paint_guess(bot,ev):
             return
         lim = ev.message.extract_plain_text().strip()
         limited,clan = get_lim(lim)
+        limited = False
         answer = await get_answer(limited,clan,False)
         gm.start_game(gid,answer)
         id1,id2 = await guess_paint(bot,ev,limited,clan,answer)
